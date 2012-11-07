@@ -10,8 +10,6 @@ enum Direction {
     RIGHT
 };
 
-class Game;
-
 class MovingObject : public Object
 {
 	Direction direction;
@@ -21,7 +19,7 @@ class MovingObject : public Object
 public:
     MovingObject();
 
-    virtual void Update();
+    void Update();
     void SetDirection(Direction direction);
     void SetSpeed(int speed);
     Direction GetDirection();

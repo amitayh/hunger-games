@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "Wall.h"
+#include "Player.h"
 #include <time.h>
 
 void main() {
@@ -13,28 +15,28 @@ void main() {
 
 	Player player1('A'), player2('B');
 
-    game.Add(&wall1, 3, 5);
-	game.Add(&wall2, 4, 5);
-	game.Add(&wall3, 5, 5);
-	game.Add(&wall4, 6, 5);
-	game.Add(&wall5, 7, 5);
-	game.Add(&wall6, 8, 5);
+    game.AddObject(&wall1, 3, 5);
+	game.AddObject(&wall2, 4, 5);
+	game.AddObject(&wall3, 5, 5);
+	game.AddObject(&wall4, 6, 5);
+	game.AddObject(&wall5, 7, 5);
+	game.AddObject(&wall6, 8, 5);
 
-    game.Add(&wall7, 8, 50);
-	game.Add(&wall8, 9, 50);
-	game.Add(&wall9, 10, 50);
-	game.Add(&wall10, 11, 50);
-	game.Add(&wall11, 12, 50);
-	game.Add(&wall12, 13, 50);
+    game.AddObject(&wall7, 8, 50);
+	game.AddObject(&wall8, 9, 50);
+	game.AddObject(&wall9, 10, 50);
+	game.AddObject(&wall10, 11, 50);
+	game.AddObject(&wall11, 12, 50);
+	game.AddObject(&wall12, 13, 50);
 
-    game.Add(&wall13, 8, 44);
-	game.Add(&wall14, 8, 45);
-	game.Add(&wall15, 8, 46);
-	game.Add(&wall16, 8, 47);
-	game.Add(&wall17, 8, 48);
-	game.Add(&wall18, 8, 49);
+    game.AddObject(&wall13, 8, 44);
+	game.AddObject(&wall14, 8, 45);
+	game.AddObject(&wall15, 8, 46);
+	game.AddObject(&wall16, 8, 47);
+	game.AddObject(&wall17, 8, 48);
+	game.AddObject(&wall18, 8, 49);
 
-	game.Add(&player1, 10, 10);
+	game.AddObject(&player1, 10, 10);
     //game.Add(&player2, 20, 30);
 
 	game.Run();

@@ -2,12 +2,15 @@
 #define _DROPPING_OBJECT_H
 
 #include "Object.h"
+#include "Player.h"
 
 class DroppingObject : public Object
 {
-	double dropProbability;
+	int dropProbability;
 public:
 	DroppingObject();
+
+    virtual void Affect(Player* player);
 };
 
 #endif

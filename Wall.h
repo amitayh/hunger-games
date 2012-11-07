@@ -9,6 +9,7 @@ public:
     Wall();
 
 	void Draw();
+    bool SetSquare(Square* square);
 };
 
 #endif

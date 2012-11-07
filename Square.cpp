@@ -1,25 +1,41 @@
 #include "Square.h"
-#include "Object.h"
 
-void Square::Enter(Object* object) {
-    objects.push_back(object);
+Square::Square() {
+	droppingObject = NULL;
+	wall = NULL;
 }
 
-void Square::Leave(Object* object) {
-    objects.remove(object);
+void Square::Enter(Player* player) {
+	players.push_back(player);
 }
 
-void Square::Set(int row, int col) {
-    SetRow(row);
-    SetCol(col);
+void Square::Leave(Player* player) {
+	players.remove(player);
 }
 
-void Square::SetRow(int row) {
+void Square::Enter(Arrow* arrow) {
+	arrows.push_back(arrow);
+}
+
+void Square::Leave(Arrow* arrow) {
+	arrows.remove(arrow);
+}
+
+void Square::SetPosition(int row, int col) {
     this->row = row;
+	this->col = col;
 }
 
-void Square::SetCol(int col) {
-    this->col = col;
+bool Square::SetDroppingObject(DroppingObject* droppingObject) {
+	if (!this->droppingObject) {
+		this->droppingObject = droppingObject;
+		return true;
+	}
+	return false;
+}
+
+void Square::SetWall(Wall* wall) {
+	this->wall = wall;
 }
 
 int Square::GetRow() {
@@ -30,18 +46,14 @@ int Square::GetCol() {
     return col;
 }
 
-ObjectsList* Square::GetObjects() {
-    return &objects;
+PlayersList* Square::GetPlayers() {
+    return &players;
 }
 
-bool Square::IsOccupied() {
-    return (objects.size() > 0);
+DroppingObject* Square::GetDroppingObject() {
+    return droppingObject;
 }
 
-bool Square::IsWall() {
-    if (IsOccupied()) {
-        Object* object = objects.front();
-        return (object->GetType() == WALL);
-    }
-    return false;
+Wall* Square::GetWall() {
+    return wall;
 }

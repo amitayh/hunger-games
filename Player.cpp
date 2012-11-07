@@ -1,5 +1,7 @@
 #include "Player.h"
+#include "Arrow.h"
 #include "Game.h"
+#include "DroppingObject.h"
 
 Player::Player(char name, int power) {
     SetType(PLAYER);
@@ -10,28 +12,53 @@ Player::Player(char name, int power) {
 }
 
 bool Player::SetSquare(Square* square) {
-	if (square->IsOccupied()) {
-		ObjectsList* objects = square->GetObjects();
-        ObjectsList::iterator iterator;
-		Object* object;
-		ObjectType type;
-		for (iterator = objects->begin(); iterator != objects->end(); iterator++) {
-			object = *iterator;
-			type = object->GetType();
-			if (type == BOMB || type == FOOD || type == QUIVER) {
-			} else if (type == WALL) {
-			}
-        }
-	}
-	return MovingObject::SetSquare(square);
-
-	/*
-    if (square->IsWall()) {
-		SetRandomDirection();
+    if (square->GetWall()) {
+        SetRandomDirection();
         return false;
+    } else {
+        DroppingObject* droppingObject = square->GetDroppingObject();
+        if (droppingObject) {
+            Game* game = GetGame();
+            droppingObject->Affect(this);
+            square->SetDroppingObject(NULL);
+            game->RemoveObject(droppingObject);
+        }
+        // TODO: check power
+
+        PlayersList* players = square->GetPlayers();
+        PlayersListIterator it = players->begin();
+        while (it != players->end()) {
+            Battle(*it);
+            it++;
+        }
     }
     return MovingObject::SetSquare(square);
-	*/
+}
+
+void Player::Battle(Player* otherPlayer) {
+    int otherPlayerPower = otherPlayer->GetPower();
+    if (power > otherPlayerPower) {
+        otherPlayer->DecreasePower(200);
+        DecreasePower(10);
+    } else if (power < otherPlayerPower) {
+        otherPlayer->DecreasePower(10);
+        DecreasePower(200);
+    } else {
+        otherPlayer->DecreasePower(50);
+        DecreasePower(50);
+    }
+}
+
+void Player::IncreasePower(int amount) {
+    power = __max(power + amount, 0);
+}
+
+void Player::DecreasePower(int amount) {
+    IncreasePower(-amount);
+}
+
+int Player::GetPower() {
+    return power;
 }
 
 void Player::Update() {
@@ -49,6 +76,10 @@ void Player::Update() {
     }
 
     MovingObject::Update();
+
+    if (!power) {
+        game->RemoveObject(this);
+    }
 }
 
 void Player::SetRandomDirection() {
@@ -72,8 +103,26 @@ void Player::SetRandomDirection() {
 void Player::ShootArrow() {
 	if (remainingArrows) {
         Arrow* arrow = new Arrow(this);
+        Square* square = GetSquare();
+        int row = square->GetRow(), col = square->GetCol();
+
+        switch (GetDirection()) {
+            case UP:
+                row--;
+                break;
+            case DOWN:
+                row++;
+                break;
+            case LEFT:
+                col--;
+                break;
+            case RIGHT:
+                col++;
+                break;
+        }
+
         Game* game = GetGame();
-        game->Add(arrow);
+        game->AddObject(arrow, row, col);
 		remainingArrows--;
 	}
 }

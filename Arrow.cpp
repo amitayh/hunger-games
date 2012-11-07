@@ -3,38 +3,13 @@
 
 Arrow::Arrow(Player* shooter) {
     SetType(ARROW);
-    
-    Direction direction = shooter->GetDirection();
-    Square* shooterSquare = shooter->GetSquare();
-    int row = shooterSquare->GetRow(),
-        col = shooterSquare->GetCol();
-
-    switch (direction) {
-        case UP:
-            row--;
-            break;
-        case DOWN:
-            row++;
-            break;
-        case LEFT:
-            col--;
-            break;
-        case RIGHT:
-            col++;
-            break;
-    }
-
-    Game* game = shooter->GetGame();
-    Grid* grid = game->GetGrid();
-    Square* arrowSquare = grid->GetSquare(row, col);
-
     this->shooter = shooter;
-    SetDirection(direction);
-    SetSquare(arrowSquare);
+    SetDirection(shooter->GetDirection());
     SetSpeed(2);
-    hit = false;
+    //hit = false;
 }
 
+/*
 bool Arrow::SetSquare(Square* square) {
     if (square->IsOccupied()) {
         // Check objects on square
@@ -85,6 +60,8 @@ void Arrow::Draw() {
     cout << ch;
 }
 
+/*
 bool Arrow::GetHit() {
     return hit;
 }
+*/

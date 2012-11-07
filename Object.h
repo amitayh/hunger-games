@@ -25,16 +25,17 @@ class Object
     Dimensions size;
     Game* game;
     Square* square;
+
 public:
 	Object();
-    ~Object();
 
-	void Draw();
+    virtual void Update() {};
+    virtual void Draw() {};
+    virtual bool SetSquare(Square* square);
+
     void GotoPosition();
-
     void SetType(ObjectType type);
     void SetGame(Game* game);
-    virtual bool SetSquare(Square* square);
 
     ObjectType GetType();
     Dimensions* GetSize();

@@ -3,25 +3,38 @@
 
 #include <list>
 
-class Object;
+class Player;
+class Arrow;
+class DroppingObject;
+class Wall;
 
-typedef std::list<Object*> ObjectsList;
+typedef std::list<Player*> PlayersList;
+typedef PlayersList::iterator PlayersListIterator;
+typedef std::list<Arrow*> ArrowsList;
+typedef ArrowsList::iterator ArrowsListIterator;
 
 class Square
 {
     int row, col;
-    ObjectsList objects;
+	PlayersList players;
+	ArrowsList arrows;
+	DroppingObject* droppingObject;
+	Wall* wall;
 public:
-    void Enter(Object* object);
-    void Leave(Object* object);
-    void Set(int row, int col);
-    void SetRow(int row);
-    void SetCol(int col);
+	Square();
+
+    void Enter(Player* player);
+    void Leave(Player* player);
+	void Enter(Arrow* arrow);
+    void Leave(Arrow* arrow);
+    void SetPosition(int row, int col);
+	bool SetDroppingObject(DroppingObject* droppingObject);
+	void SetWall(Wall* wall);
     int GetRow();
     int GetCol();
-    ObjectsList* GetObjects();
-    bool IsOccupied();
-    bool IsWall();
+    PlayersList* GetPlayers();
+    DroppingObject* GetDroppingObject();
+    Wall* GetWall();
 };
 
 #endif
