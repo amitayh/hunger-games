@@ -14,8 +14,19 @@ Player::Player(char name, int power) {
 bool Player::SetSquare(Square* square) {
     if (square->GetWall()) {
         SetRandomDirection();
+		Update();
         return false;
     } else {
+		Square* oldSquare = GetSquare();
+		if (oldSquare) {
+			oldSquare->StepOut(this);
+		}
+		square->StepIn(this);
+		MovingObject::SetSquare(square);
+		return true;
+
+		/*
+		// Not here...
         DroppingObject* droppingObject = square->GetDroppingObject();
         if (droppingObject) {
             Game* game = GetGame();
@@ -30,17 +41,8 @@ bool Player::SetSquare(Square* square) {
             //Battle(*it);
             it++;
         }
+		*/
     }
-
-    bool result = MovingObject::SetSquare(square);
-    if (result) {
-        Square* oldSquare = GetSquare();
-        if (oldSquare) {
-            oldSquare->StepOut(this);
-        }
-        square->StepIn(this);
-    }
-    return result;
 }
 
 void Player::Battle(Player* otherPlayer) {
@@ -70,20 +72,21 @@ int Player::GetPower() {
 }
 
 bool Player::Update() {
+	MovingObject::Update();
+
+	// Randomly change direction
     int random = rand() % 100;
     if (random < CHANGE_DIRECTION_PROBABILITY) {
-        // 10% chance of changing direction randomly
         SetRandomDirection();
     }
 
+	// Randomly shoot arrows
     Game* game = GetGame();
     int tick = game->GetTick();
-    random = rand() % 100;
-    if (random < ARROW_PROBABILITY && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
+	random = rand() % 100;
+    if (random < SHOOT_ARROW_PROBABILITY && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
         ShootArrow();
     }
-
-    MovingObject::Update();
 
     return (power > 0);
 }

@@ -14,6 +14,11 @@ bool Arrow::SetSquare(Square* square) {
         hit = true;
         return false;
     } else {
+		MovingObject::SetSquare(square);
+		return true;
+
+		/*
+		// Not here...
         PlayersList* players = square->GetPlayers();
         if (players->size()) {
             Player* player = players->front();
@@ -23,8 +28,8 @@ bool Arrow::SetSquare(Square* square) {
                 return false;
             }
         }
-    }
-    return MovingObject::SetSquare(square);
+		*/
+	}
 }
 
 bool Arrow::Update() {

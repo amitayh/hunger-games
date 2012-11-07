@@ -30,7 +30,7 @@ void main() {
 	game.AddObject(new Wall, 8, 48);
 	game.AddObject(new Wall, 8, 49);
 
-	game.AddObject(new Player('A'), 10, 5);
+	game.AddObject(new Player('A'), 10, 10);
     game.AddObject(new Player('B'), 10, 40);
 
 	game.Run();

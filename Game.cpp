@@ -52,8 +52,10 @@ void Game::Update() {
 	while (it != objects.end()) {
         object = *it;
         if (object->Update()) {
+			// Update OK, continue to next object
             it++;
         } else {
+			// Object is ready for removal
             it = objects.erase(it);
             delete object;
         }

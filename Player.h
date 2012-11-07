@@ -5,7 +5,7 @@
 
 const int INITIAL_NUM_ARROWS = 3;
 const int MIN_TICKS_BETWEEN_ARROWS = 3;
-const int ARROW_PROBABILITY = 10;
+const int SHOOT_ARROW_PROBABILITY = 10;
 const int CHANGE_DIRECTION_PROBABILITY = 10;
 
 class Player : public MovingObject
@@ -16,6 +16,8 @@ class Player : public MovingObject
     int lastArrowTick;
 
     void SetRandomDirection();
+	void ShootArrow();
+
 public:
 	Player(char name, int power = 1000);
 
@@ -25,7 +27,6 @@ public:
     void IncreasePower(int amount);
     void DecreasePower(int amount);
     void Battle(Player* otherPlayer);
-    void ShootArrow();
     int GetPower();
 };
 

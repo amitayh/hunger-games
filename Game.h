@@ -18,6 +18,10 @@ class Game
 	Grid grid;
 	ObjectsList objects;
 
+	void Loop();
+	void Update();
+	void Draw();
+
 public:
 	Game();
     ~Game();
@@ -29,9 +33,6 @@ public:
 
     void Run();
     void Pause();
-	void Loop();
-	void Update();
-	void Draw();
 };
 
 #endif
