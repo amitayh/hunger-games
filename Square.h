@@ -4,29 +4,23 @@
 #include <list>
 
 class Player;
-class Arrow;
 class DroppingObject;
 class Wall;
 
 typedef std::list<Player*> PlayersList;
-typedef PlayersList::iterator PlayersListIterator;
-typedef std::list<Arrow*> ArrowsList;
-typedef ArrowsList::iterator ArrowsListIterator;
+typedef PlayersList::iterator PlayersIterator;
 
 class Square
 {
     int row, col;
 	PlayersList players;
-	ArrowsList arrows;
 	DroppingObject* droppingObject;
 	Wall* wall;
 public:
 	Square();
 
-    void Enter(Player* player);
-    void Leave(Player* player);
-	void Enter(Arrow* arrow);
-    void Leave(Arrow* arrow);
+    void StepIn(Player* player);
+    void StepOut(Player* player);
     void SetPosition(int row, int col);
 	bool SetDroppingObject(DroppingObject* droppingObject);
 	void SetWall(Wall* wall);

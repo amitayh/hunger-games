@@ -6,38 +6,31 @@ Arrow::Arrow(Player* shooter) {
     this->shooter = shooter;
     SetDirection(shooter->GetDirection());
     SetSpeed(2);
-    //hit = false;
+    hit = false;
 }
 
-/*
 bool Arrow::SetSquare(Square* square) {
-    if (square->IsOccupied()) {
-        // Check objects on square
-        ObjectsList* objects = square->GetObjects();
-        ObjectsList::iterator iterator;
-        ObjectType type;
-        for (iterator = objects->begin(); !hit && iterator != objects->end(); iterator++) {
-            type = (*iterator)->GetType();
-            if (type == WALL || type == PLAYER) {
+    if (square->GetWall()) {
+        hit = true;
+        return false;
+    } else {
+        PlayersList* players = square->GetPlayers();
+        if (players->size()) {
+            Player* player = players->front();
+            if (player != shooter) {
+                player->DecreasePower(500);
                 hit = true;
+                return false;
             }
         }
-		if (hit) {
-			return false;
-		}
     }
     return MovingObject::SetSquare(square);
 }
 
-/*
-void Arrow::Update() {
+bool Arrow::Update() {
     MovingObject::Update();
-    if (hit) {
-        Game* game = GetGame();
-        game->Remove(this);
-    }
+    return !hit;
 }
-*/
 
 void Arrow::Draw() {
     char ch;
@@ -59,9 +52,3 @@ void Arrow::Draw() {
     GotoPosition();
     cout << ch;
 }
-
-/*
-bool Arrow::GetHit() {
-    return hit;
-}
-*/

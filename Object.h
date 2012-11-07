@@ -29,7 +29,7 @@ class Object
 public:
 	Object();
 
-    virtual void Update() {};
+    virtual bool Update();
     virtual void Draw() {};
     virtual bool SetSquare(Square* square);
 

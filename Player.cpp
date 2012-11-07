@@ -23,16 +23,24 @@ bool Player::SetSquare(Square* square) {
             square->SetDroppingObject(NULL);
             game->RemoveObject(droppingObject);
         }
-        // TODO: check power
 
         PlayersList* players = square->GetPlayers();
-        PlayersListIterator it = players->begin();
+        PlayersIterator it = players->begin();
         while (it != players->end()) {
-            Battle(*it);
+            //Battle(*it);
             it++;
         }
     }
-    return MovingObject::SetSquare(square);
+
+    bool result = MovingObject::SetSquare(square);
+    if (result) {
+        Square* oldSquare = GetSquare();
+        if (oldSquare) {
+            oldSquare->StepOut(this);
+        }
+        square->StepIn(this);
+    }
+    return result;
 }
 
 void Player::Battle(Player* otherPlayer) {
@@ -61,7 +69,7 @@ int Player::GetPower() {
     return power;
 }
 
-void Player::Update() {
+bool Player::Update() {
     int random = rand() % 100;
     if (random < CHANGE_DIRECTION_PROBABILITY) {
         // 10% chance of changing direction randomly
@@ -77,9 +85,7 @@ void Player::Update() {
 
     MovingObject::Update();
 
-    if (!power) {
-        game->RemoveObject(this);
-    }
+    return (power > 0);
 }
 
 void Player::SetRandomDirection() {
@@ -122,8 +128,11 @@ void Player::ShootArrow() {
         }
 
         Game* game = GetGame();
-        game->AddObject(arrow, row, col);
-		remainingArrows--;
+        if (!game->GetGrid()->GetSquare(row, col)->GetWall()) {
+            game->AddObject(arrow, row, col);
+            lastArrowTick = game->GetTick();
+		    remainingArrows--;
+        }
 	}
 }
 

@@ -14,7 +14,7 @@ void MovingObject::UpdatePosition(int& start, int end) {
     }
 }
 
-void MovingObject::Update() {
+bool MovingObject::Update() {
     Square* currentSquare = GetSquare();
 	int currentRow = currentSquare->GetRow(),
 		currentCol = currentSquare->GetCol(),
@@ -46,6 +46,8 @@ void MovingObject::Update() {
             break;
         }
     }
+
+    return true;
 }
 
 Direction MovingObject::GetDirection() {

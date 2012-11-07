@@ -5,20 +5,12 @@ Square::Square() {
 	wall = NULL;
 }
 
-void Square::Enter(Player* player) {
-	players.push_back(player);
+void Square::StepIn(Player* player) {
+	players.push_front(player);
 }
 
-void Square::Leave(Player* player) {
+void Square::StepOut(Player* player) {
 	players.remove(player);
-}
-
-void Square::Enter(Arrow* arrow) {
-	arrows.push_back(arrow);
-}
-
-void Square::Leave(Arrow* arrow) {
-	arrows.remove(arrow);
 }
 
 void Square::SetPosition(int row, int col) {

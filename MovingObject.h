@@ -19,7 +19,7 @@ class MovingObject : public Object
 public:
     MovingObject();
 
-    void Update();
+    bool Update();
     void SetDirection(Direction direction);
     void SetSpeed(int speed);
     Direction GetDirection();

@@ -6,6 +6,16 @@ Game::Game() {
 	grid.Init(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS);
 }
 
+Game::~Game() {
+    Object* object;
+    ObjectsIterator it = objects.begin();
+	while (it != objects.end()) {
+        object = *it;
+        it = objects.erase(it);
+        delete object;
+    }
+}
+
 void Game::AddObject(Object* object, int row, int col) {
     Square* square = grid.GetSquare(row, col);
     object->SetGame(this);
@@ -37,16 +47,22 @@ void Game::Loop() {
 }
 
 void Game::Update() {
-	ObjectsListIterator it = objects.begin();
+    Object* object;
+	ObjectsIterator it = objects.begin();
 	while (it != objects.end()) {
-        (*it)->Update();
-        it++;
+        object = *it;
+        if (object->Update()) {
+            it++;
+        } else {
+            it = objects.erase(it);
+            delete object;
+        }
     }
 }
 
 void Game::Draw() {
 	clrscr();
-    ObjectsListIterator it = objects.begin();
+    ObjectsIterator it = objects.begin();
 	while (it != objects.end()) {
 		(*it)->Draw();
         it++;
