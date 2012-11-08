@@ -18,12 +18,8 @@ void Square::SetPosition(int row, int col) {
 	this->col = col;
 }
 
-bool Square::SetDroppingObject(DroppingObject* droppingObject) {
-	if (droppingObject && !this->droppingObject) {
-		this->droppingObject = droppingObject;
-		return true;
-	}
-	return false;
+void Square::SetDroppingObject(DroppingObject* droppingObject) {
+	this->droppingObject = droppingObject;
 }
 
 void Square::SetWall(Wall* wall) {

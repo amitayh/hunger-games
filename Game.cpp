@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Food.h"
+#include "Quiver.h"
 
 Game::Game() {
     tick = 0;
@@ -18,8 +19,11 @@ Game::~Game() {
 }
 
 void Game::AddObject(Object* object, int row, int col) {
-    Square* square = grid.GetSquare(row, col);
-    object->SetGame(this);
+	AddObject(object, grid.GetSquare(row, col));
+}
+
+void Game::AddObject(Object* object, Square* square) {
+	object->SetGame(this);
     object->SetSquare(square);
 	objects.push_front(object);
 }
@@ -75,11 +79,13 @@ void Game::CheckCollisions() {
 void Game::DropObjects() {
 	int random = rand() % 100;
 	if (random < DROP_FOOD_PROBABILITY) {
-		DropObject(new Food());
+		DropObject(new Food);
 	}
 
 	random = rand() % 100;
-
+	if (random < DROP_QUIVER_PROBABILITY) {
+		DropObject(new Quiver);
+	}
 }
 
 void Game::DropObject(DroppingObject* object) {
@@ -88,7 +94,7 @@ void Game::DropObject(DroppingObject* object) {
 	Square* square = grid.GetSquare(row, col);
 	if (square->IsEmpty()) {
 		square->SetDroppingObject(object);
-		AddObject(object, row, col);
+		AddObject(object, square);
 	} else {
 		// Square is occupied, try again...
 		DropObject(object);

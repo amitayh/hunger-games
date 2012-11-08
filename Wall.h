@@ -7,7 +7,7 @@ class Wall : public Object
 {
 public:
 	void Draw();
-    bool SetSquare(Square* square);
+    void SetSquare(Square* square);
 };
 
 #endif

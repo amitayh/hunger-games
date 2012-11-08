@@ -23,10 +23,10 @@ public:
 
     bool Update();
 	void Draw();
-    bool SetSquare(Square* square);
+    void SetSquare(Square* square);
     void IncreasePower(int amount);
     void DecreasePower(int amount);
-    void Battle(Player* otherPlayer);
+	void AddArrows(int amount);
     int GetPower();
 };
 

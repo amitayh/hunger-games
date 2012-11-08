@@ -7,5 +7,5 @@ void Food::Affect(Player* player) {
 
 void Food::Draw() {
 	GotoPosition();
-	cout << '@';
+	cout << '$';
 }

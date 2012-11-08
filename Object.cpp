@@ -18,9 +18,8 @@ bool Object::Update() {
     return true;
 };
 
-bool Object::SetSquare(Square* square) {
+void Object::SetSquare(Square* square) {
     this->square = square;
-    return true;
 }
 
 Dimensions* Object::GetSize() {

@@ -1,33 +1,25 @@
 #include "Arrow.h"
 #include "Game.h"
 
-Arrow::Arrow(Player* shooter) {
-    this->shooter = shooter;
-    SetDirection(shooter->GetDirection());
-    SetSpeed(2);
+Arrow::Arrow() {
+	SetMoveInterval(1);
     hit = false;
 }
 
-bool Arrow::SetSquare(Square* square) {
+void Arrow::SetSquare(Square* square) {
     if (square->GetWall()) {
         hit = true;
-        return false;
     } else {
-		MovingObject::SetSquare(square);
-		return true;
-
-		/*
-		// Not here...
-        PlayersList* players = square->GetPlayers();
+		PlayersList* players = square->GetPlayers();
         if (players->size()) {
             Player* player = players->front();
-            if (player != shooter) {
+            //if (player != shooter) {
                 player->DecreasePower(500);
                 hit = true;
-                return false;
-            }
+            //}
         }
-		*/
+
+		MovingObject::SetSquare(square);
 	}
 }
 

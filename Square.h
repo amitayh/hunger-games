@@ -22,7 +22,7 @@ public:
     void StepIn(Player* player);
     void StepOut(Player* player);
     void SetPosition(int row, int col);
-	bool SetDroppingObject(DroppingObject* droppingObject);
+	void SetDroppingObject(DroppingObject* droppingObject);
 	void SetWall(Wall* wall);
     int GetRow();
     int GetCol();

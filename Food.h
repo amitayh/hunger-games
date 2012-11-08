@@ -3,7 +3,7 @@
 
 #include "DroppingObject.h"
 
-const int DROP_FOOD_PROBABILITY = 5;
+const int DROP_FOOD_PROBABILITY = 1;
 
 class Food : public DroppingObject
 {

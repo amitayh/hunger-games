@@ -5,7 +5,7 @@
 #include "Object.h"
 #include <list>
 
-const int FRAMES_PER_SECOND = 10;
+const int FRAMES_PER_SECOND = 15;
 
 typedef std::list<Object*> ObjectsList;
 typedef ObjectsList::iterator ObjectsIterator;
@@ -30,6 +30,7 @@ public:
     ~Game();
 
 	void AddObject(Object* object, int row, int col);
+	void AddObject(Object* object, Square* square);
     void RemoveObject(Object* object);
 	int GetTick();
 	Grid* GetGrid();

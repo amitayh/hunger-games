@@ -21,7 +21,7 @@ public:
 
     virtual bool Update();
     virtual void Draw() {};
-    virtual bool SetSquare(Square* square);
+    virtual void SetSquare(Square* square);
 
     void GotoPosition();
     void SetGame(Game* game);

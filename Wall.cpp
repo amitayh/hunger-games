@@ -6,7 +6,7 @@ void Wall::Draw() {
 	cout << '#';
 }
 
-bool Wall::SetSquare(Square* square) {
+void Wall::SetSquare(Square* square) {
     square->SetWall(this);
-    return Object::SetSquare(square);
+    Object::SetSquare(square);
 }
