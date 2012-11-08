@@ -1,54 +1,69 @@
 #include "Player.h"
+#include "Arrow.h"
 #include "Game.h"
+#include "DroppingObject.h"
 
 Player::Player(char name, int power) {
-    SetType(PLAYER);
 	this->name = name;
     this->power = power;
     remainingArrows = INITIAL_NUM_ARROWS;
     lastArrowTick = 0;
+	SetMoveInterval(2);
 }
 
-bool Player::SetSquare(Square* square) {
-	if (square->IsOccupied()) {
-		ObjectsList* objects = square->GetObjects();
-        ObjectsList::iterator iterator;
-		Object* object;
-		ObjectType type;
-		for (iterator = objects->begin(); iterator != objects->end(); iterator++) {
-			object = *iterator;
-			type = object->GetType();
-			if (type == BOMB || type == FOOD || type == QUIVER) {
-			} else if (type == WALL) {
-			}
+void Player::SetSquare(Square* square) {
+    if (square->GetWall()) {
+        SetRandomDirection();
+		Update();
+    } else {
+		DroppingObject* droppingObject = square->GetDroppingObject();
+        if (droppingObject) {
+            droppingObject->Affect(this);
         }
-	}
-	return MovingObject::SetSquare(square);
 
-	/*
-    if (square->IsWall()) {
-		SetRandomDirection();
-        return false;
+		Square* previousSquare = GetSquare();
+		if (previousSquare) {
+			previousSquare->StepOut(this);
+		}
+		square->StepIn(this);
+		MovingObject::SetSquare(square);
     }
-    return MovingObject::SetSquare(square);
-	*/
 }
 
-void Player::Update() {
+void Player::AddArrows(int amount) {
+	remainingArrows += amount;
+}
+
+void Player::IncreasePower(int amount) {
+    power = __max(power + amount, 0);
+}
+
+void Player::DecreasePower(int amount) {
+    IncreasePower(-amount);
+}
+
+int Player::GetPower() {
+    return power;
+}
+
+bool Player::Update() {
+	MovingObject::Update();
+
+	// Randomly change direction
     int random = rand() % 100;
     if (random < CHANGE_DIRECTION_PROBABILITY) {
-        // 10% chance of changing direction randomly
         SetRandomDirection();
     }
 
+	// Randomly shoot arrows
     Game* game = GetGame();
     int tick = game->GetTick();
-    random = rand() % 100;
-    if (random < ARROW_PROBABILITY && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
+	random = rand() % 100;
+    if (random < SHOOT_ARROW_PROBABILITY && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
         ShootArrow();
     }
 
-    MovingObject::Update();
+    return (power > 0);
 }
 
 void Player::SetRandomDirection() {
@@ -69,16 +84,29 @@ void Player::SetRandomDirection() {
     SetDirection(newDirection);
 }
 
-void Player::ShootArrow() {
+bool Player::ShootArrow() {
 	if (remainingArrows) {
-        Arrow* arrow = new Arrow(this);
-        Game* game = GetGame();
-        game->Add(arrow);
-		remainingArrows--;
+        Square* square = GetNextSquare();
+		if (!square->GetWall()) {
+			Game* game = GetGame();
+			Arrow* arrow = new Arrow;
+			arrow->SetDirection(GetDirection());
+            game->AddObject(arrow, square);
+            lastArrowTick = game->GetTick();
+		    remainingArrows--;
+			return true;
+        }
 	}
+	return false;
 }
 
 void Player::Draw() {
 	GotoPosition();
+	
+	//HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	//SetConsoleTextAttribute(hConsole, 10);
+
 	cout << name;
+
+	//SetConsoleTextAttribute(hConsole, 7);
 }

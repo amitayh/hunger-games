@@ -2,16 +2,13 @@
 #define _GAME_H
 
 #include "Grid.h"
-#include "Player.h"
-#include "Wall.h"
-#include "Arrow.h"
+#include "Object.h"
 #include <list>
 
-const int FRAMES_PER_SECOND = 10;
+const int FRAMES_PER_SECOND = 15;
 
-typedef std::list<Wall*> WallsList;
-typedef std::list<Player*> PlayersList;
-typedef std::list<Arrow*> ArrowsList;
+typedef std::list<Object*> ObjectsList;
+typedef ObjectsList::iterator ObjectsIterator;
 
 class Game
 {
@@ -19,30 +16,27 @@ class Game
     int tick;
     bool paused;
 	Grid grid;
-	WallsList walls;
-    PlayersList players;
-    ArrowsList arrows;
+	ObjectsList objects;
+
+	void Loop();
+	void Update();
+	void CheckCollisions();
+	void DropObjects();
+	void DropObject(DroppingObject* object);
+	void Draw();
 
 public:
 	Game();
     ~Game();
 
+	void AddObject(Object* object, int row, int col);
+	void AddObject(Object* object, Square* square);
+    void RemoveObject(Object* object);
+	int GetTick();
+	Grid* GetGrid();
+
     void Run();
     void Pause();
-
-    void Add(Player* player, int row, int col);
-    void Add(Wall* wall, int row, int col);
-    void Add(Arrow* arrow);
-
-    void Remove(Arrow* arrow);
-
-	void Loop();
-	void Update();
-    void CheckCollisions();
-	void Draw();
-
-    int GetTick();
-	Grid* GetGrid();
 };
 
 #endif

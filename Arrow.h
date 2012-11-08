@@ -6,15 +6,13 @@
 
 class Arrow : public MovingObject
 {
-    Player* shooter;
     bool hit;
 public:
-    Arrow(Player* shooter);
+    Arrow();
 
-    bool SetSquare(Square* square);
-    //void Update();
+    void SetSquare(Square* square);
+    bool Update();
     void Draw();
-    bool GetHit();
 };
 
 #endif

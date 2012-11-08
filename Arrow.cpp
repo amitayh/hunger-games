@@ -1,68 +1,32 @@
 #include "Arrow.h"
 #include "Game.h"
 
-Arrow::Arrow(Player* shooter) {
-    SetType(ARROW);
-    
-    Direction direction = shooter->GetDirection();
-    Square* shooterSquare = shooter->GetSquare();
-    int row = shooterSquare->GetRow(),
-        col = shooterSquare->GetCol();
-
-    switch (direction) {
-        case UP:
-            row--;
-            break;
-        case DOWN:
-            row++;
-            break;
-        case LEFT:
-            col--;
-            break;
-        case RIGHT:
-            col++;
-            break;
-    }
-
-    Game* game = shooter->GetGame();
-    Grid* grid = game->GetGrid();
-    Square* arrowSquare = grid->GetSquare(row, col);
-
-    this->shooter = shooter;
-    SetDirection(direction);
-    SetSquare(arrowSquare);
-    SetSpeed(2);
+Arrow::Arrow() {
+	SetMoveInterval(1);
     hit = false;
 }
 
-bool Arrow::SetSquare(Square* square) {
-    if (square->IsOccupied()) {
-        // Check objects on square
-        ObjectsList* objects = square->GetObjects();
-        ObjectsList::iterator iterator;
-        ObjectType type;
-        for (iterator = objects->begin(); !hit && iterator != objects->end(); iterator++) {
-            type = (*iterator)->GetType();
-            if (type == WALL || type == PLAYER) {
+void Arrow::SetSquare(Square* square) {
+    if (square->GetWall()) {
+        hit = true;
+    } else {
+		PlayersList* players = square->GetPlayers();
+        if (players->size()) {
+            Player* player = players->front();
+            //if (player != shooter) {
+                player->DecreasePower(500);
                 hit = true;
-            }
+            //}
         }
-		if (hit) {
-			return false;
-		}
-    }
-    return MovingObject::SetSquare(square);
+
+		MovingObject::SetSquare(square);
+	}
 }
 
-/*
-void Arrow::Update() {
+bool Arrow::Update() {
     MovingObject::Update();
-    if (hit) {
-        Game* game = GetGame();
-        game->Remove(this);
-    }
+    return !hit;
 }
-*/
 
 void Arrow::Draw() {
     char ch;
@@ -83,8 +47,4 @@ void Arrow::Draw() {
 
     GotoPosition();
     cout << ch;
-}
-
-bool Arrow::GetHit() {
-    return hit;
 }

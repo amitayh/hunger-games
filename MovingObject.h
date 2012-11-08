@@ -10,21 +10,20 @@ enum Direction {
     RIGHT
 };
 
-class Game;
-
 class MovingObject : public Object
 {
 	Direction direction;
-    int speed;
+    int moveInterval;
 
     void UpdatePosition(int& start, int end);
 public:
-    MovingObject();
+	MovingObject();
 
-    virtual void Update();
+    bool Update();
     void SetDirection(Direction direction);
-    void SetSpeed(int speed);
+	void SetMoveInterval(int moveInterval);
     Direction GetDirection();
+	Square* GetNextSquare();
 };
 
 #endif

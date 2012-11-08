@@ -6,35 +6,20 @@ Object::Object() {
 	square = NULL;
 }
 
-Object::~Object() {
-    if (square) {
-        square->Leave(this);
-    }
-}
-
 void Object::GotoPosition() {
 	gotoxy(square->GetCol(), square->GetRow());
-}
-
-void Object::SetType(ObjectType type) {
-    this->type = type;
 }
 
 void Object::SetGame(Game* game) {
     this->game = game;
 }
 
-bool Object::SetSquare(Square* square) {
-	if (this->square) {
-		this->square->Leave(this);
-	}
-    this->square = square;
-	square->Enter(this);
+bool Object::Update() {
     return true;
-}
+};
 
-ObjectType Object::GetType() {
-    return type;
+void Object::SetSquare(Square* square) {
+    this->square = square;
 }
 
 Dimensions* Object::GetSize() {

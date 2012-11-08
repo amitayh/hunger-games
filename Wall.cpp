@@ -1,10 +1,12 @@
 #include "Wall.h"
-
-Wall::Wall() {
-    SetType(WALL);
-}
+#include "Square.h"
 
 void Wall::Draw() {
 	GotoPosition();
 	cout << '#';
+}
+
+void Wall::SetSquare(Square* square) {
+    square->SetWall(this);
+    Object::SetSquare(square);
 }
