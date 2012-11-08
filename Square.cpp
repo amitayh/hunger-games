@@ -19,7 +19,7 @@ void Square::SetPosition(int row, int col) {
 }
 
 bool Square::SetDroppingObject(DroppingObject* droppingObject) {
-	if (!this->droppingObject) {
+	if (droppingObject && !this->droppingObject) {
 		this->droppingObject = droppingObject;
 		return true;
 	}
@@ -48,4 +48,8 @@ DroppingObject* Square::GetDroppingObject() {
 
 Wall* Square::GetWall() {
     return wall;
+}
+
+bool Square::IsEmpty() {
+	return (!droppingObject && !wall && !players.size());
 }

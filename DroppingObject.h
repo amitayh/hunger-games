@@ -6,10 +6,11 @@
 
 class DroppingObject : public Object
 {
-	int dropProbability;
+	bool pickedUp;
 public:
 	DroppingObject();
 
+	bool Update();
     virtual void Affect(Player* player);
 };
 

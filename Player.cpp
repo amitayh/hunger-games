@@ -4,7 +4,6 @@
 #include "DroppingObject.h"
 
 Player::Player(char name, int power) {
-    SetType(PLAYER);
 	this->name = name;
     this->power = power;
     remainingArrows = INITIAL_NUM_ARROWS;
@@ -17,6 +16,12 @@ bool Player::SetSquare(Square* square) {
 		Update();
         return false;
     } else {
+
+		DroppingObject* droppingObject = square->GetDroppingObject();
+        if (droppingObject) {
+            droppingObject->Affect(this);
+        }
+
 		Square* oldSquare = GetSquare();
 		if (oldSquare) {
 			oldSquare->StepOut(this);
@@ -109,9 +114,8 @@ void Player::SetRandomDirection() {
     SetDirection(newDirection);
 }
 
-void Player::ShootArrow() {
+bool Player::ShootArrow() {
 	if (remainingArrows) {
-        Arrow* arrow = new Arrow(this);
         Square* square = GetSquare();
         int row = square->GetRow(), col = square->GetCol();
 
@@ -131,12 +135,17 @@ void Player::ShootArrow() {
         }
 
         Game* game = GetGame();
-        if (!game->GetGrid()->GetSquare(row, col)->GetWall()) {
+		Grid* grid = game->GetGrid();
+		square = grid->GetSquare(row, col);
+		if (!square->GetWall()) {
+			Arrow* arrow = new Arrow(this);
             game->AddObject(arrow, row, col);
             lastArrowTick = game->GetTick();
 		    remainingArrows--;
+			return true;
         }
 	}
+	return false;
 }
 
 void Player::Draw() {

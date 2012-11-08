@@ -20,6 +20,9 @@ class Game
 
 	void Loop();
 	void Update();
+	void CheckCollisions();
+	void DropObjects();
+	void DropObject(DroppingObject* object);
 	void Draw();
 
 public:

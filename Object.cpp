@@ -10,10 +10,6 @@ void Object::GotoPosition() {
 	gotoxy(square->GetCol(), square->GetRow());
 }
 
-void Object::SetType(ObjectType type) {
-    this->type = type;
-}
-
 void Object::SetGame(Game* game) {
     this->game = game;
 }
@@ -25,10 +21,6 @@ bool Object::Update() {
 bool Object::SetSquare(Square* square) {
     this->square = square;
     return true;
-}
-
-ObjectType Object::GetType() {
-    return type;
 }
 
 Dimensions* Object::GetSize() {

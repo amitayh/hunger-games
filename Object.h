@@ -7,21 +7,11 @@
 
 using namespace std;
 
-enum ObjectType {
-    PLAYER,
-    ARROW,
-    BOMB,
-    FOOD,
-    QUIVER,
-    WALL
-};
-
 class Square;
 class Game;
 
 class Object
 {
-    ObjectType type;
     Dimensions size;
     Game* game;
     Square* square;
@@ -34,10 +24,8 @@ public:
     virtual bool SetSquare(Square* square);
 
     void GotoPosition();
-    void SetType(ObjectType type);
     void SetGame(Game* game);
 
-    ObjectType GetType();
     Dimensions* GetSize();
     Game* GetGame();
     Square* GetSquare();

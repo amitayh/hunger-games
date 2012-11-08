@@ -29,6 +29,7 @@ public:
     PlayersList* GetPlayers();
     DroppingObject* GetDroppingObject();
     Wall* GetWall();
+	bool IsEmpty();
 };
 
 #endif

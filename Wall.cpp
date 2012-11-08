@@ -1,10 +1,6 @@
 #include "Wall.h"
 #include "Square.h"
 
-Wall::Wall() {
-    SetType(WALL);
-}
-
 void Wall::Draw() {
 	GotoPosition();
 	cout << '#';

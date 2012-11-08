@@ -2,7 +2,6 @@
 #include "Game.h"
 
 Arrow::Arrow(Player* shooter) {
-    SetType(ARROW);
     this->shooter = shooter;
     SetDirection(shooter->GetDirection());
     SetSpeed(2);

@@ -16,7 +16,7 @@ class Player : public MovingObject
     int lastArrowTick;
 
     void SetRandomDirection();
-	void ShootArrow();
+	bool ShootArrow();
 
 public:
 	Player(char name, int power = 1000);

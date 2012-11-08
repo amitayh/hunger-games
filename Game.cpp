@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Food.h"
 
 Game::Game() {
     tick = 0;
@@ -40,6 +41,8 @@ void Game::Pause() {
 void Game::Loop() {
 	while (!paused) {
 		Update();
+		//CheckCollisions();
+		DropObjects();
 		Draw();
         tick++;
 		Sleep(1000 / fps);
@@ -60,6 +63,36 @@ void Game::Update() {
             delete object;
         }
     }
+}
+
+void Game::CheckCollisions() {
+	ObjectsIterator it = objects.begin();
+	while (it != objects.end()) {
+		it++;
+    }
+}
+
+void Game::DropObjects() {
+	int random = rand() % 100;
+	if (random < DROP_FOOD_PROBABILITY) {
+		DropObject(new Food());
+	}
+
+	random = rand() % 100;
+
+}
+
+void Game::DropObject(DroppingObject* object) {
+	int row = rand() % grid.GetRows(),
+		col = rand() % grid.GetCols();
+	Square* square = grid.GetSquare(row, col);
+	if (square->IsEmpty()) {
+		square->SetDroppingObject(object);
+		AddObject(object, row, col);
+	} else {
+		// Square is occupied, try again...
+		DropObject(object);
+	}
 }
 
 void Game::Draw() {

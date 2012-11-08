@@ -1,4 +1,5 @@
 #include "InfoArea.h"
+#include "Game.h"
 
 InfoArea::InfoArea() {
     Dimensions* size = GetSize();
@@ -6,4 +7,6 @@ InfoArea::InfoArea() {
 }
 
 void InfoArea::Draw() {
+	Game* game = GetGame();
+	//PlayersList* game->GetPlayers();
 }

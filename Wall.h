@@ -6,8 +6,6 @@
 class Wall : public Object
 {
 public:
-    Wall();
-
 	void Draw();
     bool SetSquare(Square* square);
 };
