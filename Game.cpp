@@ -1,37 +1,66 @@
 #include "Game.h"
+#include "Wall.h"
+#include "InfoBox.h"
 #include "Food.h"
 #include "Quiver.h"
 #include "Bomb.h"
 
 bool checkProbability(int probability) {
-	int random = rand() % 100;
-	return (random < probability);
+    int random = rand() % 100;
+    return (random < probability);
 }
 
 Game::Game() {
     tick = 0;
-	fps = FRAMES_PER_SECOND;
-	grid.Init(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS);
+    fps = FRAMES_PER_SECOND;
+    grid.Init(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS);
 }
 
 Game::~Game() {
     Object* object;
     ObjectsIterator it = objects.begin();
-	while (it != objects.end()) {
+    while (it != objects.end()) {
         object = *it;
         it = objects.erase(it);
         delete object;
     }
 }
 
+void Game::AddPlayer(char name, int row, int col) {
+    Player* player = new Player(name);
+    AddObject(player, row, col);
+    players.push_front(player);
+}
+
+void Game::AddWall(int row, int col) {
+    AddObject(new Wall, row, col);
+}
+
+void Game::AddInfoBox(int row, int col) {
+    InfoBox* infoBox = new InfoBox;
+    Dimensions* size = infoBox->GetSize();
+
+    // Add walls around the info box
+    for (int i = 0; i < size->GetWidth() + 2; i++) {
+        AddWall(row - 1, col + i - 1);
+        AddWall(row + size->GetHeight(), col + i - 1);
+    }
+    for (int i = 0; i < size->GetHeight(); i++) {
+        AddWall(row + i, col - 1);
+        AddWall(row + i, col + size->GetWidth());
+    }
+
+    AddObject(infoBox, row, col);
+}
+
 void Game::AddObject(Object* object, int row, int col) {
-	AddObject(object, grid.GetSquare(row, col));
+    AddObject(object, grid.GetSquare(row, col));
 }
 
 void Game::AddObject(Object* object, Square* square) {
-	object->SetGame(this);
+    object->SetGame(this);
     object->SetSquare(square);
-	objects.push_front(object);
+    objects.push_front(object);
 }
 
 void Game::RemoveObject(Object* object) {
@@ -49,26 +78,26 @@ void Game::Pause() {
 }
 
 void Game::Loop() {
-	while (!paused) {
-		Update();
-		//CheckCollisions();
-		DropObjects();
-		Draw();
+    while (!paused) {
+        Update();
+        //CheckCollisions();
+        DropObjects();
+        Draw();
         tick++;
-		Sleep(1000 / fps);
-	}
+        Sleep(1000 / fps);
+    }
 }
 
 void Game::Update() {
     Object* object;
-	ObjectsIterator it = objects.begin();
-	while (it != objects.end()) {
+    ObjectsIterator it = objects.begin();
+    while (it != objects.end()) {
         object = *it;
         if (object->Update()) {
-			// Update OK, continue to next object
+            // Update OK, continue to next object
             it++;
         } else {
-			// Object is ready for removal
+            // Object is ready for removal
             it = objects.erase(it);
             delete object;
         }
@@ -76,44 +105,50 @@ void Game::Update() {
 }
 
 void Game::CheckCollisions() {
-	ObjectsIterator it = objects.begin();
-	while (it != objects.end()) {
-		it++;
+    ObjectsIterator it = objects.begin();
+    while (it != objects.end()) {
+        it++;
     }
 }
 
 void Game::DropObjects() {
-	if (checkProbability(DROP_FOOD_PROBABILITY)) {
-		DropObject(new Food);
-	}
-
-	if (checkProbability(DROP_QUIVER_PROBABILITY)) {
-		DropObject(new Quiver);
-	}
-
-	if (checkProbability(DROP_BOMB_PROBABILITY)) {
-		DropObject(new Bomb);
-	}
+    if (checkProbability(DROP_FOOD_PROBABILITY)) {
+        DropObject(new Food);
+    }
+    if (checkProbability(DROP_QUIVER_PROBABILITY)) {
+        DropObject(new Quiver);
+    }
+    if (checkProbability(DROP_BOMB_PROBABILITY)) {
+        DropObject(new Bomb);
+    }
 }
 
 void Game::DropObject(DroppingObject* object) {
-	int row = rand() % grid.GetRows(),
-		col = rand() % grid.GetCols();
-	Square* square = grid.GetSquare(row, col);
-	if (square->IsEmpty()) {
-		square->SetDroppingObject(object);
-		AddObject(object, square);
-	} else {
-		// Square is occupied, try again...
-		DropObject(object);
-	}
+    int row = rand() % grid.GetRows(),
+        col = rand() % grid.GetCols();
+    Square* square = grid.GetSquare(row, col);
+    if (IsValidSquare(square)) {
+        square->SetDroppingObject(object);
+        AddObject(object, square);
+    } else {
+        // Square is occupied, try again...
+        DropObject(object);
+    }
+}
+
+bool Game::IsValidSquare(Square* square) {
+    if (square->IsEmpty()) {
+        // TODO: check players 2 squares away
+        return true;
+    }
+    return false;
 }
 
 void Game::Draw() {
-	clrscr();
+    clrscr();
     ObjectsIterator it = objects.begin();
-	while (it != objects.end()) {
-		(*it)->Draw();
+    while (it != objects.end()) {
+        (*it)->Draw();
         it++;
     }
 }
@@ -123,5 +158,9 @@ int Game::GetTick() {
 }
 
 Grid* Game::GetGrid() {
-	return &grid;
+    return &grid;
+}
+
+PlayersList* Game::GetPlayers() {
+    return &players;
 }

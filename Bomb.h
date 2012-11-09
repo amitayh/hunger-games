@@ -7,7 +7,7 @@ class Bomb : public DroppingObject
 {
 public:
     void Affect(Player* player);
-	void Draw();
+    void Draw();
 };
 
 #endif

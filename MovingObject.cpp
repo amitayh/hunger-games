@@ -2,7 +2,7 @@
 #include "Game.h"
 
 MovingObject::MovingObject() {
-	direction = RIGHT;
+    direction = RIGHT;
 }
 
 void MovingObject::UpdatePosition(int& start, int end) {
@@ -14,11 +14,11 @@ void MovingObject::UpdatePosition(int& start, int end) {
 }
 
 bool MovingObject::Update() {
-	Game* game = GetGame();
-	if (game->GetTick() % moveInterval == 0) {
-		Square* square = GetNextSquare();
-		SetSquare(square);
-	}
+    Game* game = GetGame();
+    if (game->GetTick() % moveInterval == 0) {
+        Square* square = GetNextSquare();
+        SetSquare(square);
+    }
     return true;
 }
 
@@ -31,31 +31,31 @@ void MovingObject::SetDirection(Direction direction) {
 }
 
 void MovingObject::SetMoveInterval(int moveInterval) {
-	this->moveInterval = moveInterval;
+    this->moveInterval = moveInterval;
 }
 
 Square* MovingObject::GetNextSquare() {
-	Square* square = GetSquare();
-	int row = square->GetRow(),
-		col = square->GetCol();
+    Square* square = GetSquare();
+    int row = square->GetRow(),
+        col = square->GetCol();
 
-	switch (direction) {
-		case UP:
-			row--;
-			break;
-		case DOWN:
-			row++;
-			break;
-		case LEFT:
-			col--;
-			break;
-		case RIGHT:
-			col++;
-			break;
-	}
+    switch (direction) {
+        case UP:
+            row--;
+            break;
+        case DOWN:
+            row++;
+            break;
+        case LEFT:
+            col--;
+            break;
+        case RIGHT:
+            col++;
+            break;
+    }
 
-	Game* game = GetGame();
-	Grid* grid = game->GetGrid();
+    Game* game = GetGame();
+    Grid* grid = game->GetGrid();
 
-	return grid->GetSquare(row, col);
+    return grid->GetSquare(row, col);
 }

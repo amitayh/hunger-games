@@ -8,17 +8,17 @@ const int DEFAULT_NUM_COLS = 80;
 
 class Grid
 {
-	int rows, cols;
-	Square** squares;
+    int rows, cols;
+    Square** squares;
 
 public:
-	Grid();
-	~Grid();
-	
+    Grid();
+    ~Grid();
+    
     void Init(int rows, int cols);
     int GetRows();
     int GetCols();
-	Square* GetSquare(int row, int col);
+    Square* GetSquare(int row, int col);
 };
 
 #endif

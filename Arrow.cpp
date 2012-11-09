@@ -2,7 +2,7 @@
 #include "Game.h"
 
 Arrow::Arrow() {
-	SetMoveInterval(1);
+    SetMoveInterval(1);
     hit = false;
 }
 
@@ -10,15 +10,15 @@ void Arrow::SetSquare(Square* square) {
     if (square->GetWall()) {
         hit = true;
     } else {
-		PlayersList* players = square->GetPlayers();
+        PlayersList* players = square->GetPlayers();
         if (players->size()) {
             Player* player = players->front();
             player->DecreasePower(500);
             hit = true;
         }
 
-		MovingObject::SetSquare(square);
-	}
+        MovingObject::SetSquare(square);
+    }
 }
 
 bool Arrow::Update() {

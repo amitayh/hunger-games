@@ -13,23 +13,23 @@ typedef PlayersList::iterator PlayersIterator;
 class Square
 {
     int row, col;
-	PlayersList players;
-	DroppingObject* droppingObject;
-	Wall* wall;
+    PlayersList players;
+    DroppingObject* droppingObject;
+    Wall* wall;
 public:
-	Square();
+    Square();
 
     void StepIn(Player* player);
     void StepOut(Player* player);
     void SetPosition(int row, int col);
-	void SetDroppingObject(DroppingObject* droppingObject);
-	void SetWall(Wall* wall);
+    void SetDroppingObject(DroppingObject* droppingObject);
+    void SetWall(Wall* wall);
     int GetRow();
     int GetCol();
     PlayersList* GetPlayers();
     DroppingObject* GetDroppingObject();
     Wall* GetWall();
-	bool IsEmpty();
+    bool IsEmpty();
 };
 
 #endif

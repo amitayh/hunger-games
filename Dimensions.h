@@ -3,9 +3,9 @@
 
 class Dimensions
 {
-	int width, height;
+    int width, height;
 public:
-	Dimensions();
+    Dimensions();
 
     void Set(int width, int height);
     void SetWidth(int width);

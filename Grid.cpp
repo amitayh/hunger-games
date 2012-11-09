@@ -5,24 +5,24 @@ Grid::Grid() {
 }
 
 Grid::~Grid() {
-	for (int row = 0; row < rows; row++) {
-		delete []squares[row];
+    for (int row = 0; row < rows; row++) {
+        delete []squares[row];
         squares[row] = NULL;
-	}
-	delete []squares;
+    }
+    delete []squares;
     squares = NULL;
 }
 
 void Grid::Init(int rows, int cols) {
-	this->rows = rows;
-	this->cols = cols;
-	squares = new Square*[rows];
-	for (int row = 0; row < rows; row++) {
-		squares[row] = new Square[cols];
+    this->rows = rows;
+    this->cols = cols;
+    squares = new Square*[rows];
+    for (int row = 0; row < rows; row++) {
+        squares[row] = new Square[cols];
         for (int col = 0; col < cols; col++) {
             squares[row][col].SetPosition(row, col);
         }
-	}
+    }
 }
 
 int Grid::GetRows() {
@@ -39,10 +39,10 @@ Square* Grid::GetSquare(int row, int col) {
     } else if (row < 0) {
         row = rows + row;
     }
-	if (col >= cols) {
+    if (col >= cols) {
         col %= cols;
     } else if (col < 0) {
         col = cols + col;
     }
-	return &squares[row][col];
+    return &squares[row][col];
 }

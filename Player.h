@@ -10,24 +10,26 @@ const int CHANGE_DIRECTION_PROBABILITY = 10;
 
 class Player : public MovingObject
 {
-	char name;
-	int power;
+    char name;
+    int power;
     int remainingArrows;
     int lastArrowTick;
 
     void SetRandomDirection();
-	bool ShootArrow();
+    bool ShootArrow();
 
 public:
-	Player(char name, int power = 1000);
+    Player(char name, int power = 1000);
 
     bool Update();
-	void Draw();
+    void Draw();
     void SetSquare(Square* square);
     void IncreasePower(int amount);
     void DecreasePower(int amount);
-	void AddArrows(int amount);
+    void AddArrows(int amount);
+    char GetName();
     int GetPower();
+    int GetRemainingArrows();
 };
 
 #endif

@@ -6,11 +6,11 @@
 
 class DroppingObject : public Object
 {
-	bool pickedUp;
+    bool pickedUp;
 public:
-	DroppingObject();
+    DroppingObject();
 
-	bool Update();
+    bool Update();
     virtual void Affect(Player* player);
 };
 

@@ -3,11 +3,11 @@
 #include "Game.h"
 
 Object::Object() {
-	square = NULL;
+    square = NULL;
 }
 
 void Object::GotoPosition() {
-	gotoxy(square->GetCol(), square->GetRow());
+    gotoxy(square->GetCol(), square->GetRow());
 }
 
 void Object::SetGame(Game* game) {

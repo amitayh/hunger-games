@@ -4,7 +4,7 @@
 #include "Object.h"
 
 enum Direction {
-	UP,
+    UP,
     DOWN,
     LEFT,
     RIGHT
@@ -12,18 +12,18 @@ enum Direction {
 
 class MovingObject : public Object
 {
-	Direction direction;
+    Direction direction;
     int moveInterval;
 
     void UpdatePosition(int& start, int end);
 public:
-	MovingObject();
+    MovingObject();
 
     bool Update();
     void SetDirection(Direction direction);
-	void SetMoveInterval(int moveInterval);
+    void SetMoveInterval(int moveInterval);
     Direction GetDirection();
-	Square* GetNextSquare();
+    Square* GetNextSquare();
 };
 
 #endif

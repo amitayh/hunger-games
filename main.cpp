@@ -7,32 +7,34 @@ void main() {
 
     srand((unsigned int) time(NULL));
 
-	Game game;
+    Game game;
 
-    game.AddObject(new Wall, 3, 5);
-	game.AddObject(new Wall, 4, 5);
-	game.AddObject(new Wall, 5, 5);
-	game.AddObject(new Wall, 6, 5);
-	game.AddObject(new Wall, 7, 5);
-	game.AddObject(new Wall, 8, 5);
+    game.AddWall(3, 5);
+    game.AddWall(4, 5);
+    game.AddWall(5, 5);
+    game.AddWall(6, 5);
+    game.AddWall(7, 5);
+    game.AddWall(8, 5);
 
-    game.AddObject(new Wall, 8, 50);
-	game.AddObject(new Wall, 9, 50);
-	game.AddObject(new Wall, 10, 50);
-	game.AddObject(new Wall, 11, 50);
-	game.AddObject(new Wall, 12, 50);
-	game.AddObject(new Wall, 13, 50);
+    game.AddWall(8, 50);
+    game.AddWall(9, 50);
+    game.AddWall(10, 50);
+    game.AddWall(11, 50);
+    game.AddWall(12, 50);
+    game.AddWall(13, 50);
 
-    game.AddObject(new Wall, 8, 44);
-	game.AddObject(new Wall, 8, 45);
-	game.AddObject(new Wall, 8, 46);
-	game.AddObject(new Wall, 8, 47);
-	game.AddObject(new Wall, 8, 48);
-	game.AddObject(new Wall, 8, 49);
+    game.AddWall(8, 44);
+    game.AddWall(8, 45);
+    game.AddWall(8, 46);
+    game.AddWall(8, 47);
+    game.AddWall(8, 48);
+    game.AddWall(8, 49);
 
-	game.AddObject(new Player('A'), 10, 10);
-    game.AddObject(new Player('B'), 10, 40);
+    game.AddPlayer('A', 10, 10);
+    game.AddPlayer('B', 10, 40);
 
-	game.Run();
+    game.AddInfoBox(19, 1);
+
+    game.Run();
 
 }

@@ -1,7 +1,7 @@
 #include "Dimensions.h"
 
 Dimensions::Dimensions() {
-	width = height = 1;
+    width = height = 1;
 }
 
 void Dimensions::Set(int width, int height) {

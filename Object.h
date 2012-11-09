@@ -17,7 +17,7 @@ class Object
     Square* square;
 
 public:
-	Object();
+    Object();
 
     virtual bool Update();
     virtual void Draw() {};

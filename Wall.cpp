@@ -2,8 +2,8 @@
 #include "Square.h"
 
 void Wall::Draw() {
-	GotoPosition();
-	cout << '#';
+    GotoPosition();
+    cout << '#';
 }
 
 void Wall::SetSquare(Square* square) {
