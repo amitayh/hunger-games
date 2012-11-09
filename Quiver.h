@@ -3,8 +3,6 @@
 
 #include "DroppingObject.h"
 
-const int DROP_QUIVER_PROBABILITY = 1;
-
 class Quiver : public DroppingObject
 {
 public:

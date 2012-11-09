@@ -6,9 +6,14 @@
 #include <list>
 
 const int FRAMES_PER_SECOND = 15;
+const int DROP_FOOD_PROBABILITY = 2;
+const int DROP_QUIVER_PROBABILITY = 1;
+const int DROP_BOMB_PROBABILITY = 1;
 
 typedef std::list<Object*> ObjectsList;
 typedef ObjectsList::iterator ObjectsIterator;
+
+bool checkProbability(int probability);
 
 class Game
 {

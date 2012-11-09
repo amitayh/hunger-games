@@ -1,6 +1,12 @@
 #include "Game.h"
 #include "Food.h"
 #include "Quiver.h"
+#include "Bomb.h"
+
+bool checkProbability(int probability) {
+	int random = rand() % 100;
+	return (random < probability);
+}
 
 Game::Game() {
     tick = 0;
@@ -77,14 +83,16 @@ void Game::CheckCollisions() {
 }
 
 void Game::DropObjects() {
-	int random = rand() % 100;
-	if (random < DROP_FOOD_PROBABILITY) {
+	if (checkProbability(DROP_FOOD_PROBABILITY)) {
 		DropObject(new Food);
 	}
 
-	random = rand() % 100;
-	if (random < DROP_QUIVER_PROBABILITY) {
+	if (checkProbability(DROP_QUIVER_PROBABILITY)) {
 		DropObject(new Quiver);
+	}
+
+	if (checkProbability(DROP_BOMB_PROBABILITY)) {
+		DropObject(new Bomb);
 	}
 }
 

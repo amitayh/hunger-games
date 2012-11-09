@@ -13,10 +13,8 @@ void Arrow::SetSquare(Square* square) {
 		PlayersList* players = square->GetPlayers();
         if (players->size()) {
             Player* player = players->front();
-            //if (player != shooter) {
-                player->DecreasePower(500);
-                hit = true;
-            //}
+            player->DecreasePower(500);
+            hit = true;
         }
 
 		MovingObject::SetSquare(square);
