@@ -7,5 +7,6 @@ void Quiver::Affect(Player* player) {
 
 void Quiver::Draw() {
     GotoPosition();
+    ChangeColor(Color::YELLOW);
     cout << '*';
 }

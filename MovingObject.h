@@ -14,8 +14,6 @@ class MovingObject : public Object
 {
     Direction direction;
     int moveInterval;
-
-    void UpdatePosition(int& start, int end);
 public:
     MovingObject();
 

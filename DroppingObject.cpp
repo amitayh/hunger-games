@@ -6,8 +6,6 @@ DroppingObject::DroppingObject() {
 }
 
 void DroppingObject::Affect(Player* player) {
-    Square* square = GetSquare();
-    square->SetDroppingObject(NULL);
     pickedUp = true;
 }
 

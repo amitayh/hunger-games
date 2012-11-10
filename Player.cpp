@@ -18,7 +18,9 @@ void Player::SetSquare(Square* square) {
     } else {
         DroppingObject* droppingObject = square->GetDroppingObject();
         if (droppingObject) {
+            // Pick up dropping object
             droppingObject->Affect(this);
+            square->SetDroppingObject(NULL);
         }
 
         Square* previousSquare = GetSquare();
@@ -58,20 +60,23 @@ bool Player::Update() {
     MovingObject::Update();
 
     // Randomly change direction
-    int random = rand() % 100;
-    if (random < CHANGE_DIRECTION_PROBABILITY) {
+    if (checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
         SetRandomDirection();
     }
 
     // Randomly shoot arrows
     Game* game = GetGame();
     int tick = game->GetTick();
-    random = rand() % 100;
-    if (random < SHOOT_ARROW_PROBABILITY && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
+    if (checkProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
         ShootArrow();
     }
 
-    return (power > 0);
+    if (power > 0) {
+        return true;
+    } else {
+        game->RemovePlayer(this);
+        return false;
+    }
 }
 
 void Player::SetRandomDirection() {
@@ -110,11 +115,6 @@ bool Player::ShootArrow() {
 
 void Player::Draw() {
     GotoPosition();
-    
-    //HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    //SetConsoleTextAttribute(hConsole, 10);
-
+    ChangeColor(Color::CYAN);
     cout << name;
-
-    //SetConsoleTextAttribute(hConsole, 7);
 }

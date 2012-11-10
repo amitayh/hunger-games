@@ -3,7 +3,7 @@
 
 #include "Square.h"
 
-const int DEFAULT_NUM_ROWS = 25;
+const int DEFAULT_NUM_ROWS = 24;
 const int DEFAULT_NUM_COLS = 80;
 
 class Grid

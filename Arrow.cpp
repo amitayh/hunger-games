@@ -44,5 +44,6 @@ void Arrow::Draw() {
     }
 
     GotoPosition();
+    ChangeColor(Color::WHITE);
     cout << ch;
 }

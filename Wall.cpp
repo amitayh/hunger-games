@@ -3,6 +3,7 @@
 
 void Wall::Draw() {
     GotoPosition();
+    ChangeColor(Color::GREY);
     cout << '#';
 }
 

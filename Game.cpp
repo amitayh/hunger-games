@@ -26,19 +26,22 @@ Game::~Game() {
     }
 }
 
-void Game::AddPlayer(char name, int row, int col) {
+void Game::AddPlayer(int row, int col) {
+    char name = 'A' + players.size();
     Player* player = new Player(name);
     AddObject(player, row, col);
     players.push_front(player);
 }
 
 void Game::AddWall(int row, int col) {
-    AddObject(new Wall, row, col);
+    Square* square = grid.GetSquare(row, col);
+    if (!square->GetWall()) {
+        AddObject(new Wall, square);
+    }
 }
 
 void Game::AddInfoBox(int row, int col) {
-    InfoBox* infoBox = new InfoBox;
-    Dimensions* size = infoBox->GetSize();
+    Dimensions* size = infoBox.GetSize();
 
     // Add walls around the info box
     for (int i = 0; i < size->GetWidth() + 2; i++) {
@@ -50,7 +53,7 @@ void Game::AddInfoBox(int row, int col) {
         AddWall(row + i, col + size->GetWidth());
     }
 
-    AddObject(infoBox, row, col);
+    AddObject(&infoBox, row, col);
 }
 
 void Game::AddObject(Object* object, int row, int col) {
@@ -66,6 +69,13 @@ void Game::AddObject(Object* object, Square* square) {
 void Game::RemoveObject(Object* object) {
     objects.remove(object);
     delete object;
+}
+
+void Game::RemovePlayer(Player* player) {
+    players.remove(player);
+    if (players.size() == 1) {
+        paused = true;
+    }
 }
 
 void Game::Run() {
@@ -138,8 +148,19 @@ void Game::DropObject(DroppingObject* object) {
 
 bool Game::IsValidSquare(Square* square) {
     if (square->IsEmpty()) {
+        Square* infoBoxSquare = infoBox.GetSquare();
+        Dimensions* infoBoxSize = infoBox.GetSize();
+        
+        int row = square->GetRow(),
+            col = square->GetCol(),
+            rowMin = infoBoxSquare->GetRow(),
+            rowMax = rowMin + infoBoxSize->GetHeight(),
+            colMin = infoBoxSquare->GetCol(),
+            colMax = colMin + infoBoxSize->GetWidth();
+
+        return !(row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
+
         // TODO: check players 2 squares away
-        return true;
     }
     return false;
 }

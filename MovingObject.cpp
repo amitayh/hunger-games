@@ -5,14 +5,6 @@ MovingObject::MovingObject() {
     direction = RIGHT;
 }
 
-void MovingObject::UpdatePosition(int& start, int end) {
-    if (start < end) {
-        start++;
-    } else if (start > end) {
-        start--;
-    }
-}
-
 bool MovingObject::Update() {
     Game* game = GetGame();
     if (game->GetTick() % moveInterval == 0) {

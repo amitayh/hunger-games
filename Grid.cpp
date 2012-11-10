@@ -7,10 +7,8 @@ Grid::Grid() {
 Grid::~Grid() {
     for (int row = 0; row < rows; row++) {
         delete []squares[row];
-        squares[row] = NULL;
     }
     delete []squares;
-    squares = NULL;
 }
 
 void Grid::Init(int rows, int cols) {

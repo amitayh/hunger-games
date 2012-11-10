@@ -3,6 +3,7 @@
 
 #include "Dimensions.h"
 #include "Gotoxy.h"
+#include "Console.h"
 #include <iostream>
 
 using namespace std;

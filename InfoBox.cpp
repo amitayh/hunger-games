@@ -15,9 +15,11 @@ void InfoBox::Draw() {
     PlayersIterator it = players->begin();
     Dimensions* size = GetSize();
     int row = square->GetRow(), col = square->GetCol();
+
+    ChangeColor(Color::SILVER);
     
     gotoxy(col, row);
-    cout << "P Pwr  Ars";
+    cout << "P HP   A";
     gotoxy(col, row + 1);
     cout << "----------";
 

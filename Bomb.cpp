@@ -7,5 +7,6 @@ void Bomb::Affect(Player* player) {
 
 void Bomb::Draw() {
     GotoPosition();
+    ChangeColor(Color::RED);
     cout << '@';
 }

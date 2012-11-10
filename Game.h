@@ -3,9 +3,10 @@
 
 #include "Grid.h"
 #include "Object.h"
+#include "InfoBox.h"
 #include <list>
 
-const int FRAMES_PER_SECOND = 15;
+const int FRAMES_PER_SECOND = 30;
 const int DROP_FOOD_PROBABILITY = 2;
 const int DROP_QUIVER_PROBABILITY = 1;
 const int DROP_BOMB_PROBABILITY = 1;
@@ -23,6 +24,7 @@ class Game
     Grid grid;
     ObjectsList objects;
     PlayersList players;
+    InfoBox infoBox;
 
     void Loop();
     void Update();
@@ -36,12 +38,13 @@ public:
     Game();
     ~Game();
 
-    void AddPlayer(char name, int row, int col);
+    void AddPlayer(int row, int col);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
     void AddObject(Object* object, int row, int col);
     void AddObject(Object* object, Square* square);
     void RemoveObject(Object* object);
+    void RemovePlayer(Player* player);
     int GetTick();
     Grid* GetGrid();
     PlayersList* GetPlayers();
