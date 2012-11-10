@@ -14,10 +14,6 @@ void Object::SetGame(Game* game) {
     this->game = game;
 }
 
-bool Object::Update() {
-    return true;
-};
-
 void Object::SetSquare(Square* square) {
     this->square = square;
 }

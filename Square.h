@@ -4,7 +4,7 @@
 #include <list>
 
 class Player;
-class DroppingObject;
+class Item;
 class Wall;
 
 typedef std::list<Player*> PlayersList;
@@ -14,7 +14,7 @@ class Square
 {
     int row, col;
     PlayersList players;
-    DroppingObject* droppingObject;
+    Item* item;
     Wall* wall;
 public:
     Square();
@@ -22,12 +22,12 @@ public:
     void StepIn(Player* player);
     void StepOut(Player* player);
     void SetPosition(int row, int col);
-    void SetDroppingObject(DroppingObject* droppingObject);
+    void SetItem(Item* item);
     void SetWall(Wall* wall);
     int GetRow();
     int GetCol();
     PlayersList* GetPlayers();
-    DroppingObject* GetDroppingObject();
+    Item* GetItem();
     Wall* GetWall();
     bool IsEmpty();
 };

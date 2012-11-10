@@ -1,19 +1,6 @@
 #include "Grid.h"
 
-Grid::Grid() {
-    rows = cols = 0;
-}
-
-Grid::~Grid() {
-    for (int row = 0; row < rows; row++) {
-        delete []squares[row];
-    }
-    delete []squares;
-}
-
-void Grid::Init(int rows, int cols) {
-    this->rows = rows;
-    this->cols = cols;
+Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
     squares = new Square*[rows];
     for (int row = 0; row < rows; row++) {
         squares[row] = new Square[cols];
@@ -21,6 +8,13 @@ void Grid::Init(int rows, int cols) {
             squares[row][col].SetPosition(row, col);
         }
     }
+}
+
+Grid::~Grid() {
+    for (int row = 0; row < rows; row++) {
+        delete []squares[row];
+    }
+    delete []squares;
 }
 
 int Grid::GetRows() {

@@ -4,7 +4,7 @@
 #include "Square.h"
 
 const int DEFAULT_NUM_ROWS = 24;
-const int DEFAULT_NUM_COLS = 80;
+const int DEFAULT_NUM_COLS = 79;
 
 class Grid
 {
@@ -12,10 +12,9 @@ class Grid
     Square** squares;
 
 public:
-    Grid();
+    Grid(int rows, int cols);
     ~Grid();
     
-    void Init(int rows, int cols);
     int GetRows();
     int GetCols();
     Square* GetSquare(int row, int col);

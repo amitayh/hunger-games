@@ -1,16 +1,20 @@
-#include "Game.h"
-#include "MapLoader.h"
-#include <time.h>
+﻿#include "Game.h"
 
 void main() {
-
-    srand((unsigned int) time(NULL));
-
     Game game;
 
-    MapLoader loader = MapLoader(&game);
-    loader.Load("C:\\map.txt");
+    game.AddWall(1, 5);
+    game.AddWall(2, 5);
+    game.AddWall(3, 5);
 
     game.Run();
-
 }
+
+/*
+void main() {
+    Game game;
+    MapLoader loader = MapLoader(&game);
+    loader.Load("C:\\map.txt");
+    game.Run();
+}
+*/

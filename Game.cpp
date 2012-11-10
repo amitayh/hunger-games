@@ -10,19 +10,33 @@ bool checkProbability(int probability) {
     return (random < probability);
 }
 
-Game::Game() {
-    tick = 0;
-    fps = FRAMES_PER_SECOND;
-    grid.Init(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS);
+Game::Game():
+    tick(0),
+    fps(FRAMES_PER_SECOND),
+    grid(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS)
+{
 }
 
 Game::~Game() {
-    Object* object;
-    ObjectsIterator it = objects.begin();
-    while (it != objects.end()) {
-        object = *it;
-        it = objects.erase(it);
-        delete object;
+    // Delete walls
+    while (!walls.empty()) {
+        delete walls.front();
+        walls.pop_front();
+    }
+    // Delete players
+    while (!players.empty()) {
+        delete players.front();
+        players.pop_front();
+    }
+    // Delete arrows
+    while (!arrows.empty()) {
+        delete arrows.front();
+        arrows.pop_front();
+    }
+    // Delete items
+    while (!items.empty()) {
+        delete items.front();
+        items.pop_front();
     }
 }
 
@@ -36,7 +50,9 @@ void Game::AddPlayer(int row, int col) {
 void Game::AddWall(int row, int col) {
     Square* square = grid.GetSquare(row, col);
     if (!square->GetWall()) {
-        AddObject(new Wall, square);
+        Wall* wall = new Wall;
+        AddObject(wall, square);
+        walls.push_front(wall);
     }
 }
 
@@ -63,9 +79,9 @@ void Game::AddObject(Object* object, int row, int col) {
 void Game::AddObject(Object* object, Square* square) {
     object->SetGame(this);
     object->SetSquare(square);
-    objects.push_front(object);
 }
 
+/*
 void Game::RemoveObject(Object* object) {
     objects.remove(object);
     delete object;
@@ -77,16 +93,18 @@ void Game::RemovePlayer(Player* player) {
         paused = true;
     }
 }
+*/
 
 void Game::Run() {
     paused = false;
-    Loop();
+    //Loop();
 }
 
 void Game::Pause() {
     paused = true;
 }
 
+/*
 void Game::Loop() {
     while (!paused) {
         Update();
@@ -173,6 +191,7 @@ void Game::Draw() {
         it++;
     }
 }
+*/
 
 int Game::GetTick() {
     return tick;

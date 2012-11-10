@@ -1,7 +1,7 @@
 #include "Square.h"
 
 Square::Square() {
-    droppingObject = NULL;
+    item = NULL;
     wall = NULL;
 }
 
@@ -18,8 +18,8 @@ void Square::SetPosition(int row, int col) {
     this->col = col;
 }
 
-void Square::SetDroppingObject(DroppingObject* droppingObject) {
-    this->droppingObject = droppingObject;
+void Square::SetItem(Item* item) {
+    this->item = item;
 }
 
 void Square::SetWall(Wall* wall) {
@@ -38,8 +38,8 @@ PlayersList* Square::GetPlayers() {
     return &players;
 }
 
-DroppingObject* Square::GetDroppingObject() {
-    return droppingObject;
+Item* Square::GetItem() {
+    return item;
 }
 
 Wall* Square::GetWall() {
@@ -47,5 +47,5 @@ Wall* Square::GetWall() {
 }
 
 bool Square::IsEmpty() {
-    return (!droppingObject && !wall && !players.size());
+    return (!item && !wall && players.empty());
 }
