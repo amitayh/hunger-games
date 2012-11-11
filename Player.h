@@ -13,7 +13,7 @@ class Player : public MovingObject
     char name;
     int power;
     int remainingArrows;
-    int lastArrowTick;
+    unsigned int lastArrowTick;
 
     void SetRandomDirection();
     bool ShootArrow();

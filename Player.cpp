@@ -27,7 +27,6 @@ void Player::SetSquare(Square* square) {
         if (droppingObject) {
             // Pick up dropping object
             droppingObject->Affect(this);
-            square->SetDroppingObject(NULL);
         }
 
         Square* prevSquare = GetSquare();
@@ -35,12 +34,14 @@ void Player::SetSquare(Square* square) {
             prevSquare->StepOut(this);
         }
         square->StepIn(this);
+
         MovingObject::SetSquare(square);
     }
 }
 
 void Player::Update() {
     MovingObject::Update();
+
     Game* game = GetGame();
 
     // Randomly change direction
@@ -49,7 +50,7 @@ void Player::Update() {
     }
 
     // Randomly shoot arrows
-    int tick = game->GetTick();
+    unsigned int tick = game->GetTick();
     if (game->CheckProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
         ShootArrow();
     }
@@ -80,7 +81,7 @@ int Player::GetRemainingArrows() {
 }
 
 void Player::SetRandomDirection() {
-    Direction directions[2], newDirection;
+    Direction directions[2], direction;
     switch (GetDirection()) {
         case UP:
         case DOWN:
@@ -93,8 +94,8 @@ void Player::SetRandomDirection() {
             directions[1] = DOWN;
             break;
     }
-    newDirection = directions[rand() % 2];
-    SetDirection(newDirection);
+    direction = directions[rand() % 2];
+    SetDirection(direction);
 }
 
 bool Player::ShootArrow() {
@@ -103,10 +104,8 @@ bool Player::ShootArrow() {
         if (!square->GetWall()) {
             Game* game = GetGame();
             Arrow* arrow = new Arrow;
-            arrow->SetGame(game);
-            arrow->SetSquare(square);
             arrow->SetDirection(GetDirection());
-            game->AddArrow(arrow);
+            game->AddArrow(arrow, square);
             lastArrowTick = game->GetTick();
             remainingArrows--;
             return true;

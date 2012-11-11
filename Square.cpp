@@ -1,4 +1,5 @@
 #include "Square.h"
+#include "Player.h"
 
 Square::Square() {
     droppingObject = NULL;
@@ -48,4 +49,31 @@ Wall* Square::GetWall() {
 
 bool Square::IsEmpty() {
     return (!droppingObject && !wall && players.empty());
+}
+
+void Square::Battle() {
+    if (!players.empty()) {
+        Player* player;
+        Player* strongest = players.front();
+        PlayersIterator it = players.begin();
+        while (it != players.end()) {
+            player = *it;
+            if (player->GetPower() > strongest->GetPower()) {
+                strongest = player;
+            }
+            it++;
+        }
+
+        /*
+        it = players.begin();
+        while (it != players.end()) {
+            player = *it;
+            if (player->GetPower() == strongest->GetPower()) {
+                strongest = player;
+            }
+            it++;
+        }
+        */
+
+    }
 }

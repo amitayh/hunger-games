@@ -17,7 +17,6 @@ void Arrow::SetSquare(Square* square) {
             hit = true;
         }
 
-        ClearPrevPosition();
         MovingObject::SetSquare(square);
     }
 }

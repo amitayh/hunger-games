@@ -23,13 +23,11 @@ class MovingObject : public Object
 
 public:
     MovingObject();
-    ~MovingObject();
 
     void Update();
     virtual void Move() {};
     void SetDirection(Direction direction);
     void SetMoveInterval(int moveInterval);
-    void ClearPrevPosition();
     Direction GetDirection();
     Square* GetNextSquare();
 };

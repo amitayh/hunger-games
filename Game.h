@@ -6,8 +6,8 @@
 #include "InfoBox.h"
 #include <list>
 
-const int FRAMES_PER_SECOND = 20;
-const int DROP_FOOD_PROBABILITY = 2;
+const int FRAMES_PER_SECOND = 30;
+const int DROP_FOOD_PROBABILITY = 1;
 const int DROP_QUIVER_PROBABILITY = 1;
 const int DROP_BOMB_PROBABILITY = 1;
 
@@ -34,15 +34,17 @@ class Game
 
     void Loop();
     void Update();
+    void Draw();
     void UpdatePlayers();
+    void DrawPlayers();
     void UpdateArrows();
+    void DrawArrows();
+    void UpdateDroppingObjects();
     void DrawDroppingObjects();
     void DrawWalls();
-    //void CheckCollisions();
     void DropObjects();
     void DropObject(DroppingObject* object);
-    bool IsValidSquare(Square* square);
-    //void Draw();
+    bool IsValidDrop(Square* square);
 
 public:
     Game();
@@ -51,11 +53,11 @@ public:
     void AddPlayer(int row, int col);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
-    void AddArrow(Arrow* arrow);
+    void AddArrow(Arrow* arrow, Square* square);
     void AddObject(Object* object, int row, int col);
     void AddObject(Object* object, Square* square);
     bool CheckProbability(int probability);
-    int GetTick();
+    unsigned int GetTick();
     Grid* GetGrid();
     PlayersList* GetPlayers();
 

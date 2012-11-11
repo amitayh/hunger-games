@@ -5,23 +5,12 @@ MovingObject::MovingObject() {
     direction = RIGHT;
 }
 
-MovingObject::~MovingObject() {
-    ClearPrevPosition();
-}
-
 void MovingObject::Update() {
     Game* game = GetGame();
     if (game->GetTick() % moveInterval == 0) {
-        ClearPrevPosition();
+        Clear();
         SetSquare(GetNextSquare());
-        Draw();
-    }
-}
-
-void MovingObject::ClearPrevPosition() {
-    if (GetSquare()) {
-        GotoPosition();
-        cout << ' ';
+        //Draw();
     }
 }
 
