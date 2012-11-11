@@ -11,6 +11,13 @@ Player::Player(char name, int power) {
     SetMoveInterval(2);
 }
 
+Player::~Player() {
+    Square* square = GetSquare();
+    if (square) {
+        square->StepOut(this);
+    }
+}
+
 void Player::SetSquare(Square* square) {
     if (square->GetWall()) {
         SetRandomDirection();
@@ -23,12 +30,28 @@ void Player::SetSquare(Square* square) {
             square->SetDroppingObject(NULL);
         }
 
-        Square* previousSquare = GetSquare();
-        if (previousSquare) {
-            previousSquare->StepOut(this);
+        Square* prevSquare = GetSquare();
+        if (prevSquare) {
+            prevSquare->StepOut(this);
         }
         square->StepIn(this);
         MovingObject::SetSquare(square);
+    }
+}
+
+void Player::Update() {
+    MovingObject::Update();
+    Game* game = GetGame();
+
+    // Randomly change direction
+    if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
+        SetRandomDirection();
+    }
+
+    // Randomly shoot arrows
+    int tick = game->GetTick();
+    if (game->CheckProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
+        ShootArrow();
     }
 }
 
@@ -56,29 +79,6 @@ int Player::GetRemainingArrows() {
     return remainingArrows;
 }
 
-bool Player::Update() {
-    MovingObject::Update();
-
-    // Randomly change direction
-    if (checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
-        SetRandomDirection();
-    }
-
-    // Randomly shoot arrows
-    Game* game = GetGame();
-    int tick = game->GetTick();
-    if (checkProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
-        ShootArrow();
-    }
-
-    if (power > 0) {
-        return true;
-    } else {
-        game->RemovePlayer(this);
-        return false;
-    }
-}
-
 void Player::SetRandomDirection() {
     Direction directions[2], newDirection;
     switch (GetDirection()) {
@@ -103,8 +103,10 @@ bool Player::ShootArrow() {
         if (!square->GetWall()) {
             Game* game = GetGame();
             Arrow* arrow = new Arrow;
+            arrow->SetGame(game);
+            arrow->SetSquare(square);
             arrow->SetDirection(GetDirection());
-            game->AddObject(arrow, square);
+            game->AddArrow(arrow);
             lastArrowTick = game->GetTick();
             remainingArrows--;
             return true;

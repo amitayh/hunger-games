@@ -11,8 +11,8 @@ public:
     Arrow();
 
     void SetSquare(Square* square);
-    bool Update();
     void Draw();
+    bool GetHit();
 };
 
 #endif

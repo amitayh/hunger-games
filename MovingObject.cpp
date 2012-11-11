@@ -5,13 +5,24 @@ MovingObject::MovingObject() {
     direction = RIGHT;
 }
 
-bool MovingObject::Update() {
+MovingObject::~MovingObject() {
+    ClearPrevPosition();
+}
+
+void MovingObject::Update() {
     Game* game = GetGame();
     if (game->GetTick() % moveInterval == 0) {
-        Square* square = GetNextSquare();
-        SetSquare(square);
+        ClearPrevPosition();
+        SetSquare(GetNextSquare());
+        Draw();
     }
-    return true;
+}
+
+void MovingObject::ClearPrevPosition() {
+    if (GetSquare()) {
+        GotoPosition();
+        cout << ' ';
+    }
 }
 
 Direction MovingObject::GetDirection() {
@@ -48,6 +59,5 @@ Square* MovingObject::GetNextSquare() {
 
     Game* game = GetGame();
     Grid* grid = game->GetGrid();
-
     return grid->GetSquare(row, col);
 }

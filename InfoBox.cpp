@@ -4,7 +4,8 @@
 
 InfoBox::InfoBox() {
     Dimensions* size = GetSize();
-    size->Set(10, 5);
+    size->SetWidth(10);
+    size->SetHeight(5);
 }
 
 void InfoBox::Draw() {

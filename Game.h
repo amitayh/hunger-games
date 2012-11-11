@@ -6,7 +6,7 @@
 #include "InfoBox.h"
 #include <list>
 
-const int FRAMES_PER_SECOND = 30;
+const int FRAMES_PER_SECOND = 20;
 const int DROP_FOOD_PROBABILITY = 2;
 const int DROP_QUIVER_PROBABILITY = 1;
 const int DROP_BOMB_PROBABILITY = 1;
@@ -17,10 +17,8 @@ typedef WallsList::iterator WallsIterator;
 typedef std::list<Arrow*> ArrowsList;
 typedef ArrowsList::iterator ArrowsIterator;
 
-typedef std::list<Item*> ItemsList;
-typedef ItemsList::iterator ItemsIterator;
-
-bool checkProbability(int probability);
+typedef std::list<DroppingObject*> DroppingObjectsList;
+typedef DroppingObjectsList::iterator DroppingObjectsIterator;
 
 class Game
 {
@@ -31,15 +29,19 @@ class Game
     WallsList walls;
     PlayersList players;
     ArrowsList arrows;
-    ItemsList items;
+    DroppingObjectsList droppingObjects;
     InfoBox infoBox;
 
     void Loop();
     void Update();
+    void UpdatePlayers();
+    void UpdateArrows();
+    void DrawDroppingObjects();
+    void DrawWalls();
     //void CheckCollisions();
-    //void DropItems();
-    //void DropItem(Item* item);
-    //bool IsValidSquare(Square* square);
+    void DropObjects();
+    void DropObject(DroppingObject* object);
+    bool IsValidSquare(Square* square);
     //void Draw();
 
 public:
@@ -49,16 +51,17 @@ public:
     void AddPlayer(int row, int col);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
+    void AddArrow(Arrow* arrow);
     void AddObject(Object* object, int row, int col);
     void AddObject(Object* object, Square* square);
-    //void RemoveObject(Object* object);
-    //void RemovePlayer(Player* player);
+    bool CheckProbability(int probability);
     int GetTick();
     Grid* GetGrid();
     PlayersList* GetPlayers();
 
     void Run();
     void Pause();
+    void Resume();
 };
 
 #endif

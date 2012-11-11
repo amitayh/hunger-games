@@ -11,19 +11,15 @@ void Arrow::SetSquare(Square* square) {
         hit = true;
     } else {
         PlayersList* players = square->GetPlayers();
-        if (players->size()) {
+        if (!players->empty()) {
             Player* player = players->front();
             player->DecreasePower(500);
             hit = true;
         }
 
+        ClearPrevPosition();
         MovingObject::SetSquare(square);
     }
-}
-
-bool Arrow::Update() {
-    MovingObject::Update();
-    return !hit;
 }
 
 void Arrow::Draw() {
@@ -46,4 +42,8 @@ void Arrow::Draw() {
     GotoPosition();
     ChangeColor(Color::WHITE);
     cout << ch;
+}
+
+bool Arrow::GetHit() {
+    return hit;
 }

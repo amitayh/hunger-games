@@ -3,6 +3,12 @@
 
 #include "Object.h"
 
+enum ItemType {
+    FOOD,
+    QUIVER,
+    BOMB
+};
+
 enum Direction {
     UP,
     DOWN,
@@ -14,12 +20,16 @@ class MovingObject : public Object
 {
     Direction direction;
     int moveInterval;
+
 public:
     MovingObject();
+    ~MovingObject();
 
-    bool Update();
+    void Update();
+    virtual void Move() {};
     void SetDirection(Direction direction);
     void SetMoveInterval(int moveInterval);
+    void ClearPrevPosition();
     Direction GetDirection();
     Square* GetNextSquare();
 };

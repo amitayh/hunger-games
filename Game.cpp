@@ -4,17 +4,14 @@
 #include "Food.h"
 #include "Quiver.h"
 #include "Bomb.h"
-
-bool checkProbability(int probability) {
-    int random = rand() % 100;
-    return (random < probability);
-}
+#include <time.h>
 
 Game::Game():
     tick(0),
     fps(FRAMES_PER_SECOND),
     grid(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS)
 {
+    srand((unsigned) time(NULL));
 }
 
 Game::~Game() {
@@ -33,10 +30,10 @@ Game::~Game() {
         delete arrows.front();
         arrows.pop_front();
     }
-    // Delete items
-    while (!items.empty()) {
-        delete items.front();
-        items.pop_front();
+    // Delete dropping objects
+    while (!droppingObjects.empty()) {
+        delete droppingObjects.front();
+        droppingObjects.pop_front();
     }
 }
 
@@ -44,15 +41,15 @@ void Game::AddPlayer(int row, int col) {
     char name = 'A' + players.size();
     Player* player = new Player(name);
     AddObject(player, row, col);
-    players.push_front(player);
+    players.push_back(player);
 }
 
 void Game::AddWall(int row, int col) {
     Square* square = grid.GetSquare(row, col);
-    if (!square->GetWall()) {
+    if (IsValidSquare(square)) {
         Wall* wall = new Wall;
         AddObject(wall, square);
-        walls.push_front(wall);
+        walls.push_back(wall);
     }
 }
 
@@ -72,6 +69,10 @@ void Game::AddInfoBox(int row, int col) {
     AddObject(&infoBox, row, col);
 }
 
+void Game::AddArrow(Arrow* arrow) {
+    arrows.push_back(arrow);
+}
+
 void Game::AddObject(Object* object, int row, int col) {
     AddObject(object, grid.GetSquare(row, col));
 }
@@ -81,41 +82,107 @@ void Game::AddObject(Object* object, Square* square) {
     object->SetSquare(square);
 }
 
-/*
-void Game::RemoveObject(Object* object) {
-    objects.remove(object);
-    delete object;
+bool Game::CheckProbability(int probability) {
+    int random = rand() % 100;
+    return (random < probability);
 }
-
-void Game::RemovePlayer(Player* player) {
-    players.remove(player);
-    if (players.size() == 1) {
-        paused = true;
-    }
-}
-*/
 
 void Game::Run() {
     paused = false;
-    //Loop();
+    DrawWalls();
+    Loop();
 }
 
 void Game::Pause() {
     paused = true;
 }
 
-/*
+void Game::Resume() {
+    paused = false;
+}
+
 void Game::Loop() {
     while (!paused) {
         Update();
         //CheckCollisions();
         DropObjects();
-        Draw();
         tick++;
         Sleep(1000 / fps);
     }
 }
 
+void Game::Update() {
+    UpdateArrows();
+    UpdatePlayers();
+    DrawDroppingObjects();
+    infoBox.Draw();
+    gotoxy(grid.GetCols(), grid.GetRows());
+}
+
+void Game::UpdatePlayers() {
+    Player* player;
+    PlayersIterator it = players.begin();
+    while (it != players.end()) {
+        player = *it;
+        player->Update();
+        if (player->GetPower() > 0) {
+            // Player is still alive
+            it++;
+        } else {
+            // Player is dead
+            it = players.erase(it);
+            delete player;
+        }
+    }
+}
+
+void Game::UpdateArrows() {
+    Arrow* arrow;
+    ArrowsIterator it = arrows.begin();
+    while (it != arrows.end()) {
+        arrow = *it;
+        arrow->Update();
+        if (!arrow->GetHit()) {
+            it++;
+        } else {
+            // Arrow hit a wall/player
+            it = arrows.erase(it);
+            delete arrow;
+        }
+    }
+}
+
+void Game::DrawDroppingObjects() {
+    DroppingObjectsIterator it = droppingObjects.begin();
+    while (it != droppingObjects.end()) {
+        (*it)->Draw();
+        it++;
+    }
+}
+
+void Game::DrawWalls() {
+    WallsIterator it = walls.begin();
+    while (it != walls.end()) {
+        (*it)->Draw();
+        it++;
+    }
+}
+
+void Game::DropObjects() {
+    /*
+    if (CheckProbability(DROP_FOOD_PROBABILITY)) {
+        DropObject(new Food);
+    }
+    if (CheckProbability(DROP_QUIVER_PROBABILITY)) {
+        DropObject(new Quiver);
+    }
+    if (CheckProbability(DROP_BOMB_PROBABILITY)) {
+        DropObject(new Bomb);
+    }
+    */
+}
+
+/*
 void Game::Update() {
     Object* object;
     ObjectsIterator it = objects.begin();
@@ -139,18 +206,6 @@ void Game::CheckCollisions() {
     }
 }
 
-void Game::DropObjects() {
-    if (checkProbability(DROP_FOOD_PROBABILITY)) {
-        DropObject(new Food);
-    }
-    if (checkProbability(DROP_QUIVER_PROBABILITY)) {
-        DropObject(new Quiver);
-    }
-    if (checkProbability(DROP_BOMB_PROBABILITY)) {
-        DropObject(new Bomb);
-    }
-}
-
 void Game::DropObject(DroppingObject* object) {
     int row = rand() % grid.GetRows(),
         col = rand() % grid.GetCols();
@@ -164,7 +219,20 @@ void Game::DropObject(DroppingObject* object) {
     }
 }
 
+void Game::Draw() {
+    clrscr();
+    ObjectsIterator it = objects.begin();
+    while (it != objects.end()) {
+        (*it)->Draw();
+        it++;
+    }
+}
+*/
+
 bool Game::IsValidSquare(Square* square) {
+    return square->IsEmpty();
+
+    /*
     if (square->IsEmpty()) {
         Square* infoBoxSquare = infoBox.GetSquare();
         Dimensions* infoBoxSize = infoBox.GetSize();
@@ -181,17 +249,8 @@ bool Game::IsValidSquare(Square* square) {
         // TODO: check players 2 squares away
     }
     return false;
+    */
 }
-
-void Game::Draw() {
-    clrscr();
-    ObjectsIterator it = objects.begin();
-    while (it != objects.end()) {
-        (*it)->Draw();
-        it++;
-    }
-}
-*/
 
 int Game::GetTick() {
     return tick;

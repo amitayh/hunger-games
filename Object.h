@@ -17,14 +17,13 @@ class Object
     Game* game;
     Square* square;
 
-    void GotoPosition();
-
 public:
     Object();
 
     virtual void Draw() {};
-    void SetSquare(Square* square);
+    virtual void SetSquare(Square* square);
     void SetGame(Game* game);
+    void GotoPosition();
     Dimensions* GetSize();
     Game* GetGame();
     Square* GetSquare();
