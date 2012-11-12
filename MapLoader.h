@@ -10,6 +10,7 @@ const char CHAR_INFO_BOX    = 'O';
 class MapLoader
 {
     Game* game;
+
 public:
     MapLoader(Game* game);
 

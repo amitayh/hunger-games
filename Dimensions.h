@@ -4,10 +4,10 @@
 class Dimensions
 {
     int width, height;
-public:
-    Dimensions();
 
-    void Set(int width, int height);
+public:
+    Dimensions(int width = 1, int height = 1);
+
     void SetWidth(int width);
     void SetHeight(int height);
     int GetWidth();

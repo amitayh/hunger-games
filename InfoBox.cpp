@@ -4,7 +4,8 @@
 
 InfoBox::InfoBox() {
     Dimensions* size = GetSize();
-    size->Set(10, 5);
+    size->SetWidth(10);
+    size->SetHeight(5);
 }
 
 void InfoBox::Draw() {
@@ -23,9 +24,14 @@ void InfoBox::Draw() {
     gotoxy(col, row + 1);
     cout << "----------";
 
-    for (int i = 2; i < size->GetHeight() && it != players->end(); i++, it++) {
-        player = *it;
+    for (int i = 2; i < size->GetHeight(); i++) {
         gotoxy(square->GetCol(), square->GetRow() + i);
-        printf("%c %-4d %-3d\n", player->GetName(), player->GetPower(), player->GetRemainingArrows());
+        if (it != players->end()) {
+            player = *it;
+            printf("%c %-4d %-3d\n", player->GetName(), player->GetPower(), player->GetRemainingArrows());
+            it++;
+        } else {
+            cout << "          ";
+        }
     }
 }

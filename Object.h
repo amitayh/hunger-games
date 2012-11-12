@@ -19,17 +19,17 @@ class Object
 
 public:
     Object();
+    ~Object();
 
-    virtual bool Update();
     virtual void Draw() {};
     virtual void SetSquare(Square* square);
-
-    void GotoPosition();
     void SetGame(Game* game);
-
+    void GotoPosition();
+    void Clear();
     Dimensions* GetSize();
     Game* GetGame();
     Square* GetSquare();
+    bool InArea(Square *square);
 };
 
 #endif

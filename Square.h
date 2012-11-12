@@ -16,6 +16,8 @@ class Square
     PlayersList players;
     DroppingObject* droppingObject;
     Wall* wall;
+    unsigned int lastBattleTick;
+
 public:
     Square();
 
@@ -24,11 +26,13 @@ public:
     void SetPosition(int row, int col);
     void SetDroppingObject(DroppingObject* droppingObject);
     void SetWall(Wall* wall);
+    void Battle();
     int GetRow();
     int GetCol();
     PlayersList* GetPlayers();
     DroppingObject* GetDroppingObject();
     Wall* GetWall();
+    double GetDistance(Square* square);
     bool IsEmpty();
 };
 

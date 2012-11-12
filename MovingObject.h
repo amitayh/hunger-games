@@ -14,10 +14,12 @@ class MovingObject : public Object
 {
     Direction direction;
     int moveInterval;
+
 public:
     MovingObject();
 
-    bool Update();
+    void Update();
+    virtual void Move() {};
     void SetDirection(Direction direction);
     void SetMoveInterval(int moveInterval);
     Direction GetDirection();

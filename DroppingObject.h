@@ -7,11 +7,14 @@
 class DroppingObject : public Object
 {
     bool pickedUp;
+
 public:
     DroppingObject();
+    ~DroppingObject();
 
-    bool Update();
+    void DroppingObject::SetSquare(Square* square);
     virtual void Affect(Player* player);
+    bool GetPickedUp();
 };
 
 #endif
