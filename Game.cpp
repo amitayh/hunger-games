@@ -110,6 +110,7 @@ void Game::Resume() {
 void Game::EndGame(Player* winner) {
     clrscr();
     gotoxy(0, 0);
+    ChangeColor(Color::WHITE);
     cout << "Game over";
     if (winner) {
         cout << ", winner is " << winner->GetName();
@@ -119,7 +120,7 @@ void Game::EndGame(Player* winner) {
 
 void Game::Loop() {
     while (!paused) {
-        if (kbhit() && getch() == ESCAPSE_KEY) {
+        if (_kbhit() && _getch() == ESCAPSE_KEY) {
             ShowMenu();
         } else {
             Update();

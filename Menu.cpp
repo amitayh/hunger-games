@@ -15,7 +15,7 @@ MenuOption Menu::Choose() {
     cout << "1. Quit game" << endl;
     cout << "2. Resume" << endl;
 
-    switch (getch()) {
+    switch (_getch()) {
         case '1':   return QUIT;
         case '2':   return RESUME;
         default:    return Choose();
