@@ -17,7 +17,7 @@ void InfoBox::Draw() {
     Dimensions* size = GetSize();
     int row = square->GetRow(), col = square->GetCol();
 
-    ChangeColor(Color::SILVER);
+    ChangeColor(SILVER);
     
     gotoxy(col, row);
     cout << "P HP   A";

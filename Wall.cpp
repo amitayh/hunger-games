@@ -10,7 +10,7 @@ Wall::~Wall() {
 
 void Wall::Draw() {
     GotoPosition();
-    ChangeColor(Color::GREY);
+    ChangeColor(GREY);
     cout << '#';
 }
 

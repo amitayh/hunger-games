@@ -8,11 +8,12 @@
 #include <list>
 
 // Game constants
-const int FRAMES_PER_SECOND = 30;
-const int DROP_FOOD_PROBABILITY = 2;
-const int DROP_QUIVER_PROBABILITY = 1;
-const int DROP_BOMB_PROBABILITY = 1;
-const int ESCAPSE_KEY = 27;
+const int FRAMES_PER_SECOND         = 30;
+const int DROP_FOOD_PROBABILITY     = 2;
+const int DROP_QUIVER_PROBABILITY   = 1;
+const int DROP_BOMB_PROBABILITY     = 1;
+const int MIN_DISTANCE_FROM_PLAYERS = 2;
+const int ESCAPSE_KEY               = 27;
 
 // Lists and iterators
 typedef std::list<Wall*> WallsList;
@@ -47,8 +48,8 @@ class Game
     void DrawWalls();
     void DropObjects();
     void DropObject(DroppingObject* object);
-    bool IsValidDrop(Square* square);
     void EndGame(Player* winner = NULL);
+    bool IsValidDrop(Square* square);
     void ShowMenu();
 
 public:
@@ -56,6 +57,7 @@ public:
     ~Game();
 
     void AddPlayer(int row, int col);
+    void AddPlayer(Square* square);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
     void AddArrow(Arrow* arrow, Square* square);
@@ -65,6 +67,7 @@ public:
     unsigned int GetTick();
     Grid* GetGrid();
     PlayersList* GetPlayers();
+    Square* GetValidDropSquare();
 
     void Run();
     void Pause();

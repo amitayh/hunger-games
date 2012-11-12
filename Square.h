@@ -26,10 +26,10 @@ public:
     void SetPosition(int row, int col);
     void SetDroppingObject(DroppingObject* droppingObject);
     void SetWall(Wall* wall);
-    void Battle();
     int GetRow();
     int GetCol();
     PlayersList* GetPlayers();
+    Player* GetStrongestPlayer();
     DroppingObject* GetDroppingObject();
     Wall* GetWall();
     double GetDistance(Square* square);

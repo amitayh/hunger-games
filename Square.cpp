@@ -50,36 +50,25 @@ Wall* Square::GetWall() {
 
 double Square::GetDistance(Square* square) {
     double deltaX = col - square->GetCol(), deltaY = row - square->GetRow();
-    return sqrt(deltaX * deltaX + deltaY * deltaY);
+    return sqrt((deltaX * deltaX) + (deltaY * deltaY));
 }
 
 bool Square::IsEmpty() {
     return (!droppingObject && !wall && players.empty());
 }
 
-void Square::Battle() {
+Player* Square::GetStrongestPlayer() {
     if (!players.empty()) {
-        Player* player;
-        Player* strongest = players.front();
+        Player *strongest = players.front(), *challenger;
         PlayersIterator it = players.begin();
         while (it != players.end()) {
-            player = *it;
-            if (player->GetPower() > strongest->GetPower()) {
-                strongest = player;
+            challenger = *it;
+            if (challenger->GetPower() > strongest->GetPower()) {
+                strongest = challenger;
             }
             it++;
         }
-
-        /*
-        it = players.begin();
-        while (it != players.end()) {
-            player = *it;
-            if (player->GetPower() == strongest->GetPower()) {
-                strongest = player;
-            }
-            it++;
-        }
-        */
-
+        return strongest;
     }
+    return NULL;
 }

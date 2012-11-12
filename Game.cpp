@@ -39,9 +39,13 @@ Game::~Game() {
 }
 
 void Game::AddPlayer(int row, int col) {
+    AddPlayer(grid.GetSquare(row, col));
+}
+
+void Game::AddPlayer(Square* square) {
     char name = 'A' + players.size();
     Player* player = new Player(name);
-    AddObject(player, row, col);
+    AddObject(player, square);
     players.push_back(player);
 }
 
@@ -110,7 +114,7 @@ void Game::Resume() {
 void Game::EndGame(Player* winner) {
     clrscr();
     gotoxy(0, 0);
-    ChangeColor(Color::WHITE);
+    ChangeColor(WHITE);
     cout << "Game over";
     if (winner) {
         cout << ", winner is " << winner->GetName();
@@ -162,8 +166,8 @@ void Game::UpdateArrows() {
     ArrowsIterator it = arrows.begin();
     while (it != arrows.end()) {
         arrow = *it;
+        arrow->Update();
         if (!arrow->GetHit()) {
-            arrow->Update();
             it++;
         } else {
             // Arrow hit a wall/player
@@ -186,9 +190,9 @@ void Game::UpdatePlayers() {
     PlayersIterator it = players.begin();
     while (it != players.end()) {
         player = *it;
+        player->Update();
         if (player->GetPower() > 0) {
             // Player is still alive
-            player->Update();
             it++;
         } else {
             // Player is dead
@@ -196,7 +200,7 @@ void Game::UpdatePlayers() {
             delete player;
 
             if (players.size() == 1) {
-                // Game over
+                // One player left, game over
                 Pause();
                 EndGame(players.front());
             }
@@ -265,17 +269,17 @@ void Game::DropObjects() {
 }
 
 void Game::DropObject(DroppingObject* object) {
-    int row = rand() % grid.GetRows(),
-        col = rand() % grid.GetCols();
-    Square* square = grid.GetSquare(row, col);
-    if (IsValidDrop(square)) {
-        AddObject(object, square);
-        droppingObjects.push_back(object);
-        object->Draw();
-    } else {
-        // Try again...
-        DropObject(object);
-    }
+    AddObject(object, GetValidDropSquare());
+    droppingObjects.push_back(object);
+    object->Draw();
+}
+
+Square* Game::GetValidDropSquare() {
+    Square* square;
+    do {
+        square = grid.GetRandomSquare();
+    } while (!IsValidDrop(square));
+    return square;
 }
 
 bool Game::IsValidDrop(Square* square) {
@@ -290,7 +294,7 @@ bool Game::IsValidDrop(Square* square) {
         PlayersIterator it = players.begin();
         while (result && it != players.end()) {
             double distance = square->GetDistance((*it)->GetSquare());
-            if (distance < 2) {
+            if (distance < MIN_DISTANCE_FROM_PLAYERS) {
                 // Square is too close to one of the players
                 result = false;
             }

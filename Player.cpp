@@ -40,19 +40,20 @@ void Player::SetSquare(Square* square) {
 }
 
 void Player::Update() {
-    MovingObject::Update();
+    if (power > 0) {
+        MovingObject::Update();
+        Game* game = GetGame();
 
-    Game* game = GetGame();
+        // Randomly change direction
+        if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
+            SetRandomDirection();
+        }
 
-    // Randomly change direction
-    if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
-        SetRandomDirection();
-    }
-
-    // Randomly shoot arrows
-    unsigned int tick = game->GetTick();
-    if (game->CheckProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
-        ShootArrow();
+        // Randomly shoot arrows
+        unsigned int tick = game->GetTick();
+        if (game->CheckProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
+            ShootArrow();
+        }
     }
 }
 
@@ -116,6 +117,6 @@ bool Player::ShootArrow() {
 
 void Player::Draw() {
     GotoPosition();
-    ChangeColor(Color::CYAN);
+    ChangeColor(CYAN);
     cout << name;
 }

@@ -39,7 +39,7 @@ void Arrow::Draw() {
     }
 
     GotoPosition();
-    ChangeColor(Color::WHITE);
+    ChangeColor(WHITE);
     cout << ch;
 }
 

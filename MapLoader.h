@@ -6,6 +6,7 @@
 const char CHAR_WALL        = 'W';
 const char CHAR_PLAYER      = 'P';
 const char CHAR_INFO_BOX    = 'O';
+const int  MIN_NUM_PLAYERS  = 2;
 
 class MapLoader
 {

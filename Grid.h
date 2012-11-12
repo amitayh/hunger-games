@@ -18,6 +18,7 @@ public:
     int GetRows();
     int GetCols();
     Square* GetSquare(int row, int col);
+    Square* GetRandomSquare();
 };
 
 #endif

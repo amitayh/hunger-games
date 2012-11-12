@@ -7,6 +7,6 @@ void Food::Affect(Player* player) {
 
 void Food::Draw() {
     GotoPosition();
-    ChangeColor(Color::LIME);
+    ChangeColor(LIME);
     cout << '$';
 }

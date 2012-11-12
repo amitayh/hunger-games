@@ -38,3 +38,8 @@ Square* Grid::GetSquare(int row, int col) {
     }
     return &squares[row][col];
 }
+
+Square* Grid::GetRandomSquare() {
+    int row = rand() % rows, col = rand() % cols;
+    return GetSquare(row, col);
+}
