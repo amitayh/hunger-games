@@ -10,7 +10,6 @@ void MovingObject::Update() {
     if (game->GetTick() % moveInterval == 0) {
         Clear();
         SetSquare(GetNextSquare());
-        //Draw();
     }
 }
 

@@ -29,6 +29,7 @@ public:
     Dimensions* GetSize();
     Game* GetGame();
     Square* GetSquare();
+    bool InArea(Square *square);
 };
 
 #endif

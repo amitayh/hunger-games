@@ -3,12 +3,6 @@
 
 #include "Object.h"
 
-enum ItemType {
-    FOOD,
-    QUIVER,
-    BOMB
-};
-
 enum Direction {
     UP,
     DOWN,

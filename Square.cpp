@@ -1,5 +1,6 @@
 #include "Square.h"
 #include "Player.h"
+#include <math.h>
 
 Square::Square() {
     droppingObject = NULL;
@@ -45,6 +46,11 @@ DroppingObject* Square::GetDroppingObject() {
 
 Wall* Square::GetWall() {
     return wall;
+}
+
+double Square::GetDistance(Square* square) {
+    double deltaX = col - square->GetCol(), deltaY = row - square->GetRow();
+    return sqrt(deltaX * deltaX + deltaY * deltaY);
 }
 
 bool Square::IsEmpty() {

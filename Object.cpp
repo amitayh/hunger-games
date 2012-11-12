@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "DroppingObject.h"
 #include "Square.h"
 #include "Game.h"
 
@@ -23,9 +24,16 @@ void Object::SetSquare(Square* square) {
 }
 
 void Object::Clear() {
-    if (GetSquare()) {
-        GotoPosition();
-        cout << ' ';
+    if (square) {
+        DroppingObject* droppingObject = square->GetDroppingObject();
+        if (droppingObject) {
+            // Redraw dropping object
+            droppingObject->Draw();
+        } else {
+            // Clear square
+            GotoPosition();
+            cout << ' ';
+        }
     }
 }
 
@@ -39,4 +47,15 @@ Game* Object::GetGame() {
 
 Square* Object::GetSquare() {
     return square;
+}
+
+bool Object::InArea(Square* square) {
+    int row = square->GetRow(),
+        col = square->GetCol(),
+        rowMin = this->square->GetRow(),
+        rowMax = rowMin + size.GetHeight(),
+        colMin = this->square->GetCol(),
+        colMax = colMin + size.GetWidth();
+
+    return (row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
 }

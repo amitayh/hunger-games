@@ -4,6 +4,7 @@
 class Dimensions
 {
     int width, height;
+
 public:
     Dimensions(int width = 1, int height = 1);
 

@@ -5,13 +5,14 @@
 #include "Quiver.h"
 #include "Bomb.h"
 #include <time.h>
+#include <conio.h>
 
 Game::Game():
     tick(0),
     fps(FRAMES_PER_SECOND),
     grid(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS)
 {
-    srand((unsigned) time(NULL));
+    srand((unsigned int) time(NULL));
 }
 
 Game::~Game() {
@@ -121,7 +122,6 @@ void Game::Update() {
 void Game::Draw() {
     DrawArrows();
     DrawPlayers();
-    DrawDroppingObjects();
     infoBox.Draw();
     gotoxy(grid.GetCols(), grid.GetRows()); // Hide cursor from main window
 }
@@ -166,6 +166,11 @@ void Game::UpdatePlayers() {
         }
     }
 
+    if (players.size() == 1) {
+        // Game over
+        Pause();
+    }
+
     /*
     Square* square;
     it = players.begin();
@@ -199,14 +204,6 @@ void Game::UpdateDroppingObjects() {
     }
 }
 
-void Game::DrawDroppingObjects() {
-    DroppingObjectsIterator it = droppingObjects.begin();
-    while (it != droppingObjects.end()) {
-        (*it)->Draw();
-        it++;
-    }
-}
-
 void Game::DrawWalls() {
     WallsIterator it = walls.begin();
     while (it != walls.end()) {
@@ -234,29 +231,33 @@ void Game::DropObject(DroppingObject* object) {
     if (IsValidDrop(square)) {
         AddObject(object, square);
         droppingObjects.push_back(object);
+        object->Draw();
     } else {
-        // Square is occupied, try again...
+        // Try again...
         DropObject(object);
     }
 }
 
 bool Game::IsValidDrop(Square* square) {
-    if (square->IsEmpty()) {
-        Square* infoBoxSquare = infoBox.GetSquare();
-        Dimensions* infoBoxSize = infoBox.GetSize();
-        
-        int row = square->GetRow(),
-            col = square->GetCol(),
-            rowMin = infoBoxSquare->GetRow(),
-            rowMax = rowMin + infoBoxSize->GetHeight(),
-            colMin = infoBoxSquare->GetCol(),
-            colMax = colMin + infoBoxSize->GetWidth();
-
-        return !(row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
-
-        // TODO: check players 2 squares away
+    bool result = true;
+    if (!square->IsEmpty()) {
+        // Square is occupied
+        result = false;
+    } else if (infoBox.InArea(square)) {
+        // Square is in the info box's area
+        result = false;
+    } else {
+        PlayersIterator it = players.begin();
+        while (result && it != players.end()) {
+            double distance = square->GetDistance((*it)->GetSquare());
+            if (distance < 2) {
+                // Square is too close to one of the players
+                result = false;
+            }
+            it++;
+        }
     }
-    return false;
+    return result;
 }
 
 unsigned int Game::GetTick() {

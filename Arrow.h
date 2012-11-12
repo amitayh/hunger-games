@@ -7,6 +7,7 @@
 class Arrow : public MovingObject
 {
     bool hit;
+
 public:
     Arrow();
 

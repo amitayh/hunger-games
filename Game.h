@@ -7,7 +7,7 @@
 #include <list>
 
 const int FRAMES_PER_SECOND = 30;
-const int DROP_FOOD_PROBABILITY = 1;
+const int DROP_FOOD_PROBABILITY = 2;
 const int DROP_QUIVER_PROBABILITY = 1;
 const int DROP_BOMB_PROBABILITY = 1;
 
@@ -40,7 +40,6 @@ class Game
     void UpdateArrows();
     void DrawArrows();
     void UpdateDroppingObjects();
-    void DrawDroppingObjects();
     void DrawWalls();
     void DropObjects();
     void DropObject(DroppingObject* object);

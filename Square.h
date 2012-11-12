@@ -32,6 +32,7 @@ public:
     PlayersList* GetPlayers();
     DroppingObject* GetDroppingObject();
     Wall* GetWall();
+    double GetDistance(Square* square);
     bool IsEmpty();
 };
 

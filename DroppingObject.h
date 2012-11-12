@@ -7,6 +7,7 @@
 class DroppingObject : public Object
 {
     bool pickedUp;
+
 public:
     DroppingObject();
     ~DroppingObject();
