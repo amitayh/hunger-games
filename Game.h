@@ -48,6 +48,7 @@ class Game
     void DropObjects();
     void DropObject(DroppingObject* object);
     bool IsValidDrop(Square* square);
+    void EndGame(Player* winner = NULL);
     void ShowMenu();
 
 public:
@@ -68,7 +69,6 @@ public:
     void Run();
     void Pause();
     void Resume();
-    void Quit();
 };
 
 #endif

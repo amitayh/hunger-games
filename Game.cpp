@@ -107,10 +107,13 @@ void Game::Resume() {
     Draw();
 }
 
-void Game::Quit() {
+void Game::EndGame(Player* winner) {
     clrscr();
     gotoxy(0, 0);
-    cout << "Game over" << endl;
+    cout << "Game over";
+    if (winner) {
+        cout << ", winner is " << winner->GetName();
+    }
     getchar();
 }
 
@@ -135,7 +138,7 @@ void Game::ShowMenu() {
             Resume();
             break;
         case QUIT:
-            Quit();
+            EndGame();
             break;
     }
 }
@@ -190,12 +193,13 @@ void Game::UpdatePlayers() {
             // Player is dead
             it = players.erase(it);
             delete player;
-        }
-    }
 
-    if (players.size() == 1) {
-        // Game over
-        Pause();
+            if (players.size() == 1) {
+                // Game over
+                Pause();
+                EndGame(players.front());
+            }
+        }
     }
 
     /*
