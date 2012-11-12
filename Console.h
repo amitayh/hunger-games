@@ -2,22 +2,22 @@
 #define _CONSOLE_H
 
 enum Color {
-    BLACK   = 0x0,
-    NAVY    = 0x1,
-    GREEN   = 0x2,
-    TEAL    = 0x3,
-    MAROON  = 0x4,
-    PURPLE  = 0x5,
-    OLIVE   = 0x6,
-    SILVER  = 0x7,
-    GREY    = 0x8,
-    BLUE    = 0x9,
-    LIME    = 0xA,
-    CYAN    = 0xB,
-    RED     = 0xC,
-    MAGENTA = 0xD,
-    YELLOW  = 0xE,
-    WHITE   = 0xF
+    BLACK   = 0,
+    NAVY    = 1,
+    GREEN   = 2,
+    TEAL    = 3,
+    MAROON  = 4,
+    PURPLE  = 5,
+    OLIVE   = 6,
+    SILVER  = 7,
+    GREY    = 8,
+    BLUE    = 9,
+    LIME    = 10,
+    CYAN    = 11,
+    RED     = 12,
+    MAGENTA = 13,
+    YELLOW  = 14,
+    WHITE   = 15
 };
 
 void ChangeColor(Color color);

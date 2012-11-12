@@ -3,6 +3,7 @@
 
 #include "MovingObject.h"
 
+const int INITIAL_POWER = 1000;
 const int INITIAL_NUM_ARROWS = 30;
 const int MIN_TICKS_BETWEEN_ARROWS = 3;
 const int SHOOT_ARROW_PROBABILITY = 5;
@@ -19,7 +20,7 @@ class Player : public MovingObject
     bool ShootArrow();
 
 public:
-    Player(char name, int power = 1000);
+    Player(char name, int power = INITIAL_POWER);
     ~Player();
 
     void Update();

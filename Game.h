@@ -4,19 +4,21 @@
 #include "Grid.h"
 #include "Arrow.h"
 #include "InfoBox.h"
+#include "Menu.h"
 #include <list>
 
+// Game constants
 const int FRAMES_PER_SECOND = 30;
 const int DROP_FOOD_PROBABILITY = 2;
 const int DROP_QUIVER_PROBABILITY = 1;
 const int DROP_BOMB_PROBABILITY = 1;
+const int ESCAPSE_KEY = 27;
 
+// Lists and iterators
 typedef std::list<Wall*> WallsList;
 typedef WallsList::iterator WallsIterator;
-
 typedef std::list<Arrow*> ArrowsList;
 typedef ArrowsList::iterator ArrowsIterator;
-
 typedef std::list<DroppingObject*> DroppingObjectsList;
 typedef DroppingObjectsList::iterator DroppingObjectsIterator;
 
@@ -31,6 +33,7 @@ class Game
     ArrowsList arrows;
     DroppingObjectsList droppingObjects;
     InfoBox infoBox;
+    Menu menu;
 
     void Loop();
     void Update();
@@ -40,10 +43,12 @@ class Game
     void UpdateArrows();
     void DrawArrows();
     void UpdateDroppingObjects();
+    void DrawDroppingObjects();
     void DrawWalls();
     void DropObjects();
     void DropObject(DroppingObject* object);
     bool IsValidDrop(Square* square);
+    void ShowMenu();
 
 public:
     Game();
@@ -63,6 +68,7 @@ public:
     void Run();
     void Pause();
     void Resume();
+    void Quit();
 };
 
 #endif

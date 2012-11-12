@@ -101,15 +101,42 @@ void Game::Pause() {
 
 void Game::Resume() {
     paused = false;
+    clrscr();
+    DrawWalls();
+    DrawDroppingObjects();
+    Draw();
+}
+
+void Game::Quit() {
+    clrscr();
+    gotoxy(0, 0);
+    cout << "Game over" << endl;
+    getchar();
 }
 
 void Game::Loop() {
     while (!paused) {
-        Update();
-        Draw();
-        DropObjects();
-        tick++;
-        Sleep(1000 / fps);
+        if (kbhit() && getch() == ESCAPSE_KEY) {
+            ShowMenu();
+        } else {
+            Update();
+            Draw();
+            DropObjects();
+            tick++;
+            Sleep(1000 / fps);
+        }
+    }
+}
+
+void Game::ShowMenu() {
+    Pause();
+    switch (menu.Choose()) {
+        case RESUME:
+            Resume();
+            break;
+        case QUIT:
+            Quit();
+            break;
     }
 }
 
@@ -201,6 +228,14 @@ void Game::UpdateDroppingObjects() {
         } else {
             it++;
         }
+    }
+}
+
+void Game::DrawDroppingObjects() {
+    DroppingObjectsIterator it = droppingObjects.begin();
+    while (it != droppingObjects.end()) {
+        (*it)->Draw();
+        it++;
     }
 }
 
