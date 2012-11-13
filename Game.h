@@ -14,6 +14,8 @@ const int DROP_QUIVER_PROBABILITY   = 1;
 const int DROP_BOMB_PROBABILITY     = 1;
 const int MIN_DISTANCE_FROM_PLAYERS = 2;
 const int ESCAPSE_KEY               = 27;
+const int MENU_QUIT                 = 1;
+const int MENU_RESUME               = 2;
 
 // Lists and iterators
 typedef std::list<Wall*> WallsList;

@@ -18,6 +18,7 @@ class Player : public MovingObject
 
     void SetRandomDirection();
     bool ShootArrow();
+    void StepOut();
 
 public:
     Player(char name, int power = INITIAL_POWER);

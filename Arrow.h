@@ -8,11 +8,14 @@ class Arrow : public MovingObject
 {
     bool hit;
 
+    bool CheckHit();
+
 public:
     Arrow();
 
-    void SetSquare(Square* square);
+    void Update();
     void Draw();
+    void SetSquare(Square* square);
     bool GetHit();
 };
 

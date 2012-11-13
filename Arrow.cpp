@@ -10,15 +10,28 @@ void Arrow::SetSquare(Square* square) {
     if (square->GetWall()) {
         hit = true;
     } else {
+        MovingObject::SetSquare(square);
+        CheckHit();
+    }
+}
+
+void Arrow::Update() {
+    if (!CheckHit()) {
+        MovingObject::Update();
+    }
+}
+
+bool Arrow::CheckHit() {
+    Square* square = GetSquare();
+    if (square) {
         PlayersList* players = square->GetPlayers();
         if (!players->empty()) {
             Player* player = players->front();
             player->DecreasePower(500);
             hit = true;
         }
-
-        MovingObject::SetSquare(square);
     }
+    return hit;
 }
 
 void Arrow::Draw() {

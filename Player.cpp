@@ -12,10 +12,7 @@ Player::Player(char name, int power) {
 }
 
 Player::~Player() {
-    Square* square = GetSquare();
-    if (square) {
-        square->StepOut(this);
-    }
+    StepOut();
 }
 
 void Player::SetSquare(Square* square) {
@@ -29,13 +26,16 @@ void Player::SetSquare(Square* square) {
             droppingObject->Affect(this);
         }
 
-        Square* prevSquare = GetSquare();
-        if (prevSquare) {
-            prevSquare->StepOut(this);
-        }
+        StepOut();
         square->StepIn(this);
-
         MovingObject::SetSquare(square);
+    }
+}
+
+void Player::StepOut() {
+    Square* square = GetSquare();
+    if (square) {
+        square->StepOut(this);
     }
 }
 

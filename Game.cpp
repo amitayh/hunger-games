@@ -13,6 +13,8 @@ Game::Game():
     grid(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS)
 {
     srand((unsigned int) time(NULL));
+    menu.AddOption("Quit game");
+    menu.AddOption("Resume");
 }
 
 Game::~Game() {
@@ -114,7 +116,7 @@ void Game::Resume() {
 void Game::EndGame(Player* winner) {
     clrscr();
     gotoxy(0, 0);
-    ChangeColor(WHITE);
+    ChangeColor(SILVER);
     cout << "Game over";
     if (winner) {
         cout << ", winner is " << winner->GetName();
@@ -124,7 +126,7 @@ void Game::EndGame(Player* winner) {
 
 void Game::Loop() {
     while (!paused) {
-        if (_kbhit() && _getch() == ESCAPSE_KEY) {
+        if (kbhit() && getch() == ESCAPSE_KEY) {
             ShowMenu();
         } else {
             Update();
@@ -139,10 +141,10 @@ void Game::Loop() {
 void Game::ShowMenu() {
     Pause();
     switch (menu.Choose()) {
-        case RESUME:
+        case MENU_RESUME:
             Resume();
             break;
-        case QUIT:
+        case MENU_QUIT:
             EndGame();
             break;
     }
@@ -162,10 +164,9 @@ void Game::Draw() {
 }
 
 void Game::UpdateArrows() {
-    Arrow* arrow;
     ArrowsIterator it = arrows.begin();
     while (it != arrows.end()) {
-        arrow = *it;
+        Arrow* arrow = *it;
         arrow->Update();
         if (!arrow->GetHit()) {
             it++;
@@ -186,10 +187,9 @@ void Game::DrawArrows() {
 }
 
 void Game::UpdatePlayers() {
-    Player* player;
     PlayersIterator it = players.begin();
     while (it != players.end()) {
-        player = *it;
+        Player* player = *it;
         player->Update();
         if (player->GetPower() > 0) {
             // Player is still alive
@@ -226,10 +226,9 @@ void Game::DrawPlayers() {
 }
 
 void Game::UpdateDroppingObjects() {
-    DroppingObject* droppingObject;
     DroppingObjectsIterator it = droppingObjects.begin();
     while (it != droppingObjects.end()) {
-        droppingObject = *it;
+        DroppingObject* droppingObject = *it;
         if (droppingObject->GetPickedUp()) {
             // Object was picked up
             it = droppingObjects.erase(it);

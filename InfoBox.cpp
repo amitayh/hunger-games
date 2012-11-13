@@ -9,7 +9,6 @@ InfoBox::InfoBox() {
 }
 
 void InfoBox::Draw() {
-    Player* player;
     Game* game = GetGame();
     Square* square = GetSquare();
     PlayersList* players = game->GetPlayers();
@@ -27,7 +26,7 @@ void InfoBox::Draw() {
     for (int i = 2; i < size->GetHeight(); i++) {
         gotoxy(square->GetCol(), square->GetRow() + i);
         if (it != players->end()) {
-            player = *it;
+            Player* player = *it;
             printf("%c %-4d %-3d\n", player->GetName(), player->GetPower(), player->GetRemainingArrows());
             it++;
         } else {

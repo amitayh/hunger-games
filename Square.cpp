@@ -59,10 +59,10 @@ bool Square::IsEmpty() {
 
 Player* Square::GetStrongestPlayer() {
     if (!players.empty()) {
-        Player *strongest = players.front(), *challenger;
+        Player* strongest = players.front();
         PlayersIterator it = players.begin();
         while (it != players.end()) {
-            challenger = *it;
+            Player* challenger = *it;
             if (challenger->GetPower() > strongest->GetPower()) {
                 strongest = challenger;
             }
