@@ -1,11 +1,6 @@
 #include "MapLoader.h"
 #include <stdio.h>
 
-const char MapLoader::CHAR_WALL = 'W';
-const char MapLoader::CHAR_PLAYER = 'P';
-const char MapLoader::CHAR_INFO_BOX = 'O';
-const int MapLoader::MIN_NUM_PLAYERS = 2;
-
 MapLoader::MapLoader(Game* game) {
     this->game = game;
 }

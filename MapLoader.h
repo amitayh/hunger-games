@@ -5,14 +5,16 @@
 
 class MapLoader
 {
+    enum {
+        CHAR_WALL       = 'W',
+        CHAR_PLAYER     = 'P',
+        CHAR_INFO_BOX   = 'O',
+        MIN_NUM_PLAYERS = 2
+    };
+
     Game* game;
 
 public:
-    static const char CHAR_WALL;
-    static const char CHAR_PLAYER;
-    static const char CHAR_INFO_BOX;
-    static const int  MIN_NUM_PLAYERS;
-
     MapLoader(Game* game);
 
     bool Load(const char* filename);

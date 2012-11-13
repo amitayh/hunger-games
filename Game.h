@@ -19,6 +19,16 @@ typedef DroppingObjectsList::iterator DroppingObjectsIterator;
 
 class Game
 {
+    enum {
+        FRAMES_PER_SECOND           = 25,
+        DROP_FOOD_PROBABILITY       = 2,
+        DROP_QUIVER_PROBABILITY     = 1,
+        DROP_BOMB_PROBABILITY       = 1,
+        MIN_DISTANCE_FROM_PLAYERS   = 2,
+        MENU_QUIT                   = 1,
+        MENU_RESUME                 = 2
+    };
+
     int fps;
     unsigned int tick;
     bool paused;
@@ -47,14 +57,6 @@ class Game
     void ShowMenu();
 
 public:
-    static const int FRAMES_PER_SECOND;
-    static const int DROP_FOOD_PROBABILITY;
-    static const int DROP_QUIVER_PROBABILITY;
-    static const int DROP_BOMB_PROBABILITY;
-    static const int MIN_DISTANCE_FROM_PLAYERS;
-    static const int MENU_QUIT;
-    static const int MENU_RESUME;
-
     Game();
     ~Game();
 

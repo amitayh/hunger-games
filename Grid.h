@@ -5,13 +5,15 @@
 
 class Grid
 {
+    enum {
+        DEFAULT_NUM_ROWS = 24,
+        DEFAULT_NUM_COLS = 79
+    };
+
     int rows, cols;
     Square** squares;
 
 public:
-    static const int DEFAULT_NUM_ROWS;
-    static const int DEFAULT_NUM_COLS;
-
     Grid(int rows = DEFAULT_NUM_ROWS, int cols = DEFAULT_NUM_COLS);
     ~Grid();
     
