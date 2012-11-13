@@ -48,27 +48,11 @@ Wall* Square::GetWall() {
     return wall;
 }
 
-double Square::GetDistance(Square* square) {
-    double deltaX = col - square->GetCol(), deltaY = row - square->GetRow();
+double Square::GetDistance(Square* otherSquare) {
+    double deltaX = col - otherSquare->GetCol(), deltaY = row - otherSquare->GetRow();
     return sqrt((deltaX * deltaX) + (deltaY * deltaY));
 }
 
 bool Square::IsEmpty() {
     return (!droppingObject && !wall && players.empty());
-}
-
-Player* Square::GetStrongestPlayer() {
-    if (!players.empty()) {
-        Player* strongest = players.front();
-        PlayersIterator it = players.begin();
-        while (it != players.end()) {
-            Player* challenger = *it;
-            if (challenger->GetPower() > strongest->GetPower()) {
-                strongest = challenger;
-            }
-            it++;
-        }
-        return strongest;
-    }
-    return NULL;
 }

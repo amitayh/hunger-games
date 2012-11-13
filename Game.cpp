@@ -114,6 +114,7 @@ void Game::Resume() {
 }
 
 void Game::EndGame(Player* winner) {
+    Pause();
     clrscr();
     gotoxy(0, 0);
     ChangeColor(SILVER);
@@ -168,12 +169,12 @@ void Game::UpdateArrows() {
     while (it != arrows.end()) {
         Arrow* arrow = *it;
         arrow->Update();
-        if (!arrow->GetHit()) {
-            it++;
-        } else {
+        if (arrow->GetHit()) {
             // Arrow hit a wall/player
             it = arrows.erase(it);
             delete arrow;
+        } else {
+            it++;
         }
     }
 }
@@ -201,20 +202,10 @@ void Game::UpdatePlayers() {
 
             if (players.size() == 1) {
                 // One player left, game over
-                Pause();
                 EndGame(players.front());
             }
         }
     }
-
-    /*
-    Square* square;
-    it = players.begin();
-    while (it != players.end()) {
-        square = (*it)->GetSquare();
-        square->Battle();
-    }
-    */
 }
 
 void Game::DrawPlayers() {
@@ -293,7 +284,7 @@ bool Game::IsValidDrop(Square* square) {
         PlayersIterator it = players.begin();
         while (result && it != players.end()) {
             double distance = square->GetDistance((*it)->GetSquare());
-            if (distance < MIN_DISTANCE_FROM_PLAYERS) {
+            if (distance <= MIN_DISTANCE_FROM_PLAYERS) {
                 // Square is too close to one of the players
                 result = false;
             }

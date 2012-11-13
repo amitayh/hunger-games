@@ -16,6 +16,7 @@ class Player : public MovingObject
     int remainingArrows;
     unsigned int lastArrowTick;
 
+    void Fight(Player* oponent);
     void SetRandomDirection();
     bool ShootArrow();
     void StepOut();

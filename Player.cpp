@@ -26,6 +26,16 @@ void Player::SetSquare(Square* square) {
             droppingObject->Affect(this);
         }
 
+        PlayersList* players = square->GetPlayers();
+        if (!players->empty()) {
+            PlayersIterator it = players->begin();
+            while (power > 0 && it != players->end()) {
+                // Fight oponent
+                Fight(*it);
+                it++;
+            }
+        }
+
         StepOut();
         square->StepIn(this);
         MovingObject::SetSquare(square);
@@ -42,6 +52,7 @@ void Player::StepOut() {
 void Player::Update() {
     if (power > 0) {
         MovingObject::Update();
+
         Game* game = GetGame();
 
         // Randomly change direction
@@ -104,8 +115,7 @@ bool Player::ShootArrow() {
         Square* square = GetNextSquare();
         if (!square->GetWall()) {
             Game* game = GetGame();
-            Arrow* arrow = new Arrow;
-            arrow->SetDirection(GetDirection());
+            Arrow* arrow = new Arrow(this);
             game->AddArrow(arrow, square);
             lastArrowTick = game->GetTick();
             remainingArrows--;
@@ -113,6 +123,19 @@ bool Player::ShootArrow() {
         }
     }
     return false;
+}
+
+void Player::Fight(Player* oponent) {
+    if (power > oponent->GetPower()) {
+        oponent->DecreasePower(200);
+        DecreasePower(10);
+    } else if (power < oponent->GetPower()) {
+        oponent->DecreasePower(10);
+        DecreasePower(200);
+    } else {
+        oponent->DecreasePower(50);
+        DecreasePower(50);
+    }
 }
 
 void Player::Draw() {

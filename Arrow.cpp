@@ -1,7 +1,8 @@
 #include "Arrow.h"
 #include "Game.h"
 
-Arrow::Arrow() {
+Arrow::Arrow(Player* shooter) {
+    SetDirection(shooter->GetDirection());
     SetMoveInterval(1);
     hit = false;
 }
@@ -26,6 +27,7 @@ bool Arrow::CheckHit() {
     if (square) {
         PlayersList* players = square->GetPlayers();
         if (!players->empty()) {
+            // Hit first player on square
             Player* player = players->front();
             player->DecreasePower(500);
             hit = true;

@@ -11,7 +11,7 @@ class Arrow : public MovingObject
     bool CheckHit();
 
 public:
-    Arrow();
+    Arrow(Player* shooter);
 
     void Update();
     void Draw();
