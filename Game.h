@@ -7,15 +7,7 @@
 #include "Menu.h"
 #include <list>
 
-// Game constants
-const int FRAMES_PER_SECOND         = 30;
-const int DROP_FOOD_PROBABILITY     = 2;
-const int DROP_QUIVER_PROBABILITY   = 1;
-const int DROP_BOMB_PROBABILITY     = 1;
-const int MIN_DISTANCE_FROM_PLAYERS = 2;
-const int ESCAPSE_KEY               = 27;
-const int MENU_QUIT                 = 1;
-const int MENU_RESUME               = 2;
+const int ESCAPSE_KEY = 27;
 
 // Lists and iterators
 typedef std::list<Wall*> WallsList;
@@ -55,6 +47,14 @@ class Game
     void ShowMenu();
 
 public:
+    static const int FRAMES_PER_SECOND;
+    static const int DROP_FOOD_PROBABILITY;
+    static const int DROP_QUIVER_PROBABILITY;
+    static const int DROP_BOMB_PROBABILITY;
+    static const int MIN_DISTANCE_FROM_PLAYERS;
+    static const int MENU_QUIT;
+    static const int MENU_RESUME;
+
     Game();
     ~Game();
 

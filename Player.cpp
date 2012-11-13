@@ -3,6 +3,12 @@
 #include "Game.h"
 #include "DroppingObject.h"
 
+const int Player::INITIAL_POWER = 1000;
+const int Player::INITIAL_NUM_ARROWS = 20;
+const int Player::MIN_TICKS_BETWEEN_ARROWS = 3;
+const int Player::SHOOT_ARROW_PROBABILITY = 5;
+const int Player::CHANGE_DIRECTION_PROBABILITY = 5;
+
 Player::Player(char name, int power) {
     this->name = name;
     this->power = power;

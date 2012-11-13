@@ -7,11 +7,17 @@
 #include <time.h>
 #include <conio.h>
 
-Game::Game():
-    tick(0),
-    fps(FRAMES_PER_SECOND),
-    grid(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLS)
-{
+const int Game::FRAMES_PER_SECOND = 25;
+const int Game::DROP_FOOD_PROBABILITY = 2;
+const int Game::DROP_QUIVER_PROBABILITY = 1;
+const int Game::DROP_BOMB_PROBABILITY = 1;
+const int Game::MIN_DISTANCE_FROM_PLAYERS = 2;
+const int Game::MENU_QUIT = 1;
+const int Game::MENU_RESUME = 2;
+
+Game::Game() {
+    tick = 0;
+    fps = FRAMES_PER_SECOND;
     srand((unsigned int) time(NULL));
     menu.AddOption("Quit game");
     menu.AddOption("Resume");

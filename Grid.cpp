@@ -1,5 +1,8 @@
 #include "Grid.h"
 
+const int Grid::DEFAULT_NUM_ROWS = 24;
+const int Grid::DEFAULT_NUM_COLS = 79;
+
 Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
     squares = new Square*[rows];
     for (int row = 0; row < rows; row++) {

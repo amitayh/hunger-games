@@ -1,6 +1,11 @@
 #include "MapLoader.h"
 #include <stdio.h>
 
+const char MapLoader::CHAR_WALL = 'W';
+const char MapLoader::CHAR_PLAYER = 'P';
+const char MapLoader::CHAR_INFO_BOX = 'O';
+const int MapLoader::MIN_NUM_PLAYERS = 2;
+
 MapLoader::MapLoader(Game* game) {
     this->game = game;
 }
@@ -36,10 +41,9 @@ bool MapLoader::Load(const char* filename) {
             fgetc(fp); // Consume linebreak
         }
 
-        Square* square;
+        // Add additional players if needed
         for (int i = players; i < MIN_NUM_PLAYERS; i++) {
-            // Add additional players if needed
-            square = game->GetValidDropSquare();
+            Square* square = game->GetValidDropSquare();
             game->AddPlayer(square);
         }
 

@@ -3,12 +3,6 @@
 
 #include "MovingObject.h"
 
-const int INITIAL_POWER                 = 1000;
-const int INITIAL_NUM_ARROWS            = 30;
-const int MIN_TICKS_BETWEEN_ARROWS      = 3;
-const int SHOOT_ARROW_PROBABILITY       = 5;
-const int CHANGE_DIRECTION_PROBABILITY  = 5;
-
 class Player : public MovingObject
 {
     char name;
@@ -22,6 +16,12 @@ class Player : public MovingObject
     void StepOut();
 
 public:
+    static const int INITIAL_POWER;
+    static const int INITIAL_NUM_ARROWS;
+    static const int MIN_TICKS_BETWEEN_ARROWS;
+    static const int SHOOT_ARROW_PROBABILITY;
+    static const int CHANGE_DIRECTION_PROBABILITY;
+
     Player(char name, int power = INITIAL_POWER);
     ~Player();
 
