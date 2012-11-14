@@ -21,7 +21,7 @@ public:
     Object();
     ~Object();
 
-    virtual void Draw() {};
+    virtual void Draw() = 0;
     virtual void SetSquare(Square* square);
     void SetGame(Game* game);
     void GotoPosition();
