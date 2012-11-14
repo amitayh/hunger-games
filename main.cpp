@@ -4,6 +4,9 @@
 void main() {
     Game game;
     MapLoader loader = MapLoader(&game);
-    loader.Load("C:\\map.txt");
-    game.Run();
+    if (loader.Load("C:\\map.txt")) {
+        game.Run();
+    } else {
+        cout << "Unable to load map file" << endl;
+    }
 }

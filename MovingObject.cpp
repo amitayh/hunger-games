@@ -13,7 +13,7 @@ void MovingObject::Update() {
     }
 }
 
-Direction MovingObject::GetDirection() {
+MovingObject::Direction MovingObject::GetDirection() {
     return direction;
 }
 

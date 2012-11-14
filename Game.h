@@ -29,7 +29,6 @@ class Game
         MENU_RESUME                 = 2
     };
 
-    int fps;
     unsigned int tick;
     bool paused;
     Grid grid;

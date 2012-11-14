@@ -9,7 +9,6 @@
 
 Game::Game() {
     tick = 0;
-    fps = FRAMES_PER_SECOND;
     srand((unsigned int) time(NULL));
     menu.AddOption("Quit game");
     menu.AddOption("Resume");
@@ -120,7 +119,8 @@ void Game::EndGame(Player* winner) {
     if (winner) {
         cout << ", winner is " << winner->GetName();
     }
-    getchar();
+    cout << "!" << endl;
+    getch();
 }
 
 void Game::Loop() {
@@ -132,7 +132,7 @@ void Game::Loop() {
             Draw();
             DropObjects();
             tick++;
-            Sleep(1000 / fps);
+            Sleep(1000 / FRAMES_PER_SECOND);
         }
     }
 }

@@ -3,19 +3,16 @@
 
 #include "Object.h"
 
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
-
 class MovingObject : public Object
 {
-    Direction direction;
-    int moveInterval;
-
 public:
+    enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+
     MovingObject();
 
     void Update();
@@ -24,6 +21,10 @@ public:
     void SetMoveInterval(int moveInterval);
     Direction GetDirection();
     Square* GetNextSquare();
+
+private:
+    Direction direction;
+    int moveInterval;
 };
 
 #endif
