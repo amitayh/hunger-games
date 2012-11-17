@@ -1,13 +1,13 @@
 #include "MapLoader.h"
-#include <stdio.h>
+#include <fstream>
 
 MapLoader::MapLoader(Game* game) {
     this->game = game;
 }
 
 bool MapLoader::Load(const char* filename) {
-    FILE* fp = fopen(filename, "r");
-    if (fp) {
+    ifstream map(filename);
+    if (map.good()) {
         Grid* grid = game->GetGrid();
         int rows = grid->GetRows(),
             cols = grid->GetCols();
@@ -17,7 +17,7 @@ bool MapLoader::Load(const char* filename) {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                switch (fgetc(fp)) {
+                switch (map.get()) {
                     case CHAR_WALL:
                         game->AddWall(row, col);
                         break;
@@ -33,7 +33,7 @@ bool MapLoader::Load(const char* filename) {
                         break;
                 }
             }
-            fgetc(fp); // Consume linebreak
+            map.get(); // Consume linebreak
         }
 
         // Add additional players if needed
@@ -42,7 +42,7 @@ bool MapLoader::Load(const char* filename) {
             game->AddPlayer(square);
         }
 
-        fclose(fp);
+        map.close();
         return true;
     }
     return false;
