@@ -31,19 +31,14 @@ ListNode* ListNode::GetPrev() {
 // List container implementation
 
 List::List() {
-    head = new ListNode;
-    tail = new ListNode;
-    head->SetNext(tail);
-    tail->SetPrev(head);
+    head.SetNext(&tail);
+    tail.SetPrev(&head);
     size = 0;
 }
 
 List::~List() {
-    ListNode *current = head, *next;
-    while (current) {
-        next = current->GetNext();
-        delete current;
-        current = next;
+    while (!IsEmpty()) {
+        Pop();
     }
 }
 
@@ -62,12 +57,12 @@ void List::Remove(ListNode* node) {
 }
 
 void List::Push(void* data) {
-    Insert(data, tail->GetPrev());
+    Insert(data, tail.GetPrev());
 }
 
 void* List::Pop() {
     if (size) {
-        ListNode* node = tail->GetPrev();
+        ListNode* node = tail.GetPrev();
         void* data = node->GetData();
         Remove(node);
         return data;
@@ -76,7 +71,7 @@ void* List::Pop() {
 }
 
 void* List::Peek() {
-    return size ? head->GetNext()->GetData() : NULL;
+    return size ? head.GetNext()->GetData() : NULL;
 }
 
 ListNode* List::Find(void* data) {
@@ -92,11 +87,11 @@ ListNode* List::Find(void* data) {
 }
 
 ListNode* List::GetHead() {
-    return head;
+    return &head;
 }
 
 ListNode* List::GetTail() {
-    return tail;
+    return &tail;
 }
 
 int List::GetSize() {

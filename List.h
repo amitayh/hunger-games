@@ -21,7 +21,7 @@ public:
 
 class List
 {
-    ListNode *head, *tail; // Dummy nodes
+    ListNode head, tail; // Dummy nodes
     int size;
 
 public:
