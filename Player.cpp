@@ -26,13 +26,13 @@ void Player::SetSquare(Square* square) {
             droppingObject->Affect(this);
         }
 
-        PlayersList* players = square->GetPlayers();
-        if (!players->empty()) {
-            PlayersIterator it = players->begin();
-            while (power > 0 && it != players->end()) {
-                // Fight oponent
-                Fight(*it);
-                it++;
+        List* players = square->GetPlayers();
+        if (!players->IsEmpty()) {
+            ListIterator it(players);
+            while (power > 0 && !it.Done()) {
+                ListNode* node = it.Current();
+                Player* player = (Player*) node->GetData();
+                Fight(player);
             }
         }
 

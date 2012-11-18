@@ -11,8 +11,8 @@ InfoBox::InfoBox() {
 void InfoBox::Draw() {
     Game* game = GetGame();
     Square* square = GetSquare();
-    PlayersList* players = game->GetPlayers();
-    PlayersIterator it = players->begin();
+    List* players = game->GetPlayers();
+    ListIterator it(players);
     Dimensions* size = GetSize();
     int row = square->GetRow(), col = square->GetCol();
 
@@ -25,11 +25,11 @@ void InfoBox::Draw() {
 
     for (int i = 2; i < size->GetHeight(); i++) {
         gotoxy(col, row + i);
-        if (it != players->end()) {
+        if (!it.Done()) {
             // Print player info
-            Player* player = *it;
+            ListNode* node = it.Current();
+            Player* player = (Player*) node->GetData();
             printf("%c %-4d %-3d\n", player->GetName(), player->GetPower(), player->GetRemainingArrows());
-            it++;
         } else {
             // Print empty line
             cout << "          ";

@@ -5,17 +5,8 @@
 #include "Arrow.h"
 #include "InfoBox.h"
 #include "Menu.h"
-#include <list>
 
 const int ESCAPSE_KEY = 27;
-
-// Lists and iterators
-typedef std::list<Wall*> WallsList;
-typedef WallsList::iterator WallsIterator;
-typedef std::list<Arrow*> ArrowsList;
-typedef ArrowsList::iterator ArrowsIterator;
-typedef std::list<DroppingObject*> DroppingObjectsList;
-typedef DroppingObjectsList::iterator DroppingObjectsIterator;
 
 class Game
 {
@@ -32,10 +23,10 @@ class Game
     unsigned int tick;
     bool paused;
     Grid grid;
-    WallsList walls;
-    PlayersList players;
-    ArrowsList arrows;
-    DroppingObjectsList droppingObjects;
+    List walls;
+    List players;
+    List arrows;
+    List droppingObjects;
     InfoBox infoBox;
     Menu menu;
 
@@ -69,7 +60,7 @@ public:
     bool CheckProbability(int probability);
     unsigned int GetTick();
     Grid* GetGrid();
-    PlayersList* GetPlayers();
+    List* GetPlayers();
     Square* GetValidDropSquare();
 
     void Run();

@@ -16,24 +16,20 @@ Game::Game() {
 
 Game::~Game() {
     // Delete walls
-    while (!walls.empty()) {
-        delete walls.front();
-        walls.pop_front();
+    while (!walls.IsEmpty()) {
+        delete walls.Pop();
     }
     // Delete players
-    while (!players.empty()) {
-        delete players.front();
-        players.pop_front();
+    while (!players.IsEmpty()) {
+        delete players.Pop();
     }
     // Delete arrows
-    while (!arrows.empty()) {
-        delete arrows.front();
-        arrows.pop_front();
+    while (!arrows.IsEmpty()) {
+        delete arrows.Pop();
     }
     // Delete dropping objects
-    while (!droppingObjects.empty()) {
-        delete droppingObjects.front();
-        droppingObjects.pop_front();
+    while (!droppingObjects.IsEmpty()) {
+        delete droppingObjects.Pop();
     }
 }
 
@@ -42,10 +38,10 @@ void Game::AddPlayer(int row, int col) {
 }
 
 void Game::AddPlayer(Square* square) {
-    char name = 'A' + players.size();
+    char name = 'A' + players.GetSize();
     Player* player = new Player(name);
     AddObject(player, square);
-    players.push_back(player);
+    players.Push(player);
 }
 
 void Game::AddWall(int row, int col) {
@@ -53,7 +49,7 @@ void Game::AddWall(int row, int col) {
     if (!square->GetWall()) {
         Wall* wall = new Wall;
         AddObject(wall, square);
-        walls.push_back(wall);
+        walls.Push(wall);
     }
 }
 
@@ -75,7 +71,7 @@ void Game::AddInfoBox(int row, int col) {
 
 void Game::AddArrow(Arrow* arrow, Square* square) {
     AddObject(arrow, square);
-    arrows.push_back(arrow);
+    arrows.Push(arrow);
 }
 
 void Game::AddObject(Object* object, int row, int col) {
@@ -163,84 +159,83 @@ void Game::Draw() {
 }
 
 void Game::UpdateArrows() {
-    ArrowsIterator it = arrows.begin();
-    while (it != arrows.end()) {
-        Arrow* arrow = *it;
+    ListIterator it(&arrows);
+    while (!it.Done()) {
+        ListNode* node = it.Current();
+        Arrow* arrow = (Arrow*) node->GetData();
         arrow->Update();
         if (arrow->GetHit()) {
             // Arrow hit a wall/player
-            it = arrows.erase(it);
+            arrows.Remove(node);
             delete arrow;
-        } else {
-            it++;
         }
     }
 }
 
 void Game::DrawArrows() {
-    ArrowsIterator it = arrows.begin();
-    while (it != arrows.end()) {
-        (*it)->Draw();
-        it++;
+    ListIterator it(&arrows);
+    while (!it.Done()) {
+        ListNode* node = it.Current();
+        Arrow* arrow = (Arrow*) node->GetData();
+        arrow->Draw();
     }
 }
 
 void Game::UpdatePlayers() {
-    PlayersIterator it = players.begin();
-    while (it != players.end()) {
-        Player* player = *it;
+    ListIterator it(&players);
+    while (!it.Done()) {
+        ListNode* node = it.Current();
+        Player* player = (Player*) node->GetData();
         player->Update();
-        if (player->GetPower() > 0) {
-            // Player is still alive
-            it++;
-        } else {
+        if (!player->GetPower()) {
             // Player is dead
-            it = players.erase(it);
+            players.Remove(node);
             delete player;
 
-            if (players.size() == 1) {
+            if (players.GetSize() == 1) {
                 // One player left, game over
-                EndGame(players.front());
+                EndGame((Player*) players.Peek());
             }
         }
     }
 }
 
 void Game::DrawPlayers() {
-    PlayersIterator it = players.begin();
-    while (it != players.end()) {
-        (*it)->Draw();
-        it++;
+    ListIterator it(&players);
+    while (!it.Done()) {
+        ListNode* node = it.Current();
+        Player* player = (Player*) node->GetData();
+        player->Draw();
     }
 }
 
 void Game::UpdateDroppingObjects() {
-    DroppingObjectsIterator it = droppingObjects.begin();
-    while (it != droppingObjects.end()) {
-        DroppingObject* droppingObject = *it;
+    ListIterator it(&droppingObjects);
+    while (!it.Done()) {
+        ListNode* node = it.Current();
+        DroppingObject* droppingObject = (DroppingObject*) node->GetData();
         if (droppingObject->GetPickedUp()) {
-            // Object was picked up
-            it = droppingObjects.erase(it);
+            droppingObjects.Remove(node);
             delete droppingObject;
-        } else {
-            it++;
         }
     }
 }
 
 void Game::DrawDroppingObjects() {
-    DroppingObjectsIterator it = droppingObjects.begin();
-    while (it != droppingObjects.end()) {
-        (*it)->Draw();
-        it++;
+    ListIterator it(&droppingObjects);
+    while (!it.Done()) {
+        ListNode* node = it.Current();
+        DroppingObject* droppingObject = (DroppingObject*) node->GetData();
+        droppingObject->Draw();
     }
 }
 
 void Game::DrawWalls() {
-    WallsIterator it = walls.begin();
-    while (it != walls.end()) {
-        (*it)->Draw();
-        it++;
+    ListIterator it(&walls);
+    while (!it.Done()) {
+        ListNode* node = it.Current();
+        Wall* wall = (Wall*) node->GetData();
+        wall->Draw();
     }
 }
 
@@ -258,7 +253,7 @@ void Game::DropObjects() {
 
 void Game::DropObject(DroppingObject* object) {
     AddObject(object, GetValidDropSquare());
-    droppingObjects.push_back(object);
+    droppingObjects.Push(object);
     object->Draw();
 }
 
@@ -279,14 +274,15 @@ bool Game::IsValidDrop(Square* square) {
         // Square is in the info box's area
         result = false;
     } else {
-        PlayersIterator it = players.begin();
-        while (result && it != players.end()) {
-            double distance = square->GetDistance((*it)->GetSquare());
+        ListIterator it(&players);
+        while (result && !it.Done()) {
+            ListNode* node = it.Current();
+            Player* player = (Player*) node->GetData();
+            double distance = square->GetDistance(player->GetSquare());
             if (distance <= MIN_DISTANCE_FROM_PLAYERS) {
                 // Square is too close to one of the players
                 result = false;
             }
-            it++;
         }
     }
     return result;
@@ -300,6 +296,6 @@ Grid* Game::GetGrid() {
     return &grid;
 }
 
-PlayersList* Game::GetPlayers() {
+List* Game::GetPlayers() {
     return &players;
 }

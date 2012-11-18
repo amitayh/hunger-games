@@ -8,11 +8,12 @@ Square::Square() {
 }
 
 void Square::StepIn(Player* player) {
-    players.push_front(player);
+    players.Push(player);
 }
 
 void Square::StepOut(Player* player) {
-    players.remove(player);
+    ListNode* node = players.Find(player);
+    players.Remove(node);
 }
 
 void Square::SetPosition(int row, int col) {
@@ -36,7 +37,7 @@ int Square::GetCol() {
     return col;
 }
 
-PlayersList* Square::GetPlayers() {
+List* Square::GetPlayers() {
     return &players;
 }
 
@@ -54,5 +55,5 @@ double Square::GetDistance(Square* otherSquare) {
 }
 
 bool Square::IsEmpty() {
-    return (!droppingObject && !wall && players.empty());
+    return (!droppingObject && !wall && players.IsEmpty());
 }
