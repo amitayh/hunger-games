@@ -1,19 +1,16 @@
 #ifndef _SQUARE_H
 #define _SQUARE_H
 
-#include <list>
+#include "List.h"
 
 class Player;
 class DroppingObject;
 class Wall;
 
-typedef std::list<Player*> PlayersList;
-typedef PlayersList::iterator PlayersIterator;
-
 class Square
 {
     int row, col;
-    PlayersList players;
+    List players;
     DroppingObject* droppingObject;
     Wall* wall;
 
@@ -27,7 +24,7 @@ public:
     void SetWall(Wall* wall);
     int GetRow();
     int GetCol();
-    PlayersList* GetPlayers();
+    List* GetPlayers();
     DroppingObject* GetDroppingObject();
     Wall* GetWall();
     double GetDistance(Square* otherSquare);

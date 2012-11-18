@@ -25,10 +25,10 @@ void Arrow::Update() {
 bool Arrow::CheckHit() {
     Square* square = GetSquare();
     if (square) {
-        PlayersList* players = square->GetPlayers();
-        if (!players->empty()) {
+        List* players = square->GetPlayers();
+        if (!players->IsEmpty()) {
             // Hit first player on square
-            Player* player = players->front();
+            Player* player = (Player*) players->Peek();
             player->DecreasePower(500);
             hit = true;
         }
