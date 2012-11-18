@@ -39,7 +39,7 @@ List::List() {
 }
 
 List::~List() {
-    ListNode* current = head,* next;
+    ListNode *current = head, *next;
     while (current) {
         next = current->GetNext();
         delete current;
@@ -62,12 +62,12 @@ void List::Remove(ListNode* node) {
 }
 
 void List::Push(void* data) {
-    Insert(data, head);
+    Insert(data, tail->GetPrev());
 }
 
 void* List::Pop() {
     if (size) {
-        ListNode* node = head->GetNext();
+        ListNode* node = tail->GetPrev();
         void* data = node->GetData();
         Remove(node);
         return data;
