@@ -1,14 +1,26 @@
 #ifndef _INFO_BOX_H
 #define _INFO_BOX_H
 
-#include "Object.h"
+#include "Square.h"
+#include "Dimensions.h"
 
-class InfoBox : public Object
+class InfoBox
 {
+    enum {
+        WIDTH = 10,
+        HEIGHT = 5
+    };
+
+    Square* square;
+    Dimensions size;
+
 public:
     InfoBox();
 
-    void Draw();
+    void SetSquare(Square* square);
+    void Draw(List* players) const;
+    const Dimensions& GetSize() const;
+    bool InArea(const Square *square) const;
 };
 
 #endif

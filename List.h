@@ -14,9 +14,9 @@ public:
     void SetPrev(ListNode* prev);
     void SetNext(ListNode* next);
 
-    void* GetData();
-    ListNode* GetNext();
-    ListNode* GetPrev();
+    void* GetData() const;
+    ListNode* GetNext() const;
+    ListNode* GetPrev() const;
 };
 
 class List
@@ -33,12 +33,12 @@ public:
     void Push(void* data);
     void* Pop();
 
-    void* Peek();
     ListNode* Find(void* data);
     ListNode* GetHead();
     ListNode* GetTail();
-    int GetSize();
-    bool IsEmpty();
+    void* Peek() const;
+    int GetSize() const;
+    bool IsEmpty() const;
 };
 
 class ListIterator
@@ -48,8 +48,8 @@ class ListIterator
 public:
     ListIterator(List* list);
 
-    bool Done();
     ListNode* Current();
+    bool Done() const;
 };
 
 #endif

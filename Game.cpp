@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "Arrow.h"
+#include "Player.h"
 #include "Wall.h"
 #include "InfoBox.h"
 #include "Food.h"
@@ -10,8 +12,8 @@
 Game::Game() {
     tick = 0;
     srand((unsigned int) time(NULL));
-    menu.AddOption("Quit game");
     menu.AddOption("Resume");
+    menu.AddOption("Quit");
 }
 
 Game::~Game() {
@@ -40,7 +42,7 @@ void Game::AddPlayer(int row, int col) {
 void Game::AddPlayer(Square* square) {
     char name = 'A' + players.GetSize();
     Player* player = new Player(name);
-    AddObject(player, square);
+    player->SetSquare(square);
     players.Push(player);
 }
 
@@ -48,29 +50,29 @@ void Game::AddWall(int row, int col) {
     Square* square = grid.GetSquare(row, col);
     if (!square->GetWall()) {
         Wall* wall = new Wall;
-        AddObject(wall, square);
+        wall->SetSquare(square);
         walls.Push(wall);
     }
 }
 
 void Game::AddInfoBox(int row, int col) {
-    Dimensions* size = infoBox.GetSize();
+    Dimensions size = infoBox.GetSize();
 
     // Add walls around the info box
-    for (int i = 0; i < size->GetWidth() + 2; i++) {
+    for (int i = 0; i < size.GetWidth() + 2; i++) {
         AddWall(row - 1, col + i - 1);
-        AddWall(row + size->GetHeight(), col + i - 1);
+        AddWall(row + size.GetHeight(), col + i - 1);
     }
-    for (int i = 0; i < size->GetHeight(); i++) {
+    for (int i = 0; i < size.GetHeight(); i++) {
         AddWall(row + i, col - 1);
-        AddWall(row + i, col + size->GetWidth());
+        AddWall(row + i, col + size.GetWidth());
     }
 
-    AddObject(&infoBox, row, col);
+    infoBox.SetSquare(grid.GetSquare(row, col));
 }
 
 void Game::AddArrow(Arrow* arrow, Square* square) {
-    AddObject(arrow, square);
+    arrow->SetSquare(square);
     arrows.Push(arrow);
 }
 
@@ -83,7 +85,7 @@ void Game::AddObject(Object* object, Square* square) {
     object->SetSquare(square);
 }
 
-bool Game::CheckProbability(int probability) {
+bool Game::CheckProbability(int probability) const {
     int random = rand() % 100;
     return (random < probability);
 }
@@ -125,10 +127,12 @@ void Game::Loop() {
             ShowMenu();
         } else {
             Update();
-            Draw();
-            DropObjects();
-            tick++;
-            Sleep(1000 / FRAMES_PER_SECOND);
+            if (!paused) {
+                Draw();
+                DropObjects();
+                tick++;
+                Sleep(1000 / FRAMES_PER_SECOND);
+            }
         }
     }
 }
@@ -154,7 +158,7 @@ void Game::Update() {
 void Game::Draw() {
     DrawArrows();
     DrawPlayers();
-    infoBox.Draw();
+    infoBox.Draw(&players);
     gotoxy(grid.GetCols(), grid.GetRows()); // Hide cursor from main window
 }
 
@@ -163,7 +167,7 @@ void Game::UpdateArrows() {
     while (!it.Done()) {
         ListNode* node = it.Current();
         Arrow* arrow = (Arrow*) node->GetData();
-        arrow->Update();
+        arrow->Update(this);
         if (arrow->GetHit()) {
             // Arrow hit a wall/player
             arrows.Remove(node);
@@ -186,7 +190,7 @@ void Game::UpdatePlayers() {
     while (!it.Done()) {
         ListNode* node = it.Current();
         Player* player = (Player*) node->GetData();
-        player->Update();
+        player->Update(this);
         if (!player->GetPower()) {
             // Player is dead
             players.Remove(node);
@@ -288,14 +292,10 @@ bool Game::IsValidDrop(Square* square) {
     return result;
 }
 
-unsigned int Game::GetTick() {
+unsigned int Game::GetTick() const {
     return tick;
 }
 
 Grid* Game::GetGrid() {
     return &grid;
-}
-
-List* Game::GetPlayers() {
-    return &players;
 }

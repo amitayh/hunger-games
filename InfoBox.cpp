@@ -1,19 +1,18 @@
 #include "InfoBox.h"
-#include "Game.h"
 #include "Player.h"
+#include "Gotoxy.h"
+#include <iostream>
 
-InfoBox::InfoBox() {
-    Dimensions* size = GetSize();
-    size->SetWidth(10);
-    size->SetHeight(5);
+using namespace std;
+
+InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
+
+void InfoBox::SetSquare(Square* square) {
+    this->square = square;
 }
 
-void InfoBox::Draw() {
-    Game* game = GetGame();
-    Square* square = GetSquare();
-    List* players = game->GetPlayers();
+void InfoBox::Draw(List* players) const {
     ListIterator it(players);
-    Dimensions* size = GetSize();
     int row = square->GetRow(), col = square->GetCol();
 
     ChangeColor(SILVER);
@@ -23,7 +22,7 @@ void InfoBox::Draw() {
     gotoxy(col, row + 1);
     cout << "----------";
 
-    for (int i = 2; i < size->GetHeight(); i++) {
+    for (int i = 2; i < size.GetHeight(); i++) {
         gotoxy(col, row + i);
         if (!it.Done()) {
             // Print player info
@@ -35,4 +34,19 @@ void InfoBox::Draw() {
             cout << "          ";
         }
     }
+}
+
+const Dimensions& InfoBox::GetSize() const {
+    return size;
+}
+
+bool InfoBox::InArea(const Square* square) const {
+    int row = square->GetRow(),
+        col = square->GetCol(),
+        rowMin = this->square->GetRow(),
+        rowMax = rowMin + size.GetHeight(),
+        colMin = this->square->GetCol(),
+        colMax = colMin + size.GetWidth();
+
+    return (row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
 }

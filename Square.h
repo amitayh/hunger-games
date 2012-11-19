@@ -2,6 +2,7 @@
 #define _SQUARE_H
 
 #include "List.h"
+#include "Console.h"
 
 class Player;
 class DroppingObject;
@@ -22,13 +23,16 @@ public:
     void SetPosition(int row, int col);
     void SetDroppingObject(DroppingObject* droppingObject);
     void SetWall(Wall* wall);
-    int GetRow();
-    int GetCol();
     List* GetPlayers();
     DroppingObject* GetDroppingObject();
     Wall* GetWall();
-    double GetDistance(Square* otherSquare);
-    bool IsEmpty();
+
+    void Clear() const;
+    void Draw(char ch, Color color = SILVER) const;
+    double GetDistance(const Square* otherSquare) const;
+    bool IsEmpty() const;
+    int GetRow() const;
+    int GetCol() const;
 };
 
 #endif

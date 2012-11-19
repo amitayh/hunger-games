@@ -5,6 +5,7 @@
 #include "Arrow.h"
 #include "InfoBox.h"
 #include "Menu.h"
+#include "Object.h"
 
 const int ESCAPSE_KEY = 27;
 
@@ -16,8 +17,8 @@ class Game
         DROP_QUIVER_PROBABILITY     = 1,
         DROP_BOMB_PROBABILITY       = 1,
         MIN_DISTANCE_FROM_PLAYERS   = 2,
-        MENU_QUIT                   = 1,
-        MENU_RESUME                 = 2
+        MENU_RESUME                 = 1,
+        MENU_QUIT                   = 2
     };
 
     unsigned int tick;
@@ -57,10 +58,9 @@ public:
     void AddArrow(Arrow* arrow, Square* square);
     void AddObject(Object* object, int row, int col);
     void AddObject(Object* object, Square* square);
-    bool CheckProbability(int probability);
-    unsigned int GetTick();
+    bool CheckProbability(int probability) const;
+    unsigned int GetTick() const;
     Grid* GetGrid();
-    List* GetPlayers();
     Square* GetValidDropSquare();
 
     void Run();

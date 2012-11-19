@@ -13,7 +13,6 @@ class Game;
 
 class Object
 {
-    Dimensions size;
     Game* game;
     Square* square;
 
@@ -29,7 +28,6 @@ public:
     Dimensions* GetSize();
     Game* GetGame();
     Square* GetSquare();
-    bool InArea(Square *square);
 };
 
 #endif

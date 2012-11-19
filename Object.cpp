@@ -37,25 +37,10 @@ void Object::Clear() {
     }
 }
 
-Dimensions* Object::GetSize() {
-    return &size;
-}
-
 Game* Object::GetGame() {
     return game;
 }
 
 Square* Object::GetSquare() {
     return square;
-}
-
-bool Object::InArea(Square* square) {
-    int row = square->GetRow(),
-        col = square->GetCol(),
-        rowMin = this->square->GetRow(),
-        rowMax = rowMin + size.GetHeight(),
-        colMin = this->square->GetCol(),
-        colMax = colMin + size.GetWidth();
-
-    return (row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
 }

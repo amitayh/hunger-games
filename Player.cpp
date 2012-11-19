@@ -1,14 +1,14 @@
 #include "Player.h"
-#include "Arrow.h"
 #include "Game.h"
 #include "DroppingObject.h"
 
-Player::Player(char name, int power) {
+Player::Player(char name, int power, Direction direction) {
+    this->direction = direction;
     this->name = name;
     this->power = power;
+    square = NULL;
     remainingArrows = INITIAL_NUM_ARROWS;
     lastArrowTick = 0;
-    SetMoveInterval(2);
 }
 
 Player::~Player() {
@@ -16,44 +16,50 @@ Player::~Player() {
 }
 
 void Player::SetSquare(Square* square) {
-    if (square->GetWall()) {
-        SetRandomDirection();
-        Update();
-    } else {
-        DroppingObject* droppingObject = square->GetDroppingObject();
-        if (droppingObject) {
-            // Pick up dropping object
-            droppingObject->Affect(this);
-        }
-
-        List* players = square->GetPlayers();
-        if (!players->IsEmpty()) {
-            ListIterator it(players);
-            while (power > 0 && !it.Done()) {
-                ListNode* node = it.Current();
-                Player* player = (Player*) node->GetData();
-                Fight(player);
-            }
-        }
-
-        StepOut();
-        square->StepIn(this);
-        MovingObject::SetSquare(square);
+    DroppingObject* droppingObject = square->GetDroppingObject();
+    if (droppingObject) {
+        // Pick up dropping object
+        droppingObject->Affect(this);
     }
+
+    List* players = square->GetPlayers();
+    if (!players->IsEmpty()) {
+        ListIterator it(players);
+        while (power > 0 && !it.Done()) {
+            ListNode* node = it.Current();
+            Player* player = (Player*) node->GetData();
+            Fight(player);
+        }
+    }
+
+    StepOut();
+    square->StepIn(this);
+    this->square = square;
 }
 
 void Player::StepOut() {
-    Square* square = GetSquare();
     if (square) {
+        square->Clear();
         square->StepOut(this);
     }
 }
 
-void Player::Update() {
+void Player::Update(Game* game) {
     if (power > 0) {
-        MovingObject::Update();
+        unsigned int tick = game->GetTick();
+        Grid* grid = game->GetGrid();
 
-        Game* game = GetGame();
+        // Move
+        if (tick % MOVE_INTERVAL == 0) {
+            Square* nextSquare = GetNextSquare(grid, square, direction);
+            while (nextSquare->GetWall()) {
+                // Change direction to avoid the wall
+                SetRandomDirection();
+                nextSquare = GetNextSquare(grid, square, direction);
+            }
+            square->Clear();
+            SetSquare(nextSquare);
+        }
 
         // Randomly change direction
         if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
@@ -61,10 +67,20 @@ void Player::Update() {
         }
 
         // Randomly shoot arrows
-        unsigned int tick = game->GetTick();
-        if (game->CheckProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
-            ShootArrow();
+        if (remainingArrows && game->CheckProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
+            ShootArrow(game);
         }
+    }
+}
+
+void Player::ShootArrow(Game* game) {
+    Grid* grid = game->GetGrid();
+    Square* arrowSquare = GetNextSquare(grid, square, direction);
+    if (!arrowSquare->GetWall()) {
+        Arrow* arrow = new Arrow(this);
+        game->AddArrow(arrow, arrowSquare);
+        lastArrowTick = game->GetTick();
+        remainingArrows--;
     }
 }
 
@@ -80,20 +96,28 @@ void Player::DecreasePower(int amount) {
     IncreasePower(-amount);
 }
 
-char Player::GetName() {
+const Square* Player::GetSquare() const {
+    return square;
+}
+
+char Player::GetName() const {
     return name;
 }
 
-int Player::GetPower() {
+int Player::GetPower() const {
     return power;
 }
 
-int Player::GetRemainingArrows() {
+int Player::GetRemainingArrows() const {
     return remainingArrows;
 }
 
+Direction Player::GetDirection() const {
+    return direction;
+}
+
 void Player::SetRandomDirection() {
-    Direction directions[2], direction;
+    Direction directions[2];
     switch (GetDirection()) {
         case UP:
         case DOWN:
@@ -107,22 +131,6 @@ void Player::SetRandomDirection() {
             break;
     }
     direction = directions[rand() % 2];
-    SetDirection(direction);
-}
-
-bool Player::ShootArrow() {
-    if (remainingArrows) {
-        Square* square = GetNextSquare();
-        if (!square->GetWall()) {
-            Game* game = GetGame();
-            Arrow* arrow = new Arrow(this);
-            game->AddArrow(arrow, square);
-            lastArrowTick = game->GetTick();
-            remainingArrows--;
-            return true;
-        }
-    }
-    return false;
 }
 
 void Player::Fight(Player* oponent) {
@@ -138,8 +146,6 @@ void Player::Fight(Player* oponent) {
     }
 }
 
-void Player::Draw() {
-    GotoPosition();
-    ChangeColor(CYAN);
-    cout << name;
+void Player::Draw() const {
+    square->Draw(name, CYAN);
 }
