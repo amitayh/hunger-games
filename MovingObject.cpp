@@ -1,6 +1,6 @@
 #include "MovingObject.h"
 
-Square* GetNextSquare(Grid* grid, Square* square, Direction direction) {
+Square *GetNextSquare(Grid *grid, Square *square, Direction direction) {
     int row = square->GetRow(), col = square->GetCol();
     switch (direction) {
         case UP:

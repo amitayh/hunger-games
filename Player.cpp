@@ -15,19 +15,19 @@ Player::~Player() {
     StepOut();
 }
 
-void Player::SetSquare(Square* square) {
-    DroppingObject* droppingObject = square->GetDroppingObject();
+void Player::SetSquare(Square *square) {
+    DroppingObject *droppingObject = square->GetDroppingObject();
     if (droppingObject) {
         // Pick up dropping object
         droppingObject->Affect(this);
     }
 
-    List* players = square->GetPlayers();
+    List *players = square->GetPlayers();
     if (!players->IsEmpty()) {
         ListIterator it(players);
         while (power > 0 && !it.Done()) {
-            ListNode* node = it.Current();
-            Player* player = (Player*) node->GetData();
+            ListNode *node = it.Current();
+            Player *player = (Player *) node->GetData();
             Fight(player);
         }
     }
@@ -44,14 +44,14 @@ void Player::StepOut() {
     }
 }
 
-void Player::Update(Game* game) {
+void Player::Update(Game *game) {
     if (power > 0) {
         unsigned int tick = game->GetTick();
-        Grid* grid = game->GetGrid();
+        Grid *grid = game->GetGrid();
 
         // Move
         if (tick % MOVE_INTERVAL == 0) {
-            Square* nextSquare = GetNextSquare(grid, square, direction);
+            Square *nextSquare = GetNextSquare(grid, square, direction);
             while (nextSquare->GetWall()) {
                 // Change direction to avoid the wall
                 SetRandomDirection();
@@ -73,18 +73,18 @@ void Player::Update(Game* game) {
     }
 }
 
-void Player::ShootArrow(Game* game) {
-    Grid* grid = game->GetGrid();
-    Square* arrowSquare = GetNextSquare(grid, square, direction);
+void Player::ShootArrow(Game *game) {
+    Grid *grid = game->GetGrid();
+    Square *arrowSquare = GetNextSquare(grid, square, direction);
     if (!arrowSquare->GetWall()) {
-        Arrow* arrow = new Arrow(this);
+        Arrow *arrow = new Arrow(this);
         game->AddArrow(arrow, arrowSquare);
         lastArrowTick = game->GetTick();
         remainingArrows--;
     }
 }
 
-void Player::Fight(Player* oponent) {
+void Player::Fight(Player *oponent) {
     if (power > oponent->GetPower()) {
         // Player is stronger than oponent
         oponent->DecreasePower(200);
@@ -112,7 +112,7 @@ void Player::DecreasePower(int amount) {
     IncreasePower(-amount);
 }
 
-const Square* Player::GetSquare() const {
+const Square *Player::GetSquare() const {
     return square;
 }
 

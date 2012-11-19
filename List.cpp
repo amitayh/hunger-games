@@ -2,29 +2,29 @@
 
 // List node implementation
 
-ListNode::ListNode(void* data, ListNode* prev, ListNode* next) {
+ListNode::ListNode(void *data, ListNode *prev, ListNode *next) {
     this->data = data;
     this->prev = prev;
     this->next = next;
 }
 
-void ListNode::SetPrev(ListNode* prev) {
+void ListNode::SetPrev(ListNode *prev) {
     this->prev = prev;
 }
 
-void ListNode::SetNext(ListNode* next) {
+void ListNode::SetNext(ListNode *next) {
     this->next = next;
 }
 
-void* ListNode::GetData() const {
+void *ListNode::GetData() const {
     return data;
 }
 
-ListNode* ListNode::GetNext() const {
+ListNode *ListNode::GetNext() const {
     return next;
 }
 
-ListNode* ListNode::GetPrev() const {
+ListNode *ListNode::GetPrev() const {
     return prev;
 }
 
@@ -42,37 +42,37 @@ List::~List() {
     }
 }
 
-void List::Insert(void* data, ListNode* after) {
-    ListNode* node = new ListNode(data, after, after->GetNext());
+void List::Insert(void *data, ListNode *after) {
+    ListNode *node = new ListNode(data, after, after->GetNext());
     after->GetNext()->SetPrev(node);
     after->SetNext(node);
     size++;
 }
 
-void List::Remove(ListNode* node) {
+void List::Remove(ListNode *node) {
     node->GetPrev()->SetNext(node->GetNext());
     node->GetNext()->SetPrev(node->GetPrev());
     delete node;
     size--;
 }
 
-void List::Push(void* data) {
+void List::Push(void *data) {
     Insert(data, tail.GetPrev());
 }
 
-void* List::Pop() {
+void *List::Pop() {
     if (size) {
-        ListNode* node = tail.GetPrev();
-        void* data = node->GetData();
+        ListNode *node = tail.GetPrev();
+        void *data = node->GetData();
         Remove(node);
         return data;
     }
     return NULL;
 }
 
-ListNode* List::Find(void* data) {
+ListNode *List::Find(const void *data) {
     ListIterator it(this);
-    ListNode* result = NULL,* current;
+    ListNode *result = NULL, *current;
     while (!result && !it.Done()) {
         current = it.Current();
         if (current->GetData() == data) {
@@ -82,15 +82,15 @@ ListNode* List::Find(void* data) {
     return result;
 }
 
-ListNode* List::GetHead() {
+ListNode *List::GetHead() {
     return &head;
 }
 
-ListNode* List::GetTail() {
+ListNode *List::GetTail() {
     return &tail;
 }
 
-void* List::Peek() const {
+void *List::Peek() const {
     return size ? head.GetNext()->GetData() : NULL;
 }
 
@@ -104,13 +104,13 @@ bool List::IsEmpty() const {
 
 // List iterator implementation
 
-ListIterator::ListIterator(List* list) {
+ListIterator::ListIterator(List *list) {
     this->list = list;
     current = list->GetHead()->GetNext();
 }
 
-ListNode* ListIterator::Current() {
-    ListNode* node = current;
+ListNode *ListIterator::Current() {
+    ListNode *node = current;
     current = current->GetNext();
     return node;
 }

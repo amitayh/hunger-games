@@ -1,14 +1,14 @@
 #include "MapLoader.h"
 #include <fstream>
 
-MapLoader::MapLoader(Game* game) {
+MapLoader::MapLoader(Game *game) {
     this->game = game;
 }
 
-bool MapLoader::Load(const char* filename) {
+bool MapLoader::Load(const char *filename) {
     ifstream map(filename);
     if (map.good()) {
-        Grid* grid = game->GetGrid();
+        Grid *grid = game->GetGrid();
         int rows = grid->GetRows(),
             cols = grid->GetCols();
 
@@ -38,7 +38,7 @@ bool MapLoader::Load(const char* filename) {
 
         // Add additional players if needed
         for (int i = players; i < MIN_NUM_PLAYERS; i++) {
-            Square* square = game->GetValidDropSquare();
+            Square *square = game->GetValidDropSquare();
             game->AddPlayer(square);
         }
 

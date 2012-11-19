@@ -12,12 +12,12 @@ class MapLoader
         MIN_NUM_PLAYERS = 2
     };
 
-    Game* game;
+    Game *game;
 
 public:
-    MapLoader(Game* game);
+    MapLoader(Game *game);
 
-    bool Load(const char* filename);
+    bool Load(const char *filename);
 };
 
 #endif

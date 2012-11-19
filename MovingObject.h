@@ -10,6 +10,6 @@ enum Direction {
     RIGHT
 };
 
-Square* GetNextSquare(Grid* grid, Square* square, Direction direction);
+Square *GetNextSquare(Grid *grid, Square *square, Direction direction);
 
 #endif

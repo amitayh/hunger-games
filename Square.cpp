@@ -13,12 +13,12 @@ Square::Square() {
     wall = NULL;
 }
 
-void Square::StepIn(Player* player) {
+void Square::StepIn(Player *player) {
     players.Push(player);
 }
 
-void Square::StepOut(Player* player) {
-    ListNode* node = players.Find(player);
+void Square::StepOut(Player *player) {
+    ListNode *node = players.Find(player);
     players.Remove(node);
 }
 
@@ -27,23 +27,23 @@ void Square::InitPosition(int row, int col) {
     this->col = col;
 }
 
-void Square::SetDroppingObject(DroppingObject* droppingObject) {
+void Square::SetDroppingObject(DroppingObject *droppingObject) {
     this->droppingObject = droppingObject;
 }
 
-void Square::SetWall(Wall* wall) {
+void Square::SetWall(Wall *wall) {
     this->wall = wall;
 }
 
-List* Square::GetPlayers() {
+List *Square::GetPlayers() {
     return &players;
 }
 
-DroppingObject* Square::GetDroppingObject() {
+DroppingObject *Square::GetDroppingObject() {
     return droppingObject;
 }
 
-Wall* Square::GetWall() {
+Wall *Square::GetWall() {
     return wall;
 }
 
@@ -61,7 +61,7 @@ void Square::Draw(char ch, Color color) const {
     cout << ch;
 }
 
-double Square::GetDistance(const Square* otherSquare) const {
+double Square::GetDistance(const Square *otherSquare) const {
     double deltaX = col - otherSquare->GetCol(), deltaY = row - otherSquare->GetRow();
     return sqrt((deltaX * deltaX) + (deltaY * deltaY));
 }

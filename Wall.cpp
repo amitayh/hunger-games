@@ -1,6 +1,6 @@
 #include "Wall.h"
 
-Wall::Wall(Square* square) {
+Wall::Wall(Square *square) {
     this->square = square;
     square->SetWall(this);
 }

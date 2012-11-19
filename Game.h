@@ -47,8 +47,8 @@ class Game
     void DrawWalls();
     void DropObjects();
     void DropObject(DroppingObject::Type type);
-    void EndGame(Player* winner = NULL);
-    bool IsValidDrop(Square* square);
+    void EndGame(Player *winner = NULL);
+    bool IsValidDrop(Square *square);
     void ShowMenu();
 
 public:
@@ -56,14 +56,14 @@ public:
     ~Game();
 
     void AddPlayer(int row, int col);
-    void AddPlayer(Square* square);
+    void AddPlayer(Square *square);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
-    void AddArrow(Arrow* arrow, Square* square);
+    void AddArrow(Arrow *arrow, Square *square);
     bool CheckProbability(int probability) const;
     unsigned int GetTick() const;
-    Grid* GetGrid();
-    Square* GetValidDropSquare();
+    Grid *GetGrid();
+    Square *GetValidDropSquare();
 
     void Run();
     void Pause();

@@ -5,10 +5,10 @@
 
 class Wall
 {
-    Square* square;
+    Square *square;
 
 public:
-    Wall(Square* square);
+    Wall(Square *square);
     ~Wall();
 
     void Draw() const;

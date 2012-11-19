@@ -16,24 +16,24 @@ class Player
         MOVE_INTERVAL                   = 2
     };
 
-    Square* square;
+    Square *square;
     Direction direction;
     char name;
     int power;
     int remainingArrows;
     unsigned int lastArrowTick;
 
-    void Fight(Player* oponent);
+    void Fight(Player *oponent);
     void SetRandomDirection();
-    void ShootArrow(Game* game);
+    void ShootArrow(Game *game);
     void StepOut();
 
 public:
     Player(char name, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
-    void SetSquare(Square* square);
-    void Update(Game* game);
+    void SetSquare(Square *square);
+    void Update(Game *game);
     void IncreasePower(int amount);
     void DecreasePower(int amount);
     void AddArrows(int amount);
@@ -42,7 +42,7 @@ public:
     int GetPower() const;
     int GetRemainingArrows() const;
     Direction GetDirection() const;
-    const Square* GetSquare() const;
+    const Square *GetSquare() const;
     void Draw() const;
 };
 

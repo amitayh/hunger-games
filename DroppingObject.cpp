@@ -1,7 +1,7 @@
 #include "DroppingObject.h"
 #include "Square.h"
 
-DroppingObject::DroppingObject(Type type, Square* square) {
+DroppingObject::DroppingObject(Type type, Square *square) {
     square->SetDroppingObject(this);
     this->square = square;
     this->type = type;
@@ -13,7 +13,7 @@ DroppingObject::~DroppingObject() {
     square->Clear();
 }
 
-void DroppingObject::Affect(Player* player) {
+void DroppingObject::Affect(Player *player) {
     switch (type) {
         case FOOD:
             player->IncreasePower(200);

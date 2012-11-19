@@ -36,17 +36,17 @@ void Game::AddPlayer(int row, int col) {
     AddPlayer(grid.GetSquare(row, col));
 }
 
-void Game::AddPlayer(Square* square) {
+void Game::AddPlayer(Square *square) {
     char name = 'A' + players.GetSize();
-    Player* player = new Player(name);
+    Player *player = new Player(name);
     player->SetSquare(square);
     players.Push(player);
 }
 
 void Game::AddWall(int row, int col) {
-    Square* square = grid.GetSquare(row, col);
+    Square *square = grid.GetSquare(row, col);
     if (!square->GetWall()) {
-        Wall* wall = new Wall(square);
+        Wall *wall = new Wall(square);
         walls.Push(wall);
     }
 }
@@ -67,7 +67,7 @@ void Game::AddInfoBox(int row, int col) {
     infoBox.SetSquare(grid.GetSquare(row, col));
 }
 
-void Game::AddArrow(Arrow* arrow, Square* square) {
+void Game::AddArrow(Arrow *arrow, Square *square) {
     arrow->SetSquare(square);
     arrows.Push(arrow);
 }
@@ -95,7 +95,7 @@ void Game::Resume() {
     Draw();
 }
 
-void Game::EndGame(Player* winner) {
+void Game::EndGame(Player *winner) {
     Pause();
     clrscr();
     gotoxy(0, 0);
@@ -152,8 +152,8 @@ void Game::Draw() {
 void Game::UpdateArrows() {
     ListIterator it(&arrows);
     while (!it.Done()) {
-        ListNode* node = it.Current();
-        Arrow* arrow = (Arrow*) node->GetData();
+        ListNode *node = it.Current();
+        Arrow *arrow = (Arrow *) node->GetData();
         arrow->Update(this);
         if (arrow->GetHit()) {
             // Arrow hit a wall/player
@@ -166,8 +166,8 @@ void Game::UpdateArrows() {
 void Game::DrawArrows() {
     ListIterator it(&arrows);
     while (!it.Done()) {
-        ListNode* node = it.Current();
-        Arrow* arrow = (Arrow*) node->GetData();
+        ListNode *node = it.Current();
+        Arrow *arrow = (Arrow *) node->GetData();
         arrow->Draw();
     }
 }
@@ -175,8 +175,8 @@ void Game::DrawArrows() {
 void Game::UpdatePlayers() {
     ListIterator it(&players);
     while (!it.Done()) {
-        ListNode* node = it.Current();
-        Player* player = (Player*) node->GetData();
+        ListNode *node = it.Current();
+        Player *player = (Player *) node->GetData();
         player->Update(this);
         if (!player->GetPower()) {
             // Player is dead
@@ -185,7 +185,7 @@ void Game::UpdatePlayers() {
 
             if (players.GetSize() == 1) {
                 // One player left, game over
-                EndGame((Player*) players.Peek());
+                EndGame((Player *) players.Peek());
             }
         }
     }
@@ -194,8 +194,8 @@ void Game::UpdatePlayers() {
 void Game::DrawPlayers() {
     ListIterator it(&players);
     while (!it.Done()) {
-        ListNode* node = it.Current();
-        Player* player = (Player*) node->GetData();
+        ListNode *node = it.Current();
+        Player *player = (Player *) node->GetData();
         player->Draw();
     }
 }
@@ -203,8 +203,8 @@ void Game::DrawPlayers() {
 void Game::UpdateDroppingObjects() {
     ListIterator it(&droppingObjects);
     while (!it.Done()) {
-        ListNode* node = it.Current();
-        DroppingObject* droppingObject = (DroppingObject*) node->GetData();
+        ListNode *node = it.Current();
+        DroppingObject *droppingObject = (DroppingObject *) node->GetData();
         if (droppingObject->GetPickedUp()) {
             droppingObjects.Remove(node);
             delete droppingObject;
@@ -215,8 +215,8 @@ void Game::UpdateDroppingObjects() {
 void Game::DrawDroppingObjects() {
     ListIterator it(&droppingObjects);
     while (!it.Done()) {
-        ListNode* node = it.Current();
-        DroppingObject* droppingObject = (DroppingObject*) node->GetData();
+        ListNode *node = it.Current();
+        DroppingObject *droppingObject = (DroppingObject *) node->GetData();
         droppingObject->Draw();
     }
 }
@@ -224,8 +224,8 @@ void Game::DrawDroppingObjects() {
 void Game::DrawWalls() {
     ListIterator it(&walls);
     while (!it.Done()) {
-        ListNode* node = it.Current();
-        Wall* wall = (Wall*) node->GetData();
+        ListNode *node = it.Current();
+        Wall *wall = (Wall *) node->GetData();
         wall->Draw();
     }
 }
@@ -243,21 +243,21 @@ void Game::DropObjects() {
 }
 
 void Game::DropObject(DroppingObject::Type type) {
-    Square* square = GetValidDropSquare();
-    DroppingObject* object = new DroppingObject(type, square);
+    Square *square = GetValidDropSquare();
+    DroppingObject *object = new DroppingObject(type, square);
     droppingObjects.Push(object);
     object->Draw();
 }
 
-Square* Game::GetValidDropSquare() {
-    Square* square;
+Square *Game::GetValidDropSquare() {
+    Square *square;
     do {
         square = grid.GetRandomSquare();
     } while (!IsValidDrop(square));
     return square;
 }
 
-bool Game::IsValidDrop(Square* square) {
+bool Game::IsValidDrop(Square *square) {
     bool result = true;
     if (!square->IsEmpty()) {
         // Square is occupied
@@ -268,8 +268,8 @@ bool Game::IsValidDrop(Square* square) {
     } else {
         ListIterator it(&players);
         while (result && !it.Done()) {
-            ListNode* node = it.Current();
-            Player* player = (Player*) node->GetData();
+            ListNode *node = it.Current();
+            Player *player = (Player *) node->GetData();
             double distance = square->GetDistance(player->GetSquare());
             if (distance <= MIN_DISTANCE_FROM_PLAYERS) {
                 // Square is too close to one of the players
@@ -284,6 +284,6 @@ unsigned int Game::GetTick() const {
     return tick;
 }
 
-Grid* Game::GetGrid() {
+Grid *Game::GetGrid() {
     return &grid;
 }

@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player* shooter) {
+Arrow::Arrow(Player *shooter) {
     direction = shooter->GetDirection();
     hit = false;
 }
@@ -11,7 +11,7 @@ Arrow::~Arrow() {
     square->Clear();
 }
 
-void Arrow::SetSquare(Square* square) {
+void Arrow::SetSquare(Square *square) {
     if (square->GetWall()) {
         hit = true;
     } else {
@@ -20,9 +20,9 @@ void Arrow::SetSquare(Square* square) {
     }
 }
 
-void Arrow::Update(Game* game) {
+void Arrow::Update(Game *game) {
     if (!CheckHit() && game->GetTick() % MOVE_INTERVAL == 0) {
-        Square* nextSquare = GetNextSquare(game->GetGrid(), square, direction);
+        Square *nextSquare = GetNextSquare(game->GetGrid(), square, direction);
         square->Clear();
         SetSquare(nextSquare);
     }
@@ -30,10 +30,10 @@ void Arrow::Update(Game* game) {
 
 bool Arrow::CheckHit() {
     if (square) {
-        List* players = square->GetPlayers();
+        List *players = square->GetPlayers();
         if (!players->IsEmpty()) {
             // Hit first player on square
-            Player* player = (Player*) players->Peek();
+            Player *player = (Player *) players->Peek();
             player->DecreasePower(500);
             hit = true;
         }

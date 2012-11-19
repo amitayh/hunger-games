@@ -7,11 +7,11 @@ using namespace std;
 
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
-void InfoBox::SetSquare(Square* square) {
+void InfoBox::SetSquare(Square *square) {
     this->square = square;
 }
 
-void InfoBox::Draw(List* players) const {
+void InfoBox::Draw(List *players) const {
     ListIterator it(players);
     int row = square->GetRow(), col = square->GetCol();
 
@@ -26,8 +26,8 @@ void InfoBox::Draw(List* players) const {
         gotoxy(col, row + i);
         if (!it.Done()) {
             // Print player info
-            ListNode* node = it.Current();
-            Player* player = (Player*) node->GetData();
+            ListNode *node = it.Current();
+            Player *player = (Player *) node->GetData();
             printf("%c %-4d %-3d\n", player->GetName(), player->GetPower(), player->GetRemainingArrows());
         } else {
             // Print empty line
@@ -40,7 +40,7 @@ const Dimensions& InfoBox::GetSize() const {
     return size;
 }
 
-bool InfoBox::InArea(const Square* square) const {
+bool InfoBox::InArea(const Square *square) const {
     int row = square->GetRow(),
         col = square->GetCol(),
         rowMin = this->square->GetRow(),
