@@ -5,8 +5,11 @@
 #include "Arrow.h"
 #include "InfoBox.h"
 #include "Menu.h"
-#include "Object.h"
 #include "DroppingObject.h"
+#include "Gotoxy.h"
+#include <iostream>
+
+using namespace std;
 
 const int ESCAPSE_KEY = 27;
 
@@ -57,8 +60,6 @@ public:
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
     void AddArrow(Arrow* arrow, Square* square);
-    void AddObject(Object* object, int row, int col);
-    void AddObject(Object* object, Square* square);
     bool CheckProbability(int probability) const;
     unsigned int GetTick() const;
     Grid* GetGrid();

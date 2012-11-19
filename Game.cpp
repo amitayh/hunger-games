@@ -72,15 +72,6 @@ void Game::AddArrow(Arrow* arrow, Square* square) {
     arrows.Push(arrow);
 }
 
-void Game::AddObject(Object* object, int row, int col) {
-    AddObject(object, grid.GetSquare(row, col));
-}
-
-void Game::AddObject(Object* object, Square* square) {
-    object->SetGame(this);
-    object->SetSquare(square);
-}
-
 bool Game::CheckProbability(int probability) const {
     int random = rand() % 100;
     return (random < probability);

@@ -84,6 +84,22 @@ void Player::ShootArrow(Game* game) {
     }
 }
 
+void Player::Fight(Player* oponent) {
+    if (power > oponent->GetPower()) {
+        // Player is stronger than oponent
+        oponent->DecreasePower(200);
+        DecreasePower(10);
+    } else if (power < oponent->GetPower()) {
+        // Player is weaker than oponent
+        oponent->DecreasePower(10);
+        DecreasePower(200);
+    } else {
+        // Player and oponent are equal
+        oponent->DecreasePower(50);
+        DecreasePower(50);
+    }
+}
+
 void Player::AddArrows(int amount) {
     remainingArrows += amount;
 }
@@ -118,7 +134,7 @@ Direction Player::GetDirection() const {
 
 void Player::SetRandomDirection() {
     Direction directions[2];
-    switch (GetDirection()) {
+    switch (direction) {
         case UP:
         case DOWN:
             directions[0] = LEFT;
@@ -131,19 +147,6 @@ void Player::SetRandomDirection() {
             break;
     }
     direction = directions[rand() % 2];
-}
-
-void Player::Fight(Player* oponent) {
-    if (power > oponent->GetPower()) {
-        oponent->DecreasePower(200);
-        DecreasePower(10);
-    } else if (power < oponent->GetPower()) {
-        oponent->DecreasePower(10);
-        DecreasePower(200);
-    } else {
-        oponent->DecreasePower(50);
-        DecreasePower(50);
-    }
 }
 
 void Player::Draw() const {
