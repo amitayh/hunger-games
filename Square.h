@@ -20,7 +20,7 @@ public:
 
     void StepIn(Player* player);
     void StepOut(Player* player);
-    void SetPosition(int row, int col);
+    void InitPosition(int row, int col);
     void SetDroppingObject(DroppingObject* droppingObject);
     void SetWall(Wall* wall);
     List* GetPlayers();

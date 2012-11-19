@@ -5,7 +5,7 @@ Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
     for (int row = 0; row < rows; row++) {
         squares[row] = new Square[cols];
         for (int col = 0; col < cols; col++) {
-            squares[row][col].SetPosition(row, col);
+            squares[row][col].InitPosition(row, col);
         }
     }
 }

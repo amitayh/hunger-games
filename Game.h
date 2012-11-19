@@ -6,6 +6,7 @@
 #include "InfoBox.h"
 #include "Menu.h"
 #include "Object.h"
+#include "DroppingObject.h"
 
 const int ESCAPSE_KEY = 27;
 
@@ -42,7 +43,7 @@ class Game
     void DrawDroppingObjects();
     void DrawWalls();
     void DropObjects();
-    void DropObject(DroppingObject* object);
+    void DropObject(DroppingObject::Type type);
     void EndGame(Player* winner = NULL);
     bool IsValidDrop(Square* square);
     void ShowMenu();

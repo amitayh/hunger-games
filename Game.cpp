@@ -3,9 +3,6 @@
 #include "Player.h"
 #include "Wall.h"
 #include "InfoBox.h"
-#include "Food.h"
-#include "Quiver.h"
-#include "Bomb.h"
 #include <time.h>
 #include <conio.h>
 
@@ -49,8 +46,7 @@ void Game::AddPlayer(Square* square) {
 void Game::AddWall(int row, int col) {
     Square* square = grid.GetSquare(row, col);
     if (!square->GetWall()) {
-        Wall* wall = new Wall;
-        wall->SetSquare(square);
+        Wall* wall = new Wall(square);
         walls.Push(wall);
     }
 }
@@ -245,18 +241,19 @@ void Game::DrawWalls() {
 
 void Game::DropObjects() {
     if (CheckProbability(DROP_FOOD_PROBABILITY)) {
-        DropObject(new Food);
+        DropObject(DroppingObject::Type::FOOD);
     }
     if (CheckProbability(DROP_QUIVER_PROBABILITY)) {
-        DropObject(new Quiver);
+        DropObject(DroppingObject::Type::QUIVER);
     }
     if (CheckProbability(DROP_BOMB_PROBABILITY)) {
-        DropObject(new Bomb);
+        DropObject(DroppingObject::Type::BOMB);
     }
 }
 
-void Game::DropObject(DroppingObject* object) {
-    AddObject(object, GetValidDropSquare());
+void Game::DropObject(DroppingObject::Type type) {
+    Square* square = GetValidDropSquare();
+    DroppingObject* object = new DroppingObject(type, square);
     droppingObjects.Push(object);
     object->Draw();
 }

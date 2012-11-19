@@ -1,8 +1,12 @@
 #include "Square.h"
 #include "Player.h"
 #include "DroppingObject.h"
+#include "Gotoxy.h"
+#include <iostream>
 #include <windows.h>
 #include <math.h>
+
+using namespace std;
 
 Square::Square() {
     droppingObject = NULL;
@@ -18,7 +22,7 @@ void Square::StepOut(Player* player) {
     players.Remove(node);
 }
 
-void Square::SetPosition(int row, int col) {
+void Square::InitPosition(int row, int col) {
     this->row = row;
     this->col = col;
 }
