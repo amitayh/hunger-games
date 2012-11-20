@@ -26,8 +26,8 @@ class Player
     void SetSquare(Square *square);
     void Fight(Player *oponent);
     void SetRandomDirection();
-    void ShootArrow(Game *game);
-    Square *GetNextMove(Game *game);
+    void ShootArrow(Game &game);
+    Square *GetNextMove(Game &game);
     DroppingObject *FindClosestObject(List *objects) const;
     bool CheckWallsInPath(Grid &grid, const Square *target) const;
     bool HasPlayersInRange(List* players) const;
@@ -38,7 +38,7 @@ public:
     Player(char name, Square *square, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
-    void Update(Game *game);
+    void Update(Game &game);
     void IncreasePower(int amount);
     void DecreasePower(int amount);
     void AddArrows(int amount);

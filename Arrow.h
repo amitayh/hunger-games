@@ -22,7 +22,7 @@ public:
     Arrow(Player *shooter, Square *square);
     ~Arrow();
 
-    void Update(Game *game);
+    void Update(Game &game);
     void Draw() const;
     bool GetHit() const;
 };

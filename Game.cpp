@@ -151,7 +151,7 @@ void Game::UpdateArrows() {
     while (!it.Done()) {
         ListNode *node = it.Current();
         Arrow *arrow = (Arrow *) node->GetData();
-        arrow->Update(this);
+        arrow->Update(*this);
         if (arrow->GetHit()) {
             // Arrow hit a wall/player
             arrows.Remove(node);
@@ -174,7 +174,7 @@ void Game::UpdatePlayers() {
     while (!it.Done()) {
         ListNode *node = it.Current();
         Player *player = (Player *) node->GetData();
-        player->Update(this);
+        player->Update(*this);
         if (!player->GetPower()) {
             // Player is dead
             players.Remove(node);

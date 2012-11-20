@@ -21,9 +21,9 @@ void Arrow::SetSquare(Square *square) {
     }
 }
 
-void Arrow::Update(Game *game) {
-    if (!CheckHit() && game->GetTick() % MOVE_INTERVAL == 0) {
-        Square *nextSquare = GetNextSquare(game->GetGrid(), square, direction);
+void Arrow::Update(Game &game) {
+    if (!CheckHit() && game.GetTick() % MOVE_INTERVAL == 0) {
+        Square *nextSquare = GetNextSquare(game.GetGrid(), square, direction);
         square->Clear();
         SetSquare(nextSquare);
     }

@@ -45,9 +45,9 @@ void Player::StepOut() {
     }
 }
 
-void Player::Update(Game *game) {
+void Player::Update(Game &game) {
     if (power > 0) {
-        unsigned int tick = game->GetTick();
+        unsigned int tick = game.GetTick();
 
         // Move
         if (tick % MOVE_INTERVAL == 0) {
@@ -57,23 +57,23 @@ void Player::Update(Game *game) {
         // Shoot arrows
         if (
             remainingArrows &&
-            game->CheckProbability(SHOOT_ARROW_PROBABILITY) &&
+            game.CheckProbability(SHOOT_ARROW_PROBABILITY) &&
             tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&
-            HasPlayersInRange(game->GetPlayers())
+            HasPlayersInRange(game.GetPlayers())
         ) {
             ShootArrow(game);
         }
     }
 }
 
-Square *Player::GetNextMove(Game *game) {
-    Grid &grid = game->GetGrid();
+Square *Player::GetNextMove(Game &game) {
+    Grid &grid = game.GetGrid();
 
     // Find closest food / quiver
-    DroppingObject *closest = FindClosestObject(game->GetDroppingObjects());
+    DroppingObject *closest = FindClosestObject(game.GetDroppingObjects());
     if (closest && CheckWallsInPath(grid, closest->GetSquare())) {
         direction = square->GetDirection(closest->GetSquare());
-    } else if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
+    } else if (game.CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
         // Randomly change direction
         SetRandomDirection();
     }
@@ -140,12 +140,12 @@ void Player::SetRandomDirection() {
     direction = directions[rand() % 2];
 }
 
-void Player::ShootArrow(Game *game) {
-    Square *arrowSquare = GetNextSquare(game->GetGrid(), square, direction);
+void Player::ShootArrow(Game &game) {
+    Square *arrowSquare = GetNextSquare(game.GetGrid(), square, direction);
     if (!arrowSquare->GetWall()) {
         Arrow *arrow = new Arrow(this, arrowSquare);
-        game->AddArrow(arrow);
-        lastArrowTick = game->GetTick();
+        game.AddArrow(arrow);
+        lastArrowTick = game.GetTick();
         remainingArrows--;
     }
 }
