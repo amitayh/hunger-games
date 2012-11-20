@@ -70,15 +70,12 @@ Square *Player::GetNextMove(Game &game) {
     Grid &grid = game.GetGrid();
 
     // Find closest food / quiver
-    List *objects = game.GetDroppingObjects();
-    if (!objects->IsEmpty()) {
-        DroppingObject &closest = FindClosestObject(objects);
-        if (CheckWallsInPath(grid, closest.GetSquare())) {
-            direction = square->GetDirection(closest.GetSquare());
-        } else if (game.CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
-            // Randomly change direction
-            SetRandomDirection();
-        }
+    DroppingObject *closest = FindClosestObject(game.GetDroppingObjects());
+    if (closest && CheckWallsInPath(grid, closest->GetSquare())) {
+        direction = square->GetDirection(closest->GetSquare());
+    } else if (game.CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
+        // Randomly change direction
+        SetRandomDirection();
     }
 
     Square *nextSquare = GetNextSquare(grid, square, direction);
@@ -91,22 +88,25 @@ Square *Player::GetNextMove(Game &game) {
     return nextSquare;
 }
 
-DroppingObject &Player::FindClosestObject(List *objects) const {
-    DroppingObject *closest = NULL, *current;
-    double closestDistance = 0, distance;
-    ListIterator it(objects);
-    while (!it.Done()) {
-        current = (DroppingObject *) it.Current()->GetData();
-        if (current->GetType() != DroppingObject::Type::BOMB) {
-            distance = square->GetDistance(current->GetSquare());
-            if (!closest || distance < closestDistance) {
-                // Found a closer food / quiver
-                closest = current;
-                closestDistance = distance;
+DroppingObject *Player::FindClosestObject(List *objects) const {
+    DroppingObject *closest = NULL;
+    if (!objects->IsEmpty()) {
+        double closestDistance = 0, distance;
+        DroppingObject *current;
+        ListIterator it(objects);
+        while (!it.Done()) {
+            current = (DroppingObject *) it.Current()->GetData();
+            if (current->GetType() != DroppingObject::Type::BOMB) {
+                distance = square->GetDistance(current->GetSquare());
+                if (!closest || distance < closestDistance) {
+                    // Found a closer food / quiver
+                    closestDistance = distance;
+                    closest = current;
+                }
             }
         }
     }
-    return *closest;
+    return closest;
 }
 
 bool Player::CheckWallsInPath(Grid &grid, const Square *target) const {

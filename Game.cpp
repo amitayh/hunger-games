@@ -38,15 +38,13 @@ void Game::AddPlayer(int row, int col) {
 
 void Game::AddPlayer(Square *square) {
     char name = 'A' + players.GetSize();
-    Player *player = new Player(name, square);
-    players.Push(player);
+    players.Push(new Player(name, square));
 }
 
 void Game::AddWall(int row, int col) {
     Square *square = grid.GetSquare(row, col);
     if (!square->HasWall()) {
-        Wall *wall = new Wall(square);
-        walls.Push(wall);
+        walls.Push(new Wall(square));
     }
 }
 
