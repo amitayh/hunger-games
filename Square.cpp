@@ -1,5 +1,6 @@
 #include "Square.h"
 #include "Player.h"
+#include "MovingObject.h"
 #include "DroppingObject.h"
 #include "Gotoxy.h"
 #include <iostream>
@@ -62,8 +63,27 @@ void Square::Draw(char ch, Color color) const {
 }
 
 double Square::GetDistance(const Square *otherSquare) const {
-    double deltaX = col - otherSquare->GetCol(), deltaY = row - otherSquare->GetRow();
-    return sqrt((deltaX * deltaX) + (deltaY * deltaY));
+    double deltaY = row - otherSquare->GetRow(), deltaX = col - otherSquare->GetCol();
+    return sqrt((deltaY * deltaY) + (deltaX * deltaX));
+}
+
+Direction Square::GetDirection(const Square *otherSquare) const {
+    double deltaY = row - otherSquare->GetRow(),
+           deltaX = col - otherSquare->GetCol(),
+           angle = atan2(deltaY, deltaX) / PI;
+
+    Direction direction;
+    if (angle >= -0.75 && angle < -0.25) {
+        direction = DOWN;
+    } else if (angle >= -0.25 && angle < 0.25) {
+        direction = LEFT;
+    } else if (angle >= 0.25 && angle < 0.75) {
+        direction = UP;
+    } else {
+        direction = RIGHT;
+    }
+
+    return direction;
 }
 
 bool Square::IsEmpty() const {

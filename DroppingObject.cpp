@@ -28,6 +28,10 @@ void DroppingObject::Affect(Player *player) {
     pickedUp = true;
 }
 
+Square *DroppingObject::GetSquare() {
+    return square;
+}
+
 void DroppingObject::Draw() const {
     char ch;
     Color color;

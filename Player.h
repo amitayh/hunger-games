@@ -9,7 +9,7 @@ class Player
 {
     enum {
         INITIAL_POWER                   = 1000,
-        INITIAL_NUM_ARROWS              = 20,
+        INITIAL_NUM_ARROWS              = 4,
         MIN_TICKS_BETWEEN_ARROWS        = 3,
         SHOOT_ARROW_PROBABILITY         = 5,
         CHANGE_DIRECTION_PROBABILITY    = 5,
@@ -26,6 +26,8 @@ class Player
     void Fight(Player *oponent);
     void SetRandomDirection();
     void ShootArrow(Game *game);
+    DroppingObject *FindClosestObject(Game *game) const;
+    bool CheckWallsInPath(Grid *grid, const Square *target) const;
     void StepOut();
 
 public:

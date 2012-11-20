@@ -51,6 +51,15 @@ void Player::Update(Game *game) {
 
         // Move
         if (tick % MOVE_INTERVAL == 0) {
+            // Find closest food / quiver
+            DroppingObject *closest = FindClosestObject(game);
+            if (closest && CheckWallsInPath(grid, closest->GetSquare())) {
+                direction = square->GetDirection(closest->GetSquare());
+            } else if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
+                // Randomly change direction
+                SetRandomDirection();
+            }
+
             Square *nextSquare = GetNextSquare(grid, square, direction);
             while (nextSquare->GetWall()) {
                 // Change direction to avoid the wall
@@ -59,11 +68,6 @@ void Player::Update(Game *game) {
             }
             square->Clear();
             SetSquare(nextSquare);
-        }
-
-        // Randomly change direction
-        if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
-            SetRandomDirection();
         }
 
         // Randomly shoot arrows
@@ -82,6 +86,42 @@ void Player::ShootArrow(Game *game) {
         lastArrowTick = game->GetTick();
         remainingArrows--;
     }
+}
+
+DroppingObject *Player::FindClosestObject(Game *game) const {
+    List *droppingObjects = game->GetDroppingObjects();
+    if (!droppingObjects->IsEmpty()) {
+        DroppingObject *closest = NULL, *current;
+        double closestDistance = 0, distance;
+        ListIterator it(droppingObjects);
+        while (!it.Done()) {
+            current = (DroppingObject *) it.Current()->GetData();
+            if (current->GetType() != DroppingObject::Type::BOMB) {
+                distance = square->GetDistance(current->GetSquare());
+                if (!closest || distance < closestDistance) {
+                    // Found a closer food / quiver
+                    closest = current;
+                    closestDistance = distance;
+                }
+            }
+        }
+        return closest;
+    }
+    return NULL;
+}
+
+bool Player::CheckWallsInPath(Grid *grid, const Square *target) const {
+    Square *current = square;
+    while (current != target) {
+        Direction direction = current->GetDirection(target);
+        current = GetNextSquare(grid, current, direction);
+        if (current->GetWall()) {
+            // Found a wall, no need to continue
+            return false;
+        }
+    }
+    // The path is clear!
+    return true;
 }
 
 void Player::Fight(Player *oponent) {

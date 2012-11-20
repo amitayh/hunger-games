@@ -284,6 +284,10 @@ unsigned int Game::GetTick() const {
     return tick;
 }
 
+List *Game::GetDroppingObjects() {
+    return &droppingObjects;
+}
+
 Grid *Game::GetGrid() {
     return &grid;
 }

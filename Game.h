@@ -18,7 +18,7 @@ class Game
     enum {
         FRAMES_PER_SECOND           = 25,
         DROP_FOOD_PROBABILITY       = 2,
-        DROP_QUIVER_PROBABILITY     = 1,
+        DROP_QUIVER_PROBABILITY     = 2,
         DROP_BOMB_PROBABILITY       = 1,
         MIN_DISTANCE_FROM_PLAYERS   = 2,
         MENU_RESUME                 = 1,
@@ -62,6 +62,7 @@ public:
     void AddArrow(Arrow *arrow, Square *square);
     bool CheckProbability(int probability) const;
     unsigned int GetTick() const;
+    List *GetDroppingObjects();
     Grid *GetGrid();
     Square *GetValidDropSquare();
 

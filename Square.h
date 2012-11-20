@@ -4,9 +4,12 @@
 #include "List.h"
 #include "Console.h"
 
+const double PI = 3.141592653589793;
+
 class Player;
 class DroppingObject;
 class Wall;
+enum Direction;
 
 class Square
 {
@@ -30,6 +33,7 @@ public:
     void Clear() const;
     void Draw(char ch, Color color = SILVER) const;
     double GetDistance(const Square *otherSquare) const;
+    Direction GetDirection(const Square *otherSquare) const;
     bool IsEmpty() const;
     int GetRow() const;
     int GetCol() const;

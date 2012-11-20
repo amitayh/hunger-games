@@ -16,6 +16,7 @@ public:
     ~DroppingObject();
 
     void Affect(Player *player);
+    Square *GetSquare();
 
     void Draw() const;
     bool GetPickedUp() const;
