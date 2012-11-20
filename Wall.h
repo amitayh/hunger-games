@@ -9,7 +9,6 @@ class Wall
 
 public:
     Wall(Square *square);
-    ~Wall();
 
     void Draw() const;
 };

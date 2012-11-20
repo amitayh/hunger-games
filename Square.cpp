@@ -32,8 +32,8 @@ void Square::SetDroppingObject(DroppingObject *droppingObject) {
     this->droppingObject = droppingObject;
 }
 
-void Square::SetWall(Wall *wall) {
-    this->wall = wall;
+void Square::SetWall(Wall &wall) {
+    this->wall = &wall;
 }
 
 List *Square::GetPlayers() {
@@ -44,8 +44,8 @@ DroppingObject *Square::GetDroppingObject() {
     return droppingObject;
 }
 
-Wall *Square::GetWall() {
-    return wall;
+bool Square::IsWall() {
+    return (wall != NULL);
 }
 
 void Square::Clear() const {

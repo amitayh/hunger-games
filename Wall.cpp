@@ -2,11 +2,7 @@
 
 Wall::Wall(Square *square) {
     this->square = square;
-    square->SetWall(this);
-}
-
-Wall::~Wall() {
-    square->SetWall(NULL);
+    square->SetWall(*this);
 }
 
 void Wall::Draw() const {

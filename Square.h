@@ -25,10 +25,10 @@ public:
     void StepOut(Player *player);
     void InitPosition(int row, int col);
     void SetDroppingObject(DroppingObject *droppingObject);
-    void SetWall(Wall *wall);
+    void SetWall(Wall &wall);
     List *GetPlayers();
     DroppingObject *GetDroppingObject();
-    Wall *GetWall();
+    bool IsWall();
 
     void Clear() const;
     void Draw(char ch, Color color = SILVER) const;

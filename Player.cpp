@@ -79,7 +79,7 @@ Square *Player::GetNextMove(Game &game) {
     }
 
     Square *nextSquare = GetNextSquare(grid, square, direction);
-    while (nextSquare->GetWall()) {
+    while (nextSquare->IsWall()) {
         // Change direction to avoid the wall
         SetRandomDirection();
         nextSquare = GetNextSquare(grid, square, direction);
@@ -114,7 +114,7 @@ bool Player::CheckWallsInPath(Grid &grid, const Square *target) const {
     while (current != target) {
         Direction direction = current->GetDirection(target);
         current = GetNextSquare(grid, current, direction);
-        if (current->GetWall()) {
+        if (current->IsWall()) {
             // Found a wall, no need to continue
             return false;
         }
@@ -142,7 +142,7 @@ void Player::SetRandomDirection() {
 
 void Player::ShootArrow(Game &game) {
     Square *arrowSquare = GetNextSquare(game.GetGrid(), square, direction);
-    if (!arrowSquare->GetWall()) {
+    if (!arrowSquare->IsWall()) {
         Arrow *arrow = new Arrow(this, arrowSquare);
         game.AddArrow(arrow);
         lastArrowTick = game.GetTick();
