@@ -11,7 +11,7 @@ void InfoBox::SetSquare(Square *square) {
     this->square = square;
 }
 
-void InfoBox::Draw(List *players) const {
+void InfoBox::Draw(List &players) const {
     ListIterator it(players);
     int row = square->GetRow(), col = square->GetCol();
 

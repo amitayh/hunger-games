@@ -23,8 +23,8 @@ void Player::SetSquare(Square *square) {
         droppingObject.Affect(this);
     }
 
-    List *players = square->GetPlayers();
-    if (!players->IsEmpty()) {
+    List &players = square->GetPlayers();
+    if (!players.IsEmpty()) {
         ListIterator it(players);
         while (power > 0 && !it.Done()) {
             ListNode *node = it.Current();
@@ -88,9 +88,9 @@ Square *Player::GetNextMove(Game &game) {
     return nextSquare;
 }
 
-DroppingObject *Player::FindClosestObject(List *objects) const {
+DroppingObject *Player::FindClosestObject(List &objects) const {
     DroppingObject *closest = NULL;
-    if (!objects->IsEmpty()) {
+    if (!objects.IsEmpty()) {
         double closestDistance = 0, distance;
         DroppingObject *current;
         ListIterator it(objects);
@@ -150,7 +150,7 @@ void Player::ShootArrow(Game &game) {
     }
 }
 
-bool Player::HasPlayersInRange(List *players) const {
+bool Player::HasPlayersInRange(List &players) const {
     ListIterator it(players);
     bool inRange = false;
     while (!inRange && !it.Done()) {

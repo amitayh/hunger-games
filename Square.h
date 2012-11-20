@@ -28,7 +28,7 @@ public:
     void UnsetDroppingObject();
     bool HasDroppingObject();
     void SetWall(Wall &wall);
-    List *GetPlayers();
+    List &GetPlayers();
     DroppingObject &GetDroppingObject();
     bool HasWall();
 

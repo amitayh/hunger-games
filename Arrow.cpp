@@ -31,10 +31,10 @@ void Arrow::Update(Game &game) {
 
 bool Arrow::CheckHit() {
     if (square) {
-        List *players = square->GetPlayers();
-        if (!players->IsEmpty()) {
+        List &players = square->GetPlayers();
+        if (!players.IsEmpty()) {
             // Hit first player on square
-            Player *player = (Player *) players->Peek();
+            Player *player = (Player *) players.Peek();
             player->DecreasePower(500);
             hit = true;
         }

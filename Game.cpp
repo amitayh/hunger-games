@@ -140,12 +140,12 @@ void Game::Update() {
 void Game::Draw() {
     DrawArrows();
     DrawPlayers();
-    infoBox.Draw(&players);
+    infoBox.Draw(players);
     gotoxy(grid.GetCols(), grid.GetRows()); // Hide cursor from main window
 }
 
 void Game::UpdateArrows() {
-    ListIterator it(&arrows);
+    ListIterator it(arrows);
     while (!it.Done()) {
         ListNode *node = it.Current();
         Arrow *arrow = (Arrow *) node->GetData();
@@ -159,7 +159,7 @@ void Game::UpdateArrows() {
 }
 
 void Game::DrawArrows() {
-    ListIterator it(&arrows);
+    ListIterator it(arrows);
     while (!it.Done()) {
         ListNode *node = it.Current();
         Arrow *arrow = (Arrow *) node->GetData();
@@ -168,7 +168,7 @@ void Game::DrawArrows() {
 }
 
 void Game::UpdatePlayers() {
-    ListIterator it(&players);
+    ListIterator it(players);
     while (!it.Done()) {
         ListNode *node = it.Current();
         Player *player = (Player *) node->GetData();
@@ -187,7 +187,7 @@ void Game::UpdatePlayers() {
 }
 
 void Game::DrawPlayers() {
-    ListIterator it(&players);
+    ListIterator it(players);
     while (!it.Done()) {
         ListNode *node = it.Current();
         Player *player = (Player *) node->GetData();
@@ -196,7 +196,7 @@ void Game::DrawPlayers() {
 }
 
 void Game::UpdateDroppingObjects() {
-    ListIterator it(&droppingObjects);
+    ListIterator it(droppingObjects);
     while (!it.Done()) {
         ListNode *node = it.Current();
         DroppingObject *droppingObject = (DroppingObject *) node->GetData();
@@ -208,7 +208,7 @@ void Game::UpdateDroppingObjects() {
 }
 
 void Game::DrawDroppingObjects() {
-    ListIterator it(&droppingObjects);
+    ListIterator it(droppingObjects);
     while (!it.Done()) {
         ListNode *node = it.Current();
         DroppingObject *droppingObject = (DroppingObject *) node->GetData();
@@ -217,7 +217,7 @@ void Game::DrawDroppingObjects() {
 }
 
 void Game::DrawWalls() {
-    ListIterator it(&walls);
+    ListIterator it(walls);
     while (!it.Done()) {
         ListNode *node = it.Current();
         Wall *wall = (Wall *) node->GetData();
@@ -261,7 +261,7 @@ bool Game::IsValidDrop(Square *square) {
         // Square is in the info box's area
         result = false;
     } else {
-        ListIterator it(&players);
+        ListIterator it(players);
         while (result && !it.Done()) {
             ListNode *node = it.Current();
             Player *player = (Player *) node->GetData();
@@ -279,12 +279,12 @@ unsigned int Game::GetTick() const {
     return tick;
 }
 
-List *Game::GetPlayers() {
-    return &players;
+List &Game::GetPlayers() {
+    return players;
 }
 
-List *Game::GetDroppingObjects() {
-    return &droppingObjects;
+List &Game::GetDroppingObjects() {
+    return droppingObjects;
 }
 
 Grid &Game::GetGrid() {

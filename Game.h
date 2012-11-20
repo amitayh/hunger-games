@@ -62,8 +62,8 @@ public:
     void AddArrow(Arrow *arrow);
     bool CheckProbability(int probability) const;
     unsigned int GetTick() const;
-    List *GetPlayers();
-    List *GetDroppingObjects();
+    List &GetPlayers();
+    List &GetDroppingObjects();
     Grid &GetGrid();
     Square *GetValidDropSquare();
 

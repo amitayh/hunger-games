@@ -44,8 +44,8 @@ void Square::SetWall(Wall &wall) {
     this->wall = &wall;
 }
 
-List *Square::GetPlayers() {
-    return &players;
+List &Square::GetPlayers() {
+    return players;
 }
 
 DroppingObject &Square::GetDroppingObject() {
