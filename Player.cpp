@@ -2,11 +2,12 @@
 #include "Game.h"
 #include "DroppingObject.h"
 
-Player::Player(char name, int power, Direction direction) {
+Player::Player(char name, Square *square, int power, Direction direction) {
     this->direction = direction;
     this->name = name;
     this->power = power;
-    square = NULL;
+    this->square = square;
+    square->StepIn(this);
     remainingArrows = INITIAL_NUM_ARROWS;
     lastArrowTick = 0;
 }
@@ -143,8 +144,8 @@ void Player::ShootArrow(Game *game) {
     Grid *grid = game->GetGrid();
     Square *arrowSquare = GetNextSquare(grid, square, direction);
     if (!arrowSquare->GetWall()) {
-        Arrow *arrow = new Arrow(this);
-        game->AddArrow(arrow, arrowSquare);
+        Arrow *arrow = new Arrow(this, arrowSquare);
+        game->AddArrow(arrow);
         lastArrowTick = game->GetTick();
         remainingArrows--;
     }

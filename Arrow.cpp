@@ -2,7 +2,8 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player *shooter) {
+Arrow::Arrow(Player *shooter, Square *square) {
+    this->square = square;
     direction = shooter->GetDirection();
     hit = false;
 }

@@ -38,8 +38,7 @@ void Game::AddPlayer(int row, int col) {
 
 void Game::AddPlayer(Square *square) {
     char name = 'A' + players.GetSize();
-    Player *player = new Player(name);
-    player->SetSquare(square);
+    Player *player = new Player(name, square);
     players.Push(player);
 }
 
@@ -67,8 +66,7 @@ void Game::AddInfoBox(int row, int col) {
     infoBox.SetSquare(grid.GetSquare(row, col));
 }
 
-void Game::AddArrow(Arrow *arrow, Square *square) {
-    arrow->SetSquare(square);
+void Game::AddArrow(Arrow *arrow) {
     arrows.Push(arrow);
 }
 

@@ -59,7 +59,7 @@ public:
     void AddPlayer(Square *square);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
-    void AddArrow(Arrow *arrow, Square *square);
+    void AddArrow(Arrow *arrow);
     bool CheckProbability(int probability) const;
     unsigned int GetTick() const;
     List *GetPlayers();

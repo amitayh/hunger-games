@@ -23,6 +23,7 @@ class Player
     int remainingArrows;
     unsigned int lastArrowTick;
 
+    void SetSquare(Square *square);
     void Fight(Player *oponent);
     void SetRandomDirection();
     void ShootArrow(Game *game);
@@ -34,10 +35,9 @@ class Player
     void StepOut();
 
 public:
-    Player(char name, int power = INITIAL_POWER, Direction direction = RIGHT);
+    Player(char name, Square *square, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
-    void SetSquare(Square *square);
     void Update(Game *game);
     void IncreasePower(int amount);
     void DecreasePower(int amount);
