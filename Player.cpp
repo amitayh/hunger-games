@@ -67,7 +67,7 @@ void Player::Update(Game *game) {
 }
 
 Square *Player::GetNextMove(Game *game) {
-    Grid *grid = game->GetGrid();
+    Grid &grid = game->GetGrid();
 
     // Find closest food / quiver
     DroppingObject *closest = FindClosestObject(game->GetDroppingObjects());
@@ -109,7 +109,7 @@ DroppingObject *Player::FindClosestObject(List *objects) const {
     return NULL;
 }
 
-bool Player::CheckWallsInPath(Grid *grid, const Square *target) const {
+bool Player::CheckWallsInPath(Grid &grid, const Square *target) const {
     Square *current = square;
     while (current != target) {
         Direction direction = current->GetDirection(target);
@@ -141,8 +141,7 @@ void Player::SetRandomDirection() {
 }
 
 void Player::ShootArrow(Game *game) {
-    Grid *grid = game->GetGrid();
-    Square *arrowSquare = GetNextSquare(grid, square, direction);
+    Square *arrowSquare = GetNextSquare(game->GetGrid(), square, direction);
     if (!arrowSquare->GetWall()) {
         Arrow *arrow = new Arrow(this, arrowSquare);
         game->AddArrow(arrow);

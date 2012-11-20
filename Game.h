@@ -64,7 +64,7 @@ public:
     unsigned int GetTick() const;
     List *GetPlayers();
     List *GetDroppingObjects();
-    Grid *GetGrid();
+    Grid &GetGrid();
     Square *GetValidDropSquare();
 
     void Run();

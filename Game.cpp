@@ -289,6 +289,6 @@ List *Game::GetDroppingObjects() {
     return &droppingObjects;
 }
 
-Grid *Game::GetGrid() {
-    return &grid;
+Grid &Game::GetGrid() {
+    return grid;
 }
