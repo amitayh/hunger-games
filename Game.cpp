@@ -44,7 +44,7 @@ void Game::AddPlayer(Square *square) {
 
 void Game::AddWall(int row, int col) {
     Square *square = grid.GetSquare(row, col);
-    if (!square->IsWall()) {
+    if (!square->HasWall()) {
         Wall *wall = new Wall(square);
         walls.Push(wall);
     }

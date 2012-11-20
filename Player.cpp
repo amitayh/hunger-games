@@ -17,10 +17,10 @@ Player::~Player() {
 }
 
 void Player::SetSquare(Square *square) {
-    DroppingObject *droppingObject = square->GetDroppingObject();
-    if (droppingObject) {
+    if (square->HasDroppingObject()) {
+        DroppingObject &droppingObject = square->GetDroppingObject();
         // Pick up dropping object
-        droppingObject->Affect(this);
+        droppingObject.Affect(this);
     }
 
     List *players = square->GetPlayers();
@@ -70,16 +70,19 @@ Square *Player::GetNextMove(Game &game) {
     Grid &grid = game.GetGrid();
 
     // Find closest food / quiver
-    DroppingObject *closest = FindClosestObject(game.GetDroppingObjects());
-    if (closest && CheckWallsInPath(grid, closest->GetSquare())) {
-        direction = square->GetDirection(closest->GetSquare());
-    } else if (game.CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
-        // Randomly change direction
-        SetRandomDirection();
+    List *objects = game.GetDroppingObjects();
+    if (!objects->IsEmpty()) {
+        DroppingObject &closest = FindClosestObject(objects);
+        if (CheckWallsInPath(grid, closest.GetSquare())) {
+            direction = square->GetDirection(closest.GetSquare());
+        } else if (game.CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
+            // Randomly change direction
+            SetRandomDirection();
+        }
     }
 
     Square *nextSquare = GetNextSquare(grid, square, direction);
-    while (nextSquare->IsWall()) {
+    while (nextSquare->HasWall()) {
         // Change direction to avoid the wall
         SetRandomDirection();
         nextSquare = GetNextSquare(grid, square, direction);
@@ -88,25 +91,22 @@ Square *Player::GetNextMove(Game &game) {
     return nextSquare;
 }
 
-DroppingObject *Player::FindClosestObject(List *objects) const {
-    if (!objects->IsEmpty()) {
-        DroppingObject *closest = NULL, *current;
-        double closestDistance = 0, distance;
-        ListIterator it(objects);
-        while (!it.Done()) {
-            current = (DroppingObject *) it.Current()->GetData();
-            if (current->GetType() != DroppingObject::Type::BOMB) {
-                distance = square->GetDistance(current->GetSquare());
-                if (!closest || distance < closestDistance) {
-                    // Found a closer food / quiver
-                    closest = current;
-                    closestDistance = distance;
-                }
+DroppingObject &Player::FindClosestObject(List *objects) const {
+    DroppingObject *closest = NULL, *current;
+    double closestDistance = 0, distance;
+    ListIterator it(objects);
+    while (!it.Done()) {
+        current = (DroppingObject *) it.Current()->GetData();
+        if (current->GetType() != DroppingObject::Type::BOMB) {
+            distance = square->GetDistance(current->GetSquare());
+            if (!closest || distance < closestDistance) {
+                // Found a closer food / quiver
+                closest = current;
+                closestDistance = distance;
             }
         }
-        return closest;
     }
-    return NULL;
+    return *closest;
 }
 
 bool Player::CheckWallsInPath(Grid &grid, const Square *target) const {
@@ -114,7 +114,7 @@ bool Player::CheckWallsInPath(Grid &grid, const Square *target) const {
     while (current != target) {
         Direction direction = current->GetDirection(target);
         current = GetNextSquare(grid, current, direction);
-        if (current->IsWall()) {
+        if (current->HasWall()) {
             // Found a wall, no need to continue
             return false;
         }
@@ -142,7 +142,7 @@ void Player::SetRandomDirection() {
 
 void Player::ShootArrow(Game &game) {
     Square *arrowSquare = GetNextSquare(game.GetGrid(), square, direction);
-    if (!arrowSquare->IsWall()) {
+    if (!arrowSquare->HasWall()) {
         Arrow *arrow = new Arrow(this, arrowSquare);
         game.AddArrow(arrow);
         lastArrowTick = game.GetTick();

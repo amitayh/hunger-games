@@ -24,11 +24,13 @@ public:
     void StepIn(Player *player);
     void StepOut(Player *player);
     void InitPosition(int row, int col);
-    void SetDroppingObject(DroppingObject *droppingObject);
+    void SetDroppingObject(DroppingObject &droppingObject);
+    void UnsetDroppingObject();
+    bool HasDroppingObject();
     void SetWall(Wall &wall);
     List *GetPlayers();
-    DroppingObject *GetDroppingObject();
-    bool IsWall();
+    DroppingObject &GetDroppingObject();
+    bool HasWall();
 
     void Clear() const;
     void Draw(char ch, Color color = SILVER) const;

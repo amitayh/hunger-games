@@ -2,14 +2,14 @@
 #include "Square.h"
 
 DroppingObject::DroppingObject(Type type, Square *square) {
-    square->SetDroppingObject(this);
+    square->SetDroppingObject(*this);
     this->square = square;
     this->type = type;
     pickedUp = false;
 }
 
 DroppingObject::~DroppingObject() {
-    square->SetDroppingObject(NULL);
+    square->UnsetDroppingObject();
     square->Clear();
 }
 

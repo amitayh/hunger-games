@@ -13,7 +13,7 @@ Arrow::~Arrow() {
 }
 
 void Arrow::SetSquare(Square *square) {
-    if (square->IsWall()) {
+    if (square->HasWall()) {
         hit = true;
     } else {
         this->square = square;

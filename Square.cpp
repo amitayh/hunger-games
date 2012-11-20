@@ -28,8 +28,16 @@ void Square::InitPosition(int row, int col) {
     this->col = col;
 }
 
-void Square::SetDroppingObject(DroppingObject *droppingObject) {
-    this->droppingObject = droppingObject;
+void Square::SetDroppingObject(DroppingObject &droppingObject) {
+    this->droppingObject = &droppingObject;
+}
+
+void Square::UnsetDroppingObject() {
+    droppingObject = NULL;
+}
+
+bool Square::HasDroppingObject() {
+    return (droppingObject != NULL);
 }
 
 void Square::SetWall(Wall &wall) {
@@ -40,11 +48,11 @@ List *Square::GetPlayers() {
     return &players;
 }
 
-DroppingObject *Square::GetDroppingObject() {
-    return droppingObject;
+DroppingObject &Square::GetDroppingObject() {
+    return *droppingObject;
 }
 
-bool Square::IsWall() {
+bool Square::HasWall() {
     return (wall != NULL);
 }
 
