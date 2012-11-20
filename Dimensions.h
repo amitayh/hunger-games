@@ -6,12 +6,10 @@ class Dimensions
     int width, height;
 
 public:
-    Dimensions(int width = 1, int height = 1);
+    Dimensions(int width, int height);
 
-    void SetWidth(int width);
-    void SetHeight(int height);
-    int GetWidth();
-    int GetHeight();
+    int GetWidth() const;
+    int GetHeight() const;
 };
 
 #endif

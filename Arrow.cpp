@@ -1,34 +1,40 @@
 #include "Arrow.h"
 #include "Game.h"
+#include "Player.h"
 
-Arrow::Arrow(Player* shooter) {
-    SetDirection(shooter->GetDirection());
-    SetMoveInterval(1);
+Arrow::Arrow(Player *shooter, Square *square) {
+    this->square = square;
+    direction = shooter->GetDirection();
     hit = false;
 }
 
-void Arrow::SetSquare(Square* square) {
+Arrow::~Arrow() {
+    square->Clear();
+}
+
+void Arrow::SetSquare(Square *square) {
     if (square->GetWall()) {
         hit = true;
     } else {
-        MovingObject::SetSquare(square);
+        this->square = square;
         CheckHit();
     }
 }
 
-void Arrow::Update() {
-    if (!CheckHit()) {
-        MovingObject::Update();
+void Arrow::Update(Game *game) {
+    if (!CheckHit() && game->GetTick() % MOVE_INTERVAL == 0) {
+        Square *nextSquare = GetNextSquare(game->GetGrid(), square, direction);
+        square->Clear();
+        SetSquare(nextSquare);
     }
 }
 
 bool Arrow::CheckHit() {
-    Square* square = GetSquare();
     if (square) {
-        List* players = square->GetPlayers();
+        List *players = square->GetPlayers();
         if (!players->IsEmpty()) {
             // Hit first player on square
-            Player* player = (Player*) players->Peek();
+            Player *player = (Player *) players->Peek();
             player->DecreasePower(500);
             hit = true;
         }
@@ -36,9 +42,9 @@ bool Arrow::CheckHit() {
     return hit;
 }
 
-void Arrow::Draw() {
+void Arrow::Draw() const {
     char ch;
-    switch (GetDirection()) {
+    switch (direction) {
         case UP:
             ch = '^';
             break;
@@ -52,12 +58,9 @@ void Arrow::Draw() {
             ch = '>';
             break;
     }
-
-    GotoPosition();
-    ChangeColor(WHITE);
-    cout << ch;
+    square->Draw(ch, WHITE);
 }
 
-bool Arrow::GetHit() {
+bool Arrow::GetHit() const {
     return hit;
 }

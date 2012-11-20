@@ -1,15 +1,17 @@
 #ifndef _WALL_H
 #define _WALL_H
 
-#include "Object.h"
+#include "Square.h"
 
-class Wall : public Object
+class Wall
 {
+    Square *square;
+
 public:
+    Wall(Square *square);
     ~Wall();
 
-    void Draw();
-    void SetSquare(Square* square);
+    void Draw() const;
 };
 
 #endif

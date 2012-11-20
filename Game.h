@@ -5,6 +5,11 @@
 #include "Arrow.h"
 #include "InfoBox.h"
 #include "Menu.h"
+#include "DroppingObject.h"
+#include "Gotoxy.h"
+#include <iostream>
+
+using namespace std;
 
 const int ESCAPSE_KEY = 27;
 
@@ -13,11 +18,11 @@ class Game
     enum {
         FRAMES_PER_SECOND           = 25,
         DROP_FOOD_PROBABILITY       = 2,
-        DROP_QUIVER_PROBABILITY     = 1,
+        DROP_QUIVER_PROBABILITY     = 2,
         DROP_BOMB_PROBABILITY       = 1,
         MIN_DISTANCE_FROM_PLAYERS   = 2,
-        MENU_QUIT                   = 1,
-        MENU_RESUME                 = 2
+        MENU_RESUME                 = 1,
+        MENU_QUIT                   = 2
     };
 
     unsigned int tick;
@@ -41,9 +46,9 @@ class Game
     void DrawDroppingObjects();
     void DrawWalls();
     void DropObjects();
-    void DropObject(DroppingObject* object);
-    void EndGame(Player* winner = NULL);
-    bool IsValidDrop(Square* square);
+    void DropObject(DroppingObject::Type type);
+    void EndGame(Player *winner = NULL);
+    bool IsValidDrop(Square *square);
     void ShowMenu();
 
 public:
@@ -51,17 +56,16 @@ public:
     ~Game();
 
     void AddPlayer(int row, int col);
-    void AddPlayer(Square* square);
+    void AddPlayer(Square *square);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
-    void AddArrow(Arrow* arrow, Square* square);
-    void AddObject(Object* object, int row, int col);
-    void AddObject(Object* object, Square* square);
-    bool CheckProbability(int probability);
-    unsigned int GetTick();
-    Grid* GetGrid();
-    List* GetPlayers();
-    Square* GetValidDropSquare();
+    void AddArrow(Arrow *arrow);
+    bool CheckProbability(int probability) const;
+    unsigned int GetTick() const;
+    List *GetPlayers();
+    List *GetDroppingObjects();
+    Grid *GetGrid();
+    Square *GetValidDropSquare();
 
     void Run();
     void Pause();

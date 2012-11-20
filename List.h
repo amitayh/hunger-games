@@ -5,18 +5,18 @@
 
 class ListNode
 {
-    void* data;
+    void *data;
     ListNode *prev, *next;
 
 public:
-    ListNode(void* data = NULL, ListNode* prev = NULL, ListNode* next = NULL);
+    ListNode(void *data = NULL, ListNode *prev = NULL, ListNode *next = NULL);
 
-    void SetPrev(ListNode* prev);
-    void SetNext(ListNode* next);
+    void SetPrev(ListNode *prev);
+    void SetNext(ListNode *next);
 
-    void* GetData();
-    ListNode* GetNext();
-    ListNode* GetPrev();
+    void *GetData() const;
+    ListNode *GetNext() const;
+    ListNode *GetPrev() const;
 };
 
 class List
@@ -28,28 +28,28 @@ public:
     List();
     ~List();
 
-    void Insert(void* data, ListNode* after);
-    void Remove(ListNode* node);
-    void Push(void* data);
-    void* Pop();
+    void Insert(void *data, ListNode *after);
+    void Remove(ListNode *node);
+    void Push(void *data);
+    void *Pop();
 
-    void* Peek();
-    ListNode* Find(void* data);
-    ListNode* GetHead();
-    ListNode* GetTail();
-    int GetSize();
-    bool IsEmpty();
+    ListNode *Find(const void *data);
+    ListNode *GetHead();
+    ListNode *GetTail();
+    void *Peek() const;
+    int GetSize() const;
+    bool IsEmpty() const;
 };
 
 class ListIterator
 {
-    List* list;
-    ListNode* current;
+    List *list;
+    ListNode *current;
 public:
-    ListIterator(List* list);
+    ListIterator(List *list);
 
-    bool Done();
-    ListNode* Current();
+    ListNode *Current();
+    bool Done() const;
 };
 
 #endif

@@ -16,7 +16,7 @@ Menu::~Menu() {
     }
 }
 
-bool Menu::AddOption(const char* option) {
+bool Menu::AddOption(const char *option) {
     if (numOptions < MAX_OPTIONS) {
         options[numOptions] = strdup(option);
         numOptions++;

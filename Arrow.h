@@ -2,21 +2,29 @@
 #define _ARROW_H
 
 #include "MovingObject.h"
-#include "Player.h"
 
-class Arrow : public MovingObject
+class Game;
+
+class Arrow
 {
+    enum {
+        MOVE_INTERVAL = 1
+    };
+
+    Square *square;
+    Direction direction;
     bool hit;
 
+    void SetSquare(Square *square);
     bool CheckHit();
 
 public:
-    Arrow(Player* shooter);
+    Arrow(Player *shooter, Square *square);
+    ~Arrow();
 
-    void Update();
-    void Draw();
-    void SetSquare(Square* square);
-    bool GetHit();
+    void Update(Game *game);
+    void Draw() const;
+    bool GetHit() const;
 };
 
 #endif

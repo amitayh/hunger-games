@@ -11,7 +11,7 @@ class Grid
     };
 
     int rows, cols;
-    Square** squares;
+    Square **squares;
 
 public:
     Grid(int rows = DEFAULT_NUM_ROWS, int cols = DEFAULT_NUM_COLS);
@@ -19,8 +19,8 @@ public:
     
     int GetRows();
     int GetCols();
-    Square* GetSquare(int row, int col);
-    Square* GetRandomSquare();
+    Square *GetSquare(int row, int col);
+    Square *GetRandomSquare();
 };
 
 #endif
