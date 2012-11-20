@@ -53,8 +53,13 @@ void Player::Update(Game *game) {
             SetSquare(GetNextMove(game));
         }
 
-        // Randomly shoot arrows
-        if (remainingArrows && game->CheckProbability(SHOOT_ARROW_PROBABILITY) && tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS) {
+        // Shoot arrows
+        if (
+            remainingArrows &&
+            game->CheckProbability(SHOOT_ARROW_PROBABILITY) &&
+            tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&
+            HasPlayersInRange(game->GetPlayers())
+        ) {
             ShootArrow(game);
         }
     }
@@ -143,6 +148,50 @@ void Player::ShootArrow(Game *game) {
         lastArrowTick = game->GetTick();
         remainingArrows--;
     }
+}
+
+bool Player::HasPlayersInRange(List *players) const {
+    ListIterator it(players);
+    bool inRange = false;
+    while (!inRange && !it.Done()) {
+        Player *player = (Player *) it.Current()->GetData();
+        if (player != this) {
+            inRange = PlayerInRange(player);
+        }
+    }
+    return inRange;
+}
+
+bool Player::PlayerInRange(Player *oponent) const {
+    const Square *oponentSquare = oponent->GetSquare();
+    Direction oponentDirection = oponent->GetDirection();
+
+    // Yuck
+    if (
+        (direction == RIGHT && square->GetCol() < oponentSquare->GetCol()) ||
+        (direction == LEFT && square->GetCol() > oponentSquare->GetCol())
+    ) {
+        if (oponentDirection == DOWN) {
+            return (square->GetRow() > oponentSquare->GetRow());
+        } else if (oponentDirection == UP) {
+            return (square->GetRow() < oponentSquare->GetRow());
+        } else {
+            return (square->GetRow() == oponentSquare->GetRow());
+        }      
+    } else if (
+        (direction == DOWN && square->GetRow() < oponentSquare->GetRow()) ||
+        (direction == UP && square->GetRow() > oponentSquare->GetRow())
+    ) {
+        if (oponentDirection == RIGHT) {
+            return (square->GetCol() > oponentSquare->GetCol());
+        } else if (oponentDirection == LEFT) {
+            return (square->GetCol() < oponentSquare->GetCol());
+        } else {
+            return (square->GetCol() == oponentSquare->GetCol());
+        }
+    }
+
+    return false;
 }
 
 void Player::Fight(Player *oponent) {

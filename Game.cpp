@@ -284,6 +284,10 @@ unsigned int Game::GetTick() const {
     return tick;
 }
 
+List *Game::GetPlayers() {
+    return &players;
+}
+
 List *Game::GetDroppingObjects() {
     return &droppingObjects;
 }

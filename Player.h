@@ -11,7 +11,7 @@ class Player
         INITIAL_POWER                   = 1000,
         INITIAL_NUM_ARROWS              = 4,
         MIN_TICKS_BETWEEN_ARROWS        = 3,
-        SHOOT_ARROW_PROBABILITY         = 5,
+        SHOOT_ARROW_PROBABILITY         = 20,
         CHANGE_DIRECTION_PROBABILITY    = 5,
         MOVE_INTERVAL                   = 2
     };
@@ -29,6 +29,8 @@ class Player
     Square *GetNextMove(Game *game);
     DroppingObject *FindClosestObject(List *objects) const;
     bool CheckWallsInPath(Grid *grid, const Square *target) const;
+    bool HasPlayersInRange(List* players) const;
+    bool PlayerInRange(Player *oponent) const;
     void StepOut();
 
 public:
