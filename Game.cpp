@@ -103,7 +103,6 @@ void Game::EndGame(Player *winner) {
         cout << ", winner is " << winner->GetName();
     }
     cout << "!" << endl;
-    getch();
 }
 
 void Game::Loop() {

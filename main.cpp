@@ -1,12 +1,14 @@
 ﻿#include "Game.h"
 #include "MapLoader.h"
 
-void main() {
+int main(int argc, char **argv) {
     Game game;
     MapLoader loader = MapLoader(&game);
-    if (loader.Load("C:\\map.txt")) {
+    if (argc > 1 && loader.Load(argv[1])) {
         game.Run();
     } else {
         cout << "Unable to load map file" << endl;
     }
+
+    return EXIT_SUCCESS;
 }

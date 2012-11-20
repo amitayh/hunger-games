@@ -5,7 +5,7 @@ MapLoader::MapLoader(Game *game) {
     this->game = game;
 }
 
-bool MapLoader::Load(const char *filename) {
+bool MapLoader::Load(const string &filename) {
     ifstream map(filename);
     if (map.good()) {
         Grid *grid = game->GetGrid();
