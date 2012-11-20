@@ -2,9 +2,9 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player *shooter, Square *square) {
+Arrow::Arrow(Player &shooter, Square *square) {
     this->square = square;
-    direction = shooter->GetDirection();
+    direction = shooter.GetDirection();
     hit = false;
 }
 

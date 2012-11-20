@@ -20,7 +20,7 @@ void Player::SetSquare(Square *square) {
     if (square->HasDroppingObject()) {
         DroppingObject &droppingObject = square->GetDroppingObject();
         // Pick up dropping object
-        droppingObject.Affect(this);
+        droppingObject.Affect(*this);
     }
 
     List &players = square->GetPlayers();
@@ -29,7 +29,7 @@ void Player::SetSquare(Square *square) {
         while (power > 0 && !it.Done()) {
             ListNode *node = it.Current();
             Player *player = (Player *) node->GetData();
-            Fight(player);
+            Fight(*player);
         }
     }
 
@@ -143,7 +143,7 @@ void Player::SetRandomDirection() {
 void Player::ShootArrow(Game &game) {
     Square *arrowSquare = GetNextSquare(game.GetGrid(), square, direction);
     if (!arrowSquare->HasWall()) {
-        Arrow *arrow = new Arrow(this, arrowSquare);
+        Arrow *arrow = new Arrow(*this, arrowSquare);
         game.AddArrow(arrow);
         lastArrowTick = game.GetTick();
         remainingArrows--;
@@ -156,15 +156,15 @@ bool Player::HasPlayersInRange(List &players) const {
     while (!inRange && !it.Done()) {
         Player *player = (Player *) it.Current()->GetData();
         if (player != this) {
-            inRange = PlayerInRange(player);
+            inRange = PlayerInRange(*player);
         }
     }
     return inRange;
 }
 
-bool Player::PlayerInRange(Player *oponent) const {
-    const Square *oponentSquare = oponent->GetSquare();
-    Direction oponentDirection = oponent->GetDirection();
+bool Player::PlayerInRange(Player &oponent) const {
+    const Square *oponentSquare = oponent.GetSquare();
+    Direction oponentDirection = oponent.GetDirection();
 
     // Yuck
     if (
@@ -194,18 +194,18 @@ bool Player::PlayerInRange(Player *oponent) const {
     return false;
 }
 
-void Player::Fight(Player *oponent) {
-    if (power > oponent->GetPower()) {
+void Player::Fight(Player &oponent) {
+    if (power > oponent.GetPower()) {
         // Player is stronger than oponent
-        oponent->DecreasePower(200);
+        oponent.DecreasePower(200);
         DecreasePower(10);
-    } else if (power < oponent->GetPower()) {
+    } else if (power < oponent.GetPower()) {
         // Player is weaker than oponent
-        oponent->DecreasePower(10);
+        oponent.DecreasePower(10);
         DecreasePower(200);
     } else {
         // Player and oponent are equal
-        oponent->DecreasePower(50);
+        oponent.DecreasePower(50);
         DecreasePower(50);
     }
 }

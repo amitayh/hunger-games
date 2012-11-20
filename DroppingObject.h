@@ -15,7 +15,7 @@ public:
     DroppingObject(Type type, Square *square);
     ~DroppingObject();
 
-    void Affect(Player *player);
+    void Affect(Player &player);
     Square *GetSquare();
 
     void Draw() const;

@@ -24,14 +24,14 @@ class Player
     unsigned int lastArrowTick;
 
     void SetSquare(Square *square);
-    void Fight(Player *oponent);
+    void Fight(Player &oponent);
     void SetRandomDirection();
     void ShootArrow(Game &game);
     Square *GetNextMove(Game &game);
     DroppingObject *FindClosestObject(List &objects) const;
     bool CheckWallsInPath(Grid &grid, const Square *target) const;
     bool HasPlayersInRange(List &players) const;
-    bool PlayerInRange(Player *oponent) const;
+    bool PlayerInRange(Player &oponent) const;
     void StepOut();
 
 public:

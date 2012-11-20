@@ -13,16 +13,16 @@ DroppingObject::~DroppingObject() {
     square->Clear();
 }
 
-void DroppingObject::Affect(Player *player) {
+void DroppingObject::Affect(Player &player) {
     switch (type) {
         case FOOD:
-            player->IncreasePower(200);
+            player.IncreasePower(200);
             break;
         case QUIVER:
-            player->AddArrows(3);
+            player.AddArrows(3);
             break;
         case BOMB:
-            player->DecreasePower(750);
+            player.DecreasePower(750);
             break;
     }
     pickedUp = true;

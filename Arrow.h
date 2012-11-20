@@ -19,7 +19,7 @@ class Arrow
     bool CheckHit();
 
 public:
-    Arrow(Player *shooter, Square *square);
+    Arrow(Player &shooter, Square *square);
     ~Arrow();
 
     void Update(Game &game);
