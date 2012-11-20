@@ -26,7 +26,8 @@ class Player
     void Fight(Player *oponent);
     void SetRandomDirection();
     void ShootArrow(Game *game);
-    DroppingObject *FindClosestObject(Game *game) const;
+    Square *GetNextMove(Game *game);
+    DroppingObject *FindClosestObject(List *objects) const;
     bool CheckWallsInPath(Grid *grid, const Square *target) const;
     void StepOut();
 

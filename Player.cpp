@@ -47,27 +47,10 @@ void Player::StepOut() {
 void Player::Update(Game *game) {
     if (power > 0) {
         unsigned int tick = game->GetTick();
-        Grid *grid = game->GetGrid();
 
         // Move
         if (tick % MOVE_INTERVAL == 0) {
-            // Find closest food / quiver
-            DroppingObject *closest = FindClosestObject(game);
-            if (closest && CheckWallsInPath(grid, closest->GetSquare())) {
-                direction = square->GetDirection(closest->GetSquare());
-            } else if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
-                // Randomly change direction
-                SetRandomDirection();
-            }
-
-            Square *nextSquare = GetNextSquare(grid, square, direction);
-            while (nextSquare->GetWall()) {
-                // Change direction to avoid the wall
-                SetRandomDirection();
-                nextSquare = GetNextSquare(grid, square, direction);
-            }
-            square->Clear();
-            SetSquare(nextSquare);
+            SetSquare(GetNextMove(game));
         }
 
         // Randomly shoot arrows
@@ -77,23 +60,33 @@ void Player::Update(Game *game) {
     }
 }
 
-void Player::ShootArrow(Game *game) {
+Square *Player::GetNextMove(Game *game) {
     Grid *grid = game->GetGrid();
-    Square *arrowSquare = GetNextSquare(grid, square, direction);
-    if (!arrowSquare->GetWall()) {
-        Arrow *arrow = new Arrow(this);
-        game->AddArrow(arrow, arrowSquare);
-        lastArrowTick = game->GetTick();
-        remainingArrows--;
+
+    // Find closest food / quiver
+    DroppingObject *closest = FindClosestObject(game->GetDroppingObjects());
+    if (closest && CheckWallsInPath(grid, closest->GetSquare())) {
+        direction = square->GetDirection(closest->GetSquare());
+    } else if (game->CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
+        // Randomly change direction
+        SetRandomDirection();
     }
+
+    Square *nextSquare = GetNextSquare(grid, square, direction);
+    while (nextSquare->GetWall()) {
+        // Change direction to avoid the wall
+        SetRandomDirection();
+        nextSquare = GetNextSquare(grid, square, direction);
+    }
+
+    return nextSquare;
 }
 
-DroppingObject *Player::FindClosestObject(Game *game) const {
-    List *droppingObjects = game->GetDroppingObjects();
-    if (!droppingObjects->IsEmpty()) {
+DroppingObject *Player::FindClosestObject(List *objects) const {
+    if (!objects->IsEmpty()) {
         DroppingObject *closest = NULL, *current;
         double closestDistance = 0, distance;
-        ListIterator it(droppingObjects);
+        ListIterator it(objects);
         while (!it.Done()) {
             current = (DroppingObject *) it.Current()->GetData();
             if (current->GetType() != DroppingObject::Type::BOMB) {
@@ -122,6 +115,34 @@ bool Player::CheckWallsInPath(Grid *grid, const Square *target) const {
     }
     // The path is clear!
     return true;
+}
+
+void Player::SetRandomDirection() {
+    Direction directions[2];
+    switch (direction) {
+        case UP:
+        case DOWN:
+            directions[0] = LEFT;
+            directions[1] = RIGHT;
+            break;
+        case LEFT:
+        case RIGHT:
+            directions[0] = UP;
+            directions[1] = DOWN;
+            break;
+    }
+    direction = directions[rand() % 2];
+}
+
+void Player::ShootArrow(Game *game) {
+    Grid *grid = game->GetGrid();
+    Square *arrowSquare = GetNextSquare(grid, square, direction);
+    if (!arrowSquare->GetWall()) {
+        Arrow *arrow = new Arrow(this);
+        game->AddArrow(arrow, arrowSquare);
+        lastArrowTick = game->GetTick();
+        remainingArrows--;
+    }
 }
 
 void Player::Fight(Player *oponent) {
@@ -170,23 +191,6 @@ int Player::GetRemainingArrows() const {
 
 Direction Player::GetDirection() const {
     return direction;
-}
-
-void Player::SetRandomDirection() {
-    Direction directions[2];
-    switch (direction) {
-        case UP:
-        case DOWN:
-            directions[0] = LEFT;
-            directions[1] = RIGHT;
-            break;
-        case LEFT:
-        case RIGHT:
-            directions[0] = UP;
-            directions[1] = DOWN;
-            break;
-    }
-    direction = directions[rand() % 2];
 }
 
 void Player::Draw() const {
