@@ -11,17 +11,17 @@ class InfoBox
         HEIGHT = 5
     };
 
-    Square *pSquare;
+    Square* pSquare;
     Dimensions size;
 
 public:
     InfoBox();
 
-    void SetSquare(Square &square);
+    void setSquare(Square& square);
 
-    void Draw(const List &players) const;
-    const Dimensions& GetSize() const;
-    bool InArea(const Square &square) const;
+    void draw(const List& players) const;
+    const Dimensions& getSize() const;
+    bool inArea(const Square& square) const;
 };
 
 #endif

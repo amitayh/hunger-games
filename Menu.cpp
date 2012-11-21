@@ -16,7 +16,7 @@ Menu::~Menu() {
     }
 }
 
-bool Menu::AddOption(const char *option) {
+bool Menu::addOption(const char* option) {
     if (numOptions < MAX_OPTIONS) {
         options[numOptions] = strdup(option);
         numOptions++;
@@ -25,10 +25,10 @@ bool Menu::AddOption(const char *option) {
     return false;
 }
 
-int Menu::Choose() const {
+int Menu::choose() const {
     clrscr();
     gotoxy(0, 0);
-    ChangeColor(SILVER);
+    changeColor(SILVER);
 
     cout << "Choose an option" << endl;
     cout << "----------------" << endl;

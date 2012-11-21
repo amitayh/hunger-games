@@ -42,42 +42,42 @@ class Game
     InfoBox infoBox;
     Menu menu;
 
-    void Loop();
-    void Update();
-    void UpdatePlayers();
-    void UpdateArrows();
-    void UpdateDroppingObjects();
-    void DropObjects();
-    void DropObject(DroppingObject::Type type);
-    void EndGame(const Player *winner = NULL);
-    void ShowMenu();
+    void loop();
+    void update();
+    void updatePlayers();
+    void updateArrows();
+    void updateDroppingObjects();
+    void dropObjects();
+    void dropObject(DroppingObject::Type type);
+    void endGame(const Player* winner = NULL);
+    void showMenu();
 
-    void Draw() const;
-    void DrawPlayers() const;
-    void DrawArrows() const;
-    void DrawDroppingObjects() const;
-    void DrawWalls() const;
-    bool IsValidDrop(const Square &square) const;
+    void draw() const;
+    void drawPlayers() const;
+    void drawArrows() const;
+    void drawDroppingObjects() const;
+    void drawWalls() const;
+    bool isValidDrop(const Square& square) const;
 
 public:
     Game();
     ~Game();
 
-    void Run();
-    void Pause();
-    void Resume();
-    void AddPlayer(int row, int col);
-    void AddPlayer(Square &square);
-    void AddWall(int row, int col);
-    void AddInfoBox(int row, int col);
-    void AddArrow(Arrow &arrow);
+    void run();
+    void pause();
+    void resume();
+    void addPlayer(int row, int col);
+    void addPlayer(Square& square);
+    void addWall(int row, int col);
+    void addInfoBox(int row, int col);
+    void addArrow(Arrow& arrow);
     
-    const List &GetPlayers() const;
-    const List &GetDroppingObjects() const;
-    const Grid &GetGrid() const;
-    Square &GetValidDropSquare() const;
-    bool CheckProbability(int probability) const;
-    unsigned int GetTick() const;
+    const List& getPlayers() const;
+    const List& getDroppingObjects() const;
+    const Grid& getGrid() const;
+    Square& getValidDropSquare() const;
+    bool checkProbability(int probability) const;
+    unsigned int getTick() const;
 };
 
 #endif

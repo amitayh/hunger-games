@@ -5,12 +5,12 @@
 
 class Wall
 {
-    Square *pSquare;
+    Square* pSquare;
 
 public:
-    Wall(Square &square);
+    Wall(Square& square);
 
-    void Draw() const;
+    void draw() const;
 };
 
 #endif

@@ -8,8 +8,8 @@ class Dimensions
 public:
     Dimensions(int width, int height);
 
-    int GetWidth() const;
-    int GetHeight() const;
+    int getWidth() const;
+    int getHeight() const;
 };
 
 #endif

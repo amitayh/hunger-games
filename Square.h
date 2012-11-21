@@ -16,30 +16,30 @@ class Square
 {
     int row, col;
     List players;
-    DroppingObject *pDroppingObject;
-    Wall *pWall;
+    DroppingObject* pDroppingObject;
+    Wall* pWall;
 
 public:
     Square();
 
-    void StepIn(const Player &player);
-    void StepOut(const Player &player);
-    void InitPosition(int row, int col);
-    void SetDroppingObject(DroppingObject &droppingObject);
-    void UnsetDroppingObject();
-    void SetWall(Wall &wall);
+    void stepIn(const Player& player);
+    void stepOut(const Player& player);
+    void initPosition(int row, int col);
+    void setDroppingObject(DroppingObject& droppingObject);
+    void unsetDroppingObject();
+    void setWall(Wall& wall);
 
-    void Clear() const;
-    void Draw(char ch, Color color = SILVER) const;
-    double GetDistance(const Square &otherSquare) const;
-    Direction GetDirection(const Square &otherSquare) const;
-    DroppingObject &GetDroppingObject() const;
-    const List &GetPlayers() const;
-    bool HasDroppingObject() const;
-    bool HasWall() const;
-    bool IsEmpty() const;
-    int GetRow() const;
-    int GetCol() const;
+    void clear() const;
+    void draw(char ch, Color color = SILVER) const;
+    double getDistance(const Square& otherSquare) const;
+    Direction getDirection(const Square& otherSquare) const;
+    DroppingObject& getDroppingObject() const;
+    const List& getPlayers() const;
+    bool hasDroppingObject() const;
+    bool hasWall() const;
+    bool isEmpty() const;
+    int getRow() const;
+    int getCol() const;
 };
 
 #endif

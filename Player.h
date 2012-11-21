@@ -16,40 +16,40 @@ class Player
         MOVE_INTERVAL                   = 2
     };
 
-    Square *pSquare;
+    Square* pSquare;
     Direction direction;
     char name;
     int power;
     int remainingArrows;
     unsigned int lastArrowTick;
 
-    void SetSquare(Square &square);
-    void Fight(Player &opponent);
-    void SetRandomDirection();
-    void ShootArrow(Game &game);
-    Square &GetNextMove(Game &game);
+    void setSquare(Square& square);
+    void fight(Player& opponent);
+    void setRandomDirection();
+    void shootArrow(Game& game);
+    Square& getNextMove(Game& game);
 
-    DroppingObject *FindClosestObject(const List &objects) const;
-    bool CheckWallsInPath(const Grid &grid, const Square &target) const;
-    bool HasPlayersInRange(const List &players) const;
-    bool PlayerInRange(const Player &opponent) const;
-    void StepOut() const;
+    DroppingObject* findClosestObject(const List& objects) const;
+    bool checkWallsInPath(const Grid& grid, const Square& target) const;
+    bool hasPlayersInRange(const List& players) const;
+    bool playerInRange(const Player& opponent) const;
+    void stepOut() const;
 
 public:
-    Player(char name, Square &square, int power = INITIAL_POWER, Direction direction = RIGHT);
+    Player(char name, Square& square, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
-    void Update(Game &game);
-    void IncreasePower(int amount);
-    void DecreasePower(int amount);
-    void AddArrows(int amount);
+    void update(Game& game);
+    void increasePower(int amount);
+    void decreasePower(int amount);
+    void addArrows(int amount);
 
-    char GetName() const;
-    int GetPower() const;
-    int GetRemainingArrows() const;
-    Direction GetDirection() const;
-    const Square &GetSquare() const;
-    void Draw() const;
+    char getName() const;
+    int getPower() const;
+    int getRemainingArrows() const;
+    Direction getDirection() const;
+    const Square& getSquare() const;
+    void draw() const;
 };
 
 #endif

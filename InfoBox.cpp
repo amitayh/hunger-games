@@ -7,28 +7,28 @@ using namespace std;
 
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
-void InfoBox::SetSquare(Square &square) {
+void InfoBox::setSquare(Square& square) {
     pSquare = &square;
 }
 
-void InfoBox::Draw(const List &players) const {
+void InfoBox::draw(const List& players) const {
     ListIterator it(players);
-    int row = pSquare->GetRow(), col = pSquare->GetCol();
+    int row = pSquare->getRow(), col = pSquare->getCol();
 
-    ChangeColor(SILVER);
+    changeColor(SILVER);
     
     gotoxy(col, row);
     cout << "P HP   A";
     gotoxy(col, row + 1);
     cout << "----------";
 
-    for (int i = 2; i < size.GetHeight(); i++) {
+    for (int i = 2; i < size.getHeight(); i++) {
         gotoxy(col, row + i);
-        if (!it.Done()) {
+        if (!it.done()) {
             // Print player info
-            ListNode *node = it.Current();
-            Player *player = (Player *) node->GetData();
-            printf("%c %-4d %-3d\n", player->GetName(), player->GetPower(), player->GetRemainingArrows());
+            ListNode* node = it.getCurrent();
+            Player* player = (Player*) node->getData();
+            printf("%c %-4d %-3d\n", player->getName(), player->getPower(), player->getRemainingArrows());
         } else {
             // Print empty line
             cout << "          ";
@@ -36,17 +36,17 @@ void InfoBox::Draw(const List &players) const {
     }
 }
 
-const Dimensions& InfoBox::GetSize() const {
+const Dimensions& InfoBox::getSize() const {
     return size;
 }
 
-bool InfoBox::InArea(const Square &square) const {
-    int row = square.GetRow(),
-        col = square.GetCol(),
-        rowMin = pSquare->GetRow(),
-        rowMax = rowMin + size.GetHeight(),
-        colMin = pSquare->GetCol(),
-        colMax = colMin + size.GetWidth();
+bool InfoBox::inArea(const Square& square) const {
+    int row = square.getRow(),
+        col = square.getCol(),
+        rowMin = pSquare->getRow(),
+        rowMax = rowMin + size.getHeight(),
+        colMin = pSquare->getCol(),
+        colMax = colMin + size.getWidth();
 
     return (row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
 }

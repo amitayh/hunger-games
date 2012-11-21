@@ -11,21 +11,21 @@ class Arrow
         MOVE_INTERVAL = 1
     };
 
-    Square *pSquare;
+    Square* pSquare;
     Direction direction;
     bool hit;
 
-    void SetSquare(Square &square);
-    bool CheckHit();
+    void setSquare(Square& square);
+    bool checkHit();
 
 public:
-    Arrow(Player &shooter, Square &square);
+    Arrow(Player& shooter, Square& square);
     ~Arrow();
 
-    void Update(Game &game);
+    void update(Game& game);
 
-    void Draw() const;
-    bool GetHit() const;
+    void draw() const;
+    bool getHit() const;
 };
 
 #endif

@@ -2,47 +2,47 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player &shooter, Square &square) {
+Arrow::Arrow(Player& shooter, Square& square) {
     pSquare = &square;
-    direction = shooter.GetDirection();
+    direction = shooter.getDirection();
     hit = false;
 }
 
 Arrow::~Arrow() {
-    pSquare->Clear();
+    pSquare->clear();
 }
 
-void Arrow::SetSquare(Square &square) {
-    if (square.HasWall()) {
+void Arrow::setSquare(Square& square) {
+    if (square.hasWall()) {
         hit = true;
     } else {
-        this->pSquare = &square;
-        CheckHit();
+        pSquare = &square;
+        checkHit();
     }
 }
 
-void Arrow::Update(Game &game) {
-    if (!CheckHit() && game.GetTick() % MOVE_INTERVAL == 0) {
-        Square &nextSquare = GetNextSquare(game.GetGrid(), *pSquare, direction);
-        pSquare->Clear();
-        SetSquare(nextSquare);
+void Arrow::update(Game& game) {
+    if (!checkHit() && game.getTick() % MOVE_INTERVAL == 0) {
+        Square& nextSquare = getNextSquare(game.getGrid(), *pSquare, direction);
+        pSquare->clear();
+        setSquare(nextSquare);
     }
 }
 
-bool Arrow::CheckHit() {
+bool Arrow::checkHit() {
     if (pSquare) {
-        const List &players = pSquare->GetPlayers();
-        if (!players.IsEmpty()) {
+        const List& players = pSquare->getPlayers();
+        if (!players.isEmpty()) {
             // Hit first player on square
-            Player *player = (Player *) players.Peek();
-            player->DecreasePower(500);
+            Player* player = (Player*) players.peek();
+            player->decreasePower(500);
             hit = true;
         }
     }
     return hit;
 }
 
-void Arrow::Draw() const {
+void Arrow::draw() const {
     char ch;
     switch (direction) {
         case UP:
@@ -58,9 +58,9 @@ void Arrow::Draw() const {
             ch = '>';
             break;
     }
-    pSquare->Draw(ch, WHITE);
+    pSquare->draw(ch, WHITE);
 }
 
-bool Arrow::GetHit() const {
+bool Arrow::getHit() const {
     return hit;
 }

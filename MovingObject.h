@@ -10,6 +10,6 @@ enum Direction {
     RIGHT
 };
 
-Square &GetNextSquare(const Grid &grid, const Square &square, Direction direction);
+Square& getNextSquare(const Grid& grid, const Square& square, Direction direction);
 
 #endif

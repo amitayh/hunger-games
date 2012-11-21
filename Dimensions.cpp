@@ -5,10 +5,10 @@ Dimensions::Dimensions(int width, int height) {
     this->height = height;
 }
 
-int Dimensions::GetWidth() const {
+int Dimensions::getWidth() const {
     return width;
 }
 
-int Dimensions::GetHeight() const {
+int Dimensions::getHeight() const {
     return height;
 }

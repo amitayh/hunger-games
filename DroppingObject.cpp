@@ -1,38 +1,38 @@
 #include "DroppingObject.h"
 #include "Square.h"
 
-DroppingObject::DroppingObject(Type type, Square &square) {
-    square.SetDroppingObject(*this);
+DroppingObject::DroppingObject(Type type, Square& square) {
+    square.setDroppingObject(*this);
     this->type = type;
     pSquare = &square;
     pickedUp = false;
 }
 
 DroppingObject::~DroppingObject() {
-    pSquare->UnsetDroppingObject();
-    pSquare->Clear();
+    pSquare->unsetDroppingObject();
+    pSquare->clear();
 }
 
-void DroppingObject::Affect(Player &player) {
+void DroppingObject::affect(Player& player) {
     switch (type) {
         case FOOD:
-            player.IncreasePower(200);
+            player.increasePower(200);
             break;
         case QUIVER:
-            player.AddArrows(3);
+            player.addArrows(3);
             break;
         case BOMB:
-            player.DecreasePower(750);
+            player.decreasePower(750);
             break;
     }
     pickedUp = true;
 }
 
-Square &DroppingObject::GetSquare() const {
+Square& DroppingObject::getSquare() const {
     return *pSquare;
 }
 
-void DroppingObject::Draw() const {
+void DroppingObject::draw() const {
     char ch;
     Color color;
     switch (type) {
@@ -49,13 +49,13 @@ void DroppingObject::Draw() const {
             color = RED;
             break;
     }
-    pSquare->Draw(ch, color);
+    pSquare->draw(ch, color);
 }
 
-bool DroppingObject::GetPickedUp() const {
+bool DroppingObject::getPickedUp() const {
     return pickedUp;
 }
 
-DroppingObject::Type DroppingObject::GetType() const {
+DroppingObject::Type DroppingObject::getType() const {
     return type;
 }

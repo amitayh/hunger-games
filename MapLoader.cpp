@@ -1,16 +1,16 @@
 #include "MapLoader.h"
 #include <fstream>
 
-MapLoader::MapLoader(Game &game) {
+MapLoader::MapLoader(Game& game) {
     pGame = &game;
 }
 
-bool MapLoader::Load(const string &filename) const {
+bool MapLoader::load(const string& filename) const {
     ifstream map(filename);
     if (map.good()) {
-        const Grid &grid = pGame->GetGrid();
-        int rows = grid.GetRows(),
-            cols = grid.GetCols();
+        const Grid& grid = pGame->getGrid();
+        int rows = grid.getRows(),
+            cols = grid.getCols();
 
         int players = 0; // Players counter
         bool addedInfoBox = false; // Info box flag
@@ -23,15 +23,15 @@ bool MapLoader::Load(const string &filename) const {
                 }
                 switch (map.get()) {
                     case CHAR_WALL:
-                        pGame->AddWall(row, col);
+                        pGame->addWall(row, col);
                         break;
                     case CHAR_PLAYER:
-                        pGame->AddPlayer(row, col);
+                        pGame->addPlayer(row, col);
                         players++;
                         break;
                     case CHAR_INFO_BOX:
                         if (!addedInfoBox) {
-                            pGame->AddInfoBox(row, col);
+                            pGame->addInfoBox(row, col);
                             addedInfoBox = true;
                         }
                         break;
@@ -42,7 +42,7 @@ bool MapLoader::Load(const string &filename) const {
 
         // Add additional players if needed
         for (int i = players; i < MIN_NUM_PLAYERS; i++) {
-            pGame->AddPlayer(pGame->GetValidDropSquare());
+            pGame->addPlayer(pGame->getValidDropSquare());
         }
 
         map.close(); // Close map file

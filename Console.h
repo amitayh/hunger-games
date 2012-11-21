@@ -20,6 +20,6 @@ enum Color {
     WHITE   = 15
 };
 
-void ChangeColor(Color color);
+void changeColor(Color color);
 
 #endif

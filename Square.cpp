@@ -14,73 +14,73 @@ Square::Square() {
     pWall = NULL;
 }
 
-void Square::StepIn(const Player &player) {
-    players.Push(&player);
+void Square::stepIn(const Player& player) {
+    players.push(&player);
 }
 
-void Square::StepOut(const Player &player) {
-    ListNode *node = players.Find(&player);
-    players.Remove(node);
+void Square::stepOut(const Player& player) {
+    ListNode* node = players.find(&player);
+    players.remove(node);
 }
 
-void Square::InitPosition(int row, int col) {
+void Square::initPosition(int row, int col) {
     this->row = row;
     this->col = col;
 }
 
-void Square::SetDroppingObject(DroppingObject &droppingObject) {
+void Square::setDroppingObject(DroppingObject& droppingObject) {
     pDroppingObject = &droppingObject;
 }
 
-void Square::UnsetDroppingObject() {
+void Square::unsetDroppingObject() {
     pDroppingObject = NULL;
 }
 
-void Square::SetWall(Wall &wall) {
+void Square::setWall(Wall& wall) {
     pWall = &wall;
 }
 
-const List &Square::GetPlayers() const {
+const List& Square::getPlayers() const {
     return players;
 }
 
-DroppingObject &Square::GetDroppingObject() const {
+DroppingObject& Square::getDroppingObject() const {
     return *pDroppingObject;
 }
 
-void Square::Clear() const {
+void Square::clear() const {
     if (pDroppingObject) {
         // Draw dropping object
-        pDroppingObject->Draw();
+        pDroppingObject->draw();
     } else {
         // Blank square
-        Draw(' ');
+        draw(' ');
     }
 }
 
-bool Square::HasDroppingObject() const {
+bool Square::hasDroppingObject() const {
     return (pDroppingObject != NULL);
 }
 
-bool Square::HasWall() const {
+bool Square::hasWall() const {
     return (pWall != NULL);
 }
 
-void Square::Draw(char ch, Color color) const {
+void Square::draw(char ch, Color color) const {
     gotoxy(col, row);
-    ChangeColor(color);
+    changeColor(color);
     cout << ch;
 }
 
-double Square::GetDistance(const Square &otherSquare) const {
+double Square::getDistance(const Square& otherSquare) const {
     // Distance function: sqrt(dx^2+dy^2), where dx=x2-x1, dy=y2-y1
-    double deltaX = col - otherSquare.GetCol(), deltaY = row - otherSquare.GetRow();
+    double deltaX = col - otherSquare.getCol(), deltaY = row - otherSquare.getRow();
     return sqrt((deltaX * deltaX) + (deltaY * deltaY));
 }
 
-Direction Square::GetDirection(const Square &otherSquare) const {
-    double deltaY = row - otherSquare.GetRow(),
-           deltaX = col - otherSquare.GetCol(),
+Direction Square::getDirection(const Square& otherSquare) const {
+    double deltaY = row - otherSquare.getRow(),
+           deltaX = col - otherSquare.getCol(),
            angle = atan2(deltaY, deltaX) / PI;
 
     Direction direction;
@@ -97,14 +97,14 @@ Direction Square::GetDirection(const Square &otherSquare) const {
     return direction;
 }
 
-bool Square::IsEmpty() const {
-    return (!pDroppingObject && !pWall && players.IsEmpty());
+bool Square::isEmpty() const {
+    return (!pDroppingObject && !pWall && players.isEmpty());
 }
 
-int Square::GetRow() const {
+int Square::getRow() const {
     return row;
 }
 
-int Square::GetCol() const {
+int Square::getCol() const {
     return col;
 }

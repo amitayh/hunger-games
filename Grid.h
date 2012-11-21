@@ -11,16 +11,16 @@ class Grid
     };
 
     int rows, cols;
-    Square **squares;
+    Square** squares;
 
 public:
     Grid(int rows = DEFAULT_NUM_ROWS, int cols = DEFAULT_NUM_COLS);
     ~Grid();
     
-    Square &GetSquare(int row, int col) const;
-    Square &GetRandomSquare() const;
-    int GetRows() const;
-    int GetCols() const;
+    Square& getSquare(int row, int col) const;
+    Square& getRandomSquare() const;
+    int getRows() const;
+    int getCols() const;
 };
 
 #endif

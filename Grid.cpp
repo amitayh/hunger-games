@@ -6,7 +6,7 @@ Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
     for (int row = 0; row < rows; row++) {
         squares[row] = new Square[cols];
         for (int col = 0; col < cols; col++) {
-            squares[row][col].InitPosition(row, col);
+            squares[row][col].initPosition(row, col);
         }
     }
 }
@@ -19,7 +19,7 @@ Grid::~Grid() {
     delete []squares;
 }
 
-Square &Grid::GetSquare(int row, int col) const {
+Square& Grid::getSquare(int row, int col) const {
     // Stay in grid's boundaries
     if (row >= rows) {
         row %= rows;
@@ -34,15 +34,15 @@ Square &Grid::GetSquare(int row, int col) const {
     return squares[row][col];
 }
 
-Square &Grid::GetRandomSquare() const {
+Square& Grid::getRandomSquare() const {
     int row = rand() % rows, col = rand() % cols;
-    return GetSquare(row, col);
+    return getSquare(row, col);
 }
 
-int Grid::GetRows() const {
+int Grid::getRows() const {
     return rows;
 }
 
-int Grid::GetCols() const {
+int Grid::getCols() const {
     return cols;
 }

@@ -5,16 +5,16 @@ const int MAX_OPTIONS = 5;
 
 class Menu
 {
-    char *options[MAX_OPTIONS];
+    char* options[MAX_OPTIONS];
     int numOptions;
 
 public:
     Menu();
     ~Menu();
 
-    bool AddOption(const char *option);
+    bool addOption(const char* option);
 
-    int Menu::Choose() const;
+    int choose() const;
 };
 
 #endif

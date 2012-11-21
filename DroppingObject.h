@@ -12,15 +12,15 @@ public:
         BOMB
     };
 
-    DroppingObject(Type type, Square &square);
+    DroppingObject(Type type, Square& square);
     ~DroppingObject();
 
-    void Affect(Player &player);
+    void affect(Player& player);
 
-    void Draw() const;
-    bool GetPickedUp() const;
-    Square &GetSquare() const;
-    Type GetType() const;
+    void draw() const;
+    bool getPickedUp() const;
+    Square& getSquare() const;
+    Type getType() const;
 
 private:
     Square *pSquare;

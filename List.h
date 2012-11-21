@@ -5,18 +5,19 @@
 
 class ListNode
 {
-    const void *data;
-    ListNode *prev, *next;
+    const void* data;
+    ListNode* prev;
+    ListNode* next;
 
 public:
-    ListNode(const void *data = NULL, ListNode *prev = NULL, ListNode *next = NULL);
+    ListNode(const void* data = NULL, ListNode* prev = NULL, ListNode* next = NULL);
 
-    void SetPrev(ListNode *prev);
-    void SetNext(ListNode *next);
+    void setPrev(ListNode* prev);
+    void setNext(ListNode* next);
 
-    const void *GetData() const;
-    ListNode *GetNext() const;
-    ListNode *GetPrev() const;
+    const void* getData() const;
+    ListNode* getNext() const;
+    ListNode* getPrev() const;
 };
 
 class List
@@ -28,29 +29,29 @@ public:
     List();
     ~List();
 
-    void Insert(const void *data, ListNode *after);
-    void Remove(ListNode *node);
-    void Push(const void *data);
-    const void *Pop();
+    void insert(const void* data, ListNode* after);
+    void remove(ListNode* node);
+    void push(const void* data);
+    const void* pop();
 
-    ListNode *Find(const void *data) const;
-    const ListNode *GetHead() const;
-    const ListNode *GetTail() const;
-    const void *Peek() const;
-    int GetSize() const;
-    bool IsEmpty() const;
+    ListNode* find(const void* data) const;
+    const ListNode* getHead() const;
+    const ListNode* getTail() const;
+    const void* peek() const;
+    int getSize() const;
+    bool isEmpty() const;
 };
 
 class ListIterator
 {
-    const List *list;
-    ListNode *current;
+    const List* list;
+    ListNode* current;
 public:
-    ListIterator(const List &list);
+    ListIterator(const List& list);
 
-    ListNode *Current();
+    ListNode* getCurrent();
 
-    bool Done() const;
+    bool done() const;
 };
 
 #endif
