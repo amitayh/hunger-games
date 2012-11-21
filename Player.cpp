@@ -13,18 +13,20 @@ Player::Player(char name, Square &square, int power, Direction direction) {
 }
 
 Player::~Player() {
+    // Clear square before deletion
     StepOut();
 }
 
 void Player::SetSquare(Square &square) {
     if (square.HasDroppingObject()) {
-        DroppingObject &droppingObject = square.GetDroppingObject();
         // Pick up dropping object
+        DroppingObject &droppingObject = square.GetDroppingObject();
         droppingObject.Affect(*this);
     }
 
-    List &players = square.GetPlayers();
+    const List &players = square.GetPlayers();
     if (!players.IsEmpty()) {
+        // Fight other players on square
         ListIterator it(players);
         while (power > 0 && !it.Done()) {
             ListNode *node = it.Current();
@@ -38,8 +40,9 @@ void Player::SetSquare(Square &square) {
     pSquare = &square;
 }
 
-void Player::StepOut() {
+void Player::StepOut() const {
     if (pSquare) {
+        // Notify square that player is leaving
         pSquare->Clear();
         pSquare->StepOut(*this);
     }
@@ -49,29 +52,30 @@ void Player::Update(Game &game) {
     if (power > 0) {
         unsigned int tick = game.GetTick();
 
-        // Move
         if (tick % MOVE_INTERVAL == 0) {
+            // Move to next square
             SetSquare(GetNextMove(game));
         }
 
-        // Shoot arrows
         if (
-            remainingArrows &&
-            game.CheckProbability(SHOOT_ARROW_PROBABILITY) &&
-            tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&
-            HasPlayersInRange(game.GetPlayers())
+            remainingArrows &&                                  // Player still has arrows
+            game.CheckProbability(SHOOT_ARROW_PROBABILITY) &&   // Check probability, don't shoot on every chance
+            tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&  // Check minimum ticks between arrows
+            HasPlayersInRange(game.GetPlayers())                // Shoot only if there is a reasonable chance of hitting an opponent
         ) {
+            // Shoot an arrow if conditions are met
             ShootArrow(game);
         }
     }
 }
 
 Square &Player::GetNextMove(Game &game) {
-    Grid &grid = game.GetGrid();
+    const Grid &grid = game.GetGrid();
 
     // Find closest food / quiver
     DroppingObject *closest = FindClosestObject(game.GetDroppingObjects());
     if (closest && CheckWallsInPath(grid, closest->GetSquare())) {
+        // Move towards the closest if it exists and the path is clear (no walls)
         direction = pSquare->GetDirection(closest->GetSquare());
     } else if (game.CheckProbability(CHANGE_DIRECTION_PROBABILITY)) {
         // Randomly change direction
@@ -88,18 +92,20 @@ Square &Player::GetNextMove(Game &game) {
     return *nextSquare;
 }
 
-DroppingObject *Player::FindClosestObject(List &objects) const {
+DroppingObject *Player::FindClosestObject(const List &objects) const {
     DroppingObject *closest = NULL;
     if (!objects.IsEmpty()) {
-        double closestDistance = 0, distance;
-        DroppingObject *current;
+        double closestDistance = 0;
         ListIterator it(objects);
         while (!it.Done()) {
-            current = (DroppingObject *) it.Current()->GetData();
+            // Iterate over the objects list
+            ListNode *node = it.Current();
+            DroppingObject *current = (DroppingObject *) node->GetData();
             if (current->GetType() != DroppingObject::Type::BOMB) {
-                distance = pSquare->GetDistance(current->GetSquare());
+                // Don't go for the bombs!
+                double distance = pSquare->GetDistance(current->GetSquare());
                 if (!closest || distance < closestDistance) {
-                    // Found a closer food / quiver
+                    // Found a closer food / quiver - update result
                     closestDistance = distance;
                     closest = current;
                 }
@@ -109,9 +115,10 @@ DroppingObject *Player::FindClosestObject(List &objects) const {
     return closest;
 }
 
-bool Player::CheckWallsInPath(Grid &grid, const Square &target) const {
+bool Player::CheckWallsInPath(const Grid &grid, const Square &target) const {
     Square *current = pSquare;
     while (current != &target) {
+        // Simulate the actual movement and check for walls in the path
         Direction direction = current->GetDirection(target);
         current = &GetNextSquare(grid, *current, direction);
         if (current->HasWall()) {
@@ -124,6 +131,7 @@ bool Player::CheckWallsInPath(Grid &grid, const Square &target) const {
 }
 
 void Player::SetRandomDirection() {
+    // Set a direction randomly (player will only turn right or left)
     Direction directions[2];
     switch (direction) {
         case UP:
@@ -143,69 +151,75 @@ void Player::SetRandomDirection() {
 void Player::ShootArrow(Game &game) {
     Square &arrowSquare = GetNextSquare(game.GetGrid(), *pSquare, direction);
     if (!arrowSquare.HasWall()) {
+        // Don't shoot directly at a wall
         Arrow *arrow = new Arrow(*this, arrowSquare);
-        game.AddArrow(*arrow);
+        game.AddArrow(*arrow); // Update game
         lastArrowTick = game.GetTick();
         remainingArrows--;
     }
 }
 
-bool Player::HasPlayersInRange(List &players) const {
+bool Player::HasPlayersInRange(const List &players) const {
     ListIterator it(players);
     bool inRange = false;
     while (!inRange && !it.Done()) {
-        Player *player = (Player *) it.Current()->GetData();
+        // Iterate over the players list
+        ListNode *node = it.Current();
+        Player *player = (Player *) node->GetData();
         if (player != this) {
+            // Check if opponent may be hit if an arrow will be shot
             inRange = PlayerInRange(*player);
         }
     }
     return inRange;
 }
 
-bool Player::PlayerInRange(Player &oponent) const {
-    const Square &oponentSquare = oponent.GetSquare();
-    Direction oponentDirection = oponent.GetDirection();
+bool Player::PlayerInRange(const Player &opponent) const {
+    // Basic algorithm: check opponent's square and direction.
+    // Compare with player's square and direction and decide whether or not to shoot
+    const Square &opponentSquare = opponent.GetSquare();
+    Direction opponentDirection = opponent.GetDirection();
 
-    // Yuck
+    // Yuck, I know...
     if (
-        (direction == RIGHT && pSquare->GetCol() < oponentSquare.GetCol()) ||
-        (direction == LEFT && pSquare->GetCol() > oponentSquare.GetCol())
+        (direction == RIGHT && pSquare->GetCol() < opponentSquare.GetCol()) ||
+        (direction == LEFT && pSquare->GetCol() > opponentSquare.GetCol())
     ) {
-        if (oponentDirection == DOWN) {
-            return (pSquare->GetRow() > oponentSquare.GetRow());
-        } else if (oponentDirection == UP) {
-            return (pSquare->GetRow() < oponentSquare.GetRow());
+        if (opponentDirection == DOWN) {
+            return (pSquare->GetRow() > opponentSquare.GetRow());
+        } else if (opponentDirection == UP) {
+            return (pSquare->GetRow() < opponentSquare.GetRow());
         } else {
-            return (pSquare->GetRow() == oponentSquare.GetRow());
+            return (pSquare->GetRow() == opponentSquare.GetRow());
         }      
     } else if (
-        (direction == DOWN && pSquare->GetRow() < oponentSquare.GetRow()) ||
-        (direction == UP && pSquare->GetRow() > oponentSquare.GetRow())
+        (direction == DOWN && pSquare->GetRow() < opponentSquare.GetRow()) ||
+        (direction == UP && pSquare->GetRow() > opponentSquare.GetRow())
     ) {
-        if (oponentDirection == RIGHT) {
-            return (pSquare->GetCol() > oponentSquare.GetCol());
-        } else if (oponentDirection == LEFT) {
-            return (pSquare->GetCol() < oponentSquare.GetCol());
+        if (opponentDirection == RIGHT) {
+            return (pSquare->GetCol() > opponentSquare.GetCol());
+        } else if (opponentDirection == LEFT) {
+            return (pSquare->GetCol() < opponentSquare.GetCol());
         } else {
-            return (pSquare->GetCol() == oponentSquare.GetCol());
+            return (pSquare->GetCol() == opponentSquare.GetCol());
         }
     }
 
     return false;
 }
 
-void Player::Fight(Player &oponent) {
-    if (power > oponent.GetPower()) {
-        // Player is stronger than oponent
-        oponent.DecreasePower(200);
+void Player::Fight(Player &opponent) {
+    if (power > opponent.GetPower()) {
+        // Player is stronger than opponent
+        opponent.DecreasePower(200);
         DecreasePower(10);
-    } else if (power < oponent.GetPower()) {
-        // Player is weaker than oponent
-        oponent.DecreasePower(10);
+    } else if (power < opponent.GetPower()) {
+        // Player is weaker than opponent
+        opponent.DecreasePower(10);
         DecreasePower(200);
     } else {
-        // Player and oponent are equal
-        oponent.DecreasePower(50);
+        // Player and opponent are equal
+        opponent.DecreasePower(50);
         DecreasePower(50);
     }
 }

@@ -17,10 +17,10 @@ public:
     Grid(int rows = DEFAULT_NUM_ROWS, int cols = DEFAULT_NUM_COLS);
     ~Grid();
     
-    int GetRows();
-    int GetCols();
-    Square &GetSquare(int row, int col);
-    Square &GetRandomSquare();
+    Square &GetSquare(int row, int col) const;
+    Square &GetRandomSquare() const;
+    int GetRows() const;
+    int GetCols() const;
 };
 
 #endif

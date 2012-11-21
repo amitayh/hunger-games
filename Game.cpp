@@ -7,10 +7,16 @@
 #include <conio.h>
 
 Game::Game() {
-    tick = 0;
+    // Initialize random number generator
     srand((unsigned int) time(NULL));
+
+    // Initialize menu
     menu.AddOption("Resume");
     menu.AddOption("Quit");
+
+    // Initialize game
+    status = PENDING;
+    tick = 0;
 }
 
 Game::~Game() {
@@ -37,6 +43,7 @@ void Game::AddPlayer(int row, int col) {
 }
 
 void Game::AddPlayer(Square &square) {
+    // Name the players sequentially (A, B, C...)
     char name = 'A' + players.GetSize();
     players.Push(new Player(name, square));
 }
@@ -65,6 +72,7 @@ void Game::AddInfoBox(int row, int col) {
 }
 
 void Game::AddArrow(Arrow &arrow) {
+    // The arrow is pre-allocated by the shooting player
     arrows.Push(&arrow);
 }
 
@@ -74,17 +82,17 @@ bool Game::CheckProbability(int probability) const {
 }
 
 void Game::Run() {
-    running = true;
+    status = RUNNING;
     DrawWalls();
     Loop();
 }
 
 void Game::Pause() {
-    running = false;
+    status = PAUSED;
 }
 
 void Game::Resume() {
-    running = true;
+    status = RUNNING;
     clrscr();
     DrawWalls();
     DrawDroppingObjects();
@@ -92,26 +100,32 @@ void Game::Resume() {
 }
 
 void Game::EndGame(const Player *winner) {
-    Pause();
+    status = ENDED;
     clrscr();
     gotoxy(0, 0);
     ChangeColor(SILVER);
     cout << "Game over";
     if (winner) {
+        // Print winner's name
         cout << ", winner is " << winner->GetName();
     }
     cout << "!" << endl;
 }
 
 void Game::Loop() {
-    while (running) {
+    // Main game loop
+    while (status == RUNNING) {
         if (kbhit() && getch() == ESCAPSE_KEY) {
+            // User pressed escape - show menu
             ShowMenu();
-        } else if (Update()) {
-            Draw();
-            DropObjects();
-            tick++;
-            Sleep(1000 / FRAMES_PER_SECOND);
+        } else {
+            Update();
+            if (status == RUNNING) { // Status may change after the update
+                Draw();
+                DropObjects();
+                tick++;
+                Sleep(1000 / FRAMES_PER_SECOND);
+            }
         }
     }
 }
@@ -128,14 +142,13 @@ void Game::ShowMenu() {
     }
 }
 
-bool Game::Update() {
+void Game::Update() {
     UpdateArrows();
     UpdatePlayers();
     UpdateDroppingObjects();
-    return running;
 }
 
-void Game::Draw() {
+void Game::Draw() const {
     DrawArrows();
     DrawPlayers();
     infoBox.Draw(players);
@@ -156,7 +169,7 @@ void Game::UpdateArrows() {
     }
 }
 
-void Game::DrawArrows() {
+void Game::DrawArrows() const {
     ListIterator it(arrows);
     while (!it.Done()) {
         ListNode *node = it.Current();
@@ -167,7 +180,7 @@ void Game::DrawArrows() {
 
 void Game::UpdatePlayers() {
     ListIterator it(players);
-    while (running && !it.Done()) {
+    while (status == RUNNING && !it.Done()) {
         ListNode *node = it.Current();
         Player *player = (Player *) node->GetData();
         player->Update(*this);
@@ -184,7 +197,7 @@ void Game::UpdatePlayers() {
     }
 }
 
-void Game::DrawPlayers() {
+void Game::DrawPlayers() const {
     ListIterator it(players);
     while (!it.Done()) {
         ListNode *node = it.Current();
@@ -195,7 +208,7 @@ void Game::DrawPlayers() {
 
 void Game::UpdateDroppingObjects() {
     ListIterator it(droppingObjects);
-    while (running && !it.Done()) {
+    while (status == RUNNING && !it.Done()) {
         ListNode *node = it.Current();
         DroppingObject *droppingObject = (DroppingObject *) node->GetData();
         if (droppingObject->GetPickedUp()) {
@@ -205,7 +218,7 @@ void Game::UpdateDroppingObjects() {
     }
 }
 
-void Game::DrawDroppingObjects() {
+void Game::DrawDroppingObjects() const {
     ListIterator it(droppingObjects);
     while (!it.Done()) {
         ListNode *node = it.Current();
@@ -214,7 +227,7 @@ void Game::DrawDroppingObjects() {
     }
 }
 
-void Game::DrawWalls() {
+void Game::DrawWalls() const {
     ListIterator it(walls);
     while (!it.Done()) {
         ListNode *node = it.Current();
@@ -242,15 +255,16 @@ void Game::DropObject(DroppingObject::Type type) {
     object->Draw();
 }
 
-Square &Game::GetValidDropSquare() {
+Square &Game::GetValidDropSquare() const {
     Square *square = &grid.GetRandomSquare();
-    do {
+    while (!IsValidDrop(*square)) {
+        // Try again until the random square is a valid drop zone
         square = &grid.GetRandomSquare();
-    } while (!IsValidDrop(*square));
+    }
     return *square;
 }
 
-bool Game::IsValidDrop(Square &square) {
+bool Game::IsValidDrop(const Square &square) const {
     bool result = true;
     if (!square.IsEmpty()) {
         // Square is occupied
@@ -277,14 +291,14 @@ unsigned int Game::GetTick() const {
     return tick;
 }
 
-List &Game::GetPlayers() {
+const List &Game::GetPlayers() const {
     return players;
 }
 
-List &Game::GetDroppingObjects() {
+const List &Game::GetDroppingObjects() const {
     return droppingObjects;
 }
 
-Grid &Game::GetGrid() {
+const Grid &Game::GetGrid() const {
     return grid;
 }

@@ -31,7 +31,7 @@ void Arrow::Update(Game &game) {
 
 bool Arrow::CheckHit() {
     if (pSquare) {
-        List &players = pSquare->GetPlayers();
+        const List &players = pSquare->GetPlayers();
         if (!players.IsEmpty()) {
             // Hit first player on square
             Player *player = (Player *) players.Peek();

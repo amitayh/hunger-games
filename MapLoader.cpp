@@ -5,15 +5,15 @@ MapLoader::MapLoader(Game &game) {
     pGame = &game;
 }
 
-bool MapLoader::Load(const string &filename) {
+bool MapLoader::Load(const string &filename) const {
     ifstream map(filename);
     if (map.good()) {
-        Grid &grid = pGame->GetGrid();
+        const Grid &grid = pGame->GetGrid();
         int rows = grid.GetRows(),
             cols = grid.GetCols();
 
-        int players = 0;
-        bool addedInfoBox = false;
+        int players = 0; // Players counter
+        bool addedInfoBox = false; // Info box flag
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {

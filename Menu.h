@@ -13,7 +13,8 @@ public:
     ~Menu();
 
     bool AddOption(const char *option);
-    int Menu::Choose();
+
+    int Menu::Choose() const;
 };
 
 #endif

@@ -25,7 +25,7 @@ bool Menu::AddOption(const char *option) {
     return false;
 }
 
-int Menu::Choose() {
+int Menu::Choose() const {
     clrscr();
     gotoxy(0, 0);
     ChangeColor(SILVER);
@@ -39,6 +39,7 @@ int Menu::Choose() {
 
     int option;
     do {
+        // Get a valid input from user
         option = getch() - '0';
     } while (option < 1 || option > numOptions);
 

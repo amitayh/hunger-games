@@ -2,7 +2,7 @@
 
 // List node implementation
 
-ListNode::ListNode(void *data, ListNode *prev, ListNode *next) {
+ListNode::ListNode(const void *data, ListNode *prev, ListNode *next) {
     this->data = data;
     this->prev = prev;
     this->next = next;
@@ -16,7 +16,7 @@ void ListNode::SetNext(ListNode *next) {
     this->next = next;
 }
 
-void *ListNode::GetData() const {
+const void *ListNode::GetData() const {
     return data;
 }
 
@@ -42,7 +42,7 @@ List::~List() {
     }
 }
 
-void List::Insert(void *data, ListNode *after) {
+void List::Insert(const void *data, ListNode *after) {
     ListNode *node = new ListNode(data, after, after->GetNext());
     after->GetNext()->SetPrev(node);
     after->SetNext(node);
@@ -56,21 +56,21 @@ void List::Remove(ListNode *node) {
     size--;
 }
 
-void List::Push(void *data) {
+void List::Push(const void *data) {
     Insert(data, tail.GetPrev());
 }
 
-void *List::Pop() {
+const void *List::Pop() {
     if (size) {
         ListNode *node = tail.GetPrev();
-        void *data = node->GetData();
+        const void *data = node->GetData();
         Remove(node);
         return data;
     }
     return NULL;
 }
 
-ListNode *List::Find(const void *data) {
+ListNode *List::Find(const void *data) const {
     ListIterator it(*this);
     ListNode *result = NULL, *current;
     while (!result && !it.Done()) {
@@ -90,7 +90,7 @@ const ListNode *List::GetTail() const {
     return &tail;
 }
 
-void *List::Peek() const {
+const void *List::Peek() const {
     return size ? head.GetNext()->GetData() : NULL;
 }
 

@@ -23,6 +23,7 @@ public:
     ~Arrow();
 
     void Update(Game &game);
+
     void Draw() const;
     bool GetHit() const;
 };

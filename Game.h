@@ -25,8 +25,15 @@ class Game
         MENU_QUIT                   = 2
     };
 
+    enum Status {
+        PENDING,
+        RUNNING,
+        PAUSED,
+        ENDED
+    };
+
     unsigned int tick;
-    bool running;
+    Status status;
     Grid grid;
     List walls;
     List players;
@@ -36,40 +43,41 @@ class Game
     Menu menu;
 
     void Loop();
-    bool Update();
-    void Draw();
+    void Update();
     void UpdatePlayers();
-    void DrawPlayers();
     void UpdateArrows();
-    void DrawArrows();
     void UpdateDroppingObjects();
-    void DrawDroppingObjects();
-    void DrawWalls();
     void DropObjects();
     void DropObject(DroppingObject::Type type);
     void EndGame(const Player *winner = NULL);
-    bool IsValidDrop(Square &square);
     void ShowMenu();
+
+    void Draw() const;
+    void DrawPlayers() const;
+    void DrawArrows() const;
+    void DrawDroppingObjects() const;
+    void DrawWalls() const;
+    bool IsValidDrop(const Square &square) const;
 
 public:
     Game();
     ~Game();
 
+    void Run();
+    void Pause();
+    void Resume();
     void AddPlayer(int row, int col);
     void AddPlayer(Square &square);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
     void AddArrow(Arrow &arrow);
+    
+    const List &GetPlayers() const;
+    const List &GetDroppingObjects() const;
+    const Grid &GetGrid() const;
+    Square &GetValidDropSquare() const;
     bool CheckProbability(int probability) const;
     unsigned int GetTick() const;
-    List &GetPlayers();
-    List &GetDroppingObjects();
-    Grid &GetGrid();
-    Square &GetValidDropSquare();
-
-    void Run();
-    void Pause();
-    void Resume();
 };
 
 #endif

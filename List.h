@@ -5,16 +5,16 @@
 
 class ListNode
 {
-    void *data;
+    const void *data;
     ListNode *prev, *next;
 
 public:
-    ListNode(void *data = NULL, ListNode *prev = NULL, ListNode *next = NULL);
+    ListNode(const void *data = NULL, ListNode *prev = NULL, ListNode *next = NULL);
 
     void SetPrev(ListNode *prev);
     void SetNext(ListNode *next);
 
-    void *GetData() const;
+    const void *GetData() const;
     ListNode *GetNext() const;
     ListNode *GetPrev() const;
 };
@@ -28,15 +28,15 @@ public:
     List();
     ~List();
 
-    void Insert(void *data, ListNode *after);
+    void Insert(const void *data, ListNode *after);
     void Remove(ListNode *node);
-    void Push(void *data);
-    void *Pop();
+    void Push(const void *data);
+    const void *Pop();
 
-    ListNode *Find(const void *data);
+    ListNode *Find(const void *data) const;
     const ListNode *GetHead() const;
     const ListNode *GetTail() const;
-    void *Peek() const;
+    const void *Peek() const;
     int GetSize() const;
     bool IsEmpty() const;
 };
@@ -49,6 +49,7 @@ public:
     ListIterator(const List &list);
 
     ListNode *Current();
+
     bool Done() const;
 };
 

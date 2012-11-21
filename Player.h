@@ -12,7 +12,7 @@ class Player
         INITIAL_NUM_ARROWS              = 4,
         MIN_TICKS_BETWEEN_ARROWS        = 3,
         SHOOT_ARROW_PROBABILITY         = 20,
-        CHANGE_DIRECTION_PROBABILITY    = 5,
+        CHANGE_DIRECTION_PROBABILITY    = 10,
         MOVE_INTERVAL                   = 2
     };
 
@@ -24,15 +24,16 @@ class Player
     unsigned int lastArrowTick;
 
     void SetSquare(Square &square);
-    void Fight(Player &oponent);
+    void Fight(Player &opponent);
     void SetRandomDirection();
     void ShootArrow(Game &game);
     Square &GetNextMove(Game &game);
-    DroppingObject *FindClosestObject(List &objects) const;
-    bool CheckWallsInPath(Grid &grid, const Square &target) const;
-    bool HasPlayersInRange(List &players) const;
-    bool PlayerInRange(Player &oponent) const;
-    void StepOut();
+
+    DroppingObject *FindClosestObject(const List &objects) const;
+    bool CheckWallsInPath(const Grid &grid, const Square &target) const;
+    bool HasPlayersInRange(const List &players) const;
+    bool PlayerInRange(const Player &opponent) const;
+    void StepOut() const;
 
 public:
     Player(char name, Square &square, int power = INITIAL_POWER, Direction direction = RIGHT);

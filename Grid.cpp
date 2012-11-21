@@ -1,6 +1,7 @@
 #include "Grid.h"
 
 Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
+    // Allocate squares matrix
     squares = new Square*[rows];
     for (int row = 0; row < rows; row++) {
         squares[row] = new Square[cols];
@@ -11,21 +12,15 @@ Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
 }
 
 Grid::~Grid() {
+    // Delete squares matrix
     for (int row = 0; row < rows; row++) {
         delete []squares[row];
     }
     delete []squares;
 }
 
-int Grid::GetRows() {
-    return rows;
-}
-
-int Grid::GetCols() {
-    return cols;
-}
-
-Square &Grid::GetSquare(int row, int col) {
+Square &Grid::GetSquare(int row, int col) const {
+    // Stay in grid's boundaries
     if (row >= rows) {
         row %= rows;
     } else if (row < 0) {
@@ -39,7 +34,15 @@ Square &Grid::GetSquare(int row, int col) {
     return squares[row][col];
 }
 
-Square &Grid::GetRandomSquare() {
+Square &Grid::GetRandomSquare() const {
     int row = rand() % rows, col = rand() % cols;
     return GetSquare(row, col);
+}
+
+int Grid::GetRows() const {
+    return rows;
+}
+
+int Grid::GetCols() const {
+    return cols;
 }

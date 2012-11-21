@@ -18,6 +18,7 @@ public:
     InfoBox();
 
     void SetSquare(Square &square);
+
     void Draw(const List &players) const;
     const Dimensions& GetSize() const;
     bool InArea(const Square &square) const;

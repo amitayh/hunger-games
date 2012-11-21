@@ -28,7 +28,7 @@ void DroppingObject::Affect(Player &player) {
     pickedUp = true;
 }
 
-Square &DroppingObject::GetSquare() {
+Square &DroppingObject::GetSquare() const {
     return *pSquare;
 }
 
