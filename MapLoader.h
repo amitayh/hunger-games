@@ -12,7 +12,7 @@ class MapLoader
         MIN_NUM_PLAYERS = 2
     };
 
-    Game *game;
+    Game *pGame;
 
 public:
     MapLoader(Game &game);

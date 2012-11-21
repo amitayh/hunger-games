@@ -11,7 +11,7 @@ class InfoBox
         HEIGHT = 5
     };
 
-    Square *square;
+    Square *pSquare;
     Dimensions size;
 
 public:

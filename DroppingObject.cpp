@@ -3,14 +3,14 @@
 
 DroppingObject::DroppingObject(Type type, Square &square) {
     square.SetDroppingObject(*this);
-    this->square = &square;
     this->type = type;
+    pSquare = &square;
     pickedUp = false;
 }
 
 DroppingObject::~DroppingObject() {
-    square->UnsetDroppingObject();
-    square->Clear();
+    pSquare->UnsetDroppingObject();
+    pSquare->Clear();
 }
 
 void DroppingObject::Affect(Player &player) {
@@ -29,7 +29,7 @@ void DroppingObject::Affect(Player &player) {
 }
 
 Square &DroppingObject::GetSquare() {
-    return *square;
+    return *pSquare;
 }
 
 void DroppingObject::Draw() const {
@@ -49,7 +49,7 @@ void DroppingObject::Draw() const {
             color = RED;
             break;
     }
-    square->Draw(ch, color);
+    pSquare->Draw(ch, color);
 }
 
 bool DroppingObject::GetPickedUp() const {

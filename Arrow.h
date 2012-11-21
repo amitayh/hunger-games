@@ -11,7 +11,7 @@ class Arrow
         MOVE_INTERVAL = 1
     };
 
-    Square *square;
+    Square *pSquare;
     Direction direction;
     bool hit;
 

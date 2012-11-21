@@ -16,7 +16,7 @@ class Player
         MOVE_INTERVAL                   = 2
     };
 
-    Square *square;
+    Square *pSquare;
     Direction direction;
     char name;
     int power;

@@ -5,7 +5,7 @@
 
 class Wall
 {
-    Square *square;
+    Square *pSquare;
 
 public:
     Wall(Square &square);

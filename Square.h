@@ -15,8 +15,8 @@ class Square
 {
     int row, col;
     List players;
-    DroppingObject *droppingObject;
-    Wall *wall;
+    DroppingObject *pDroppingObject;
+    Wall *pWall;
 
 public:
     Square();

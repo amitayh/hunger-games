@@ -23,7 +23,7 @@ public:
     Type GetType() const;
 
 private:
-    Square *square;
+    Square *pSquare;
     Type type;
     bool pickedUp;
 };

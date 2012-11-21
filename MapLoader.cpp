@@ -2,13 +2,13 @@
 #include <fstream>
 
 MapLoader::MapLoader(Game &game) {
-    this->game = &game;
+    pGame = &game;
 }
 
 bool MapLoader::Load(const string &filename) {
     ifstream map(filename);
     if (map.good()) {
-        Grid &grid = game->GetGrid();
+        Grid &grid = pGame->GetGrid();
         int rows = grid.GetRows(),
             cols = grid.GetCols();
 
@@ -17,17 +17,21 @@ bool MapLoader::Load(const string &filename) {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
+                if (map.eof()) {
+                    // Oops! Something went wrong...
+                    return false;
+                }
                 switch (map.get()) {
                     case CHAR_WALL:
-                        game->AddWall(row, col);
+                        pGame->AddWall(row, col);
                         break;
                     case CHAR_PLAYER:
-                        game->AddPlayer(row, col);
+                        pGame->AddPlayer(row, col);
                         players++;
                         break;
                     case CHAR_INFO_BOX:
                         if (!addedInfoBox) {
-                            game->AddInfoBox(row, col);
+                            pGame->AddInfoBox(row, col);
                             addedInfoBox = true;
                         }
                         break;
@@ -38,11 +42,11 @@ bool MapLoader::Load(const string &filename) {
 
         // Add additional players if needed
         for (int i = players; i < MIN_NUM_PLAYERS; i++) {
-            game->AddPlayer(game->GetValidDropSquare());
+            pGame->AddPlayer(pGame->GetValidDropSquare());
         }
 
-        map.close();
-        return true;
+        map.close(); // Close map file
+        return true; // Success - map loaded
     }
-    return false;
+    return false; // Unable to open map file
 }

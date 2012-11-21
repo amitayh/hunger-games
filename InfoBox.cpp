@@ -8,12 +8,12 @@ using namespace std;
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
 void InfoBox::SetSquare(Square &square) {
-    this->square = &square;
+    pSquare = &square;
 }
 
 void InfoBox::Draw(const List &players) const {
     ListIterator it(players);
-    int row = square->GetRow(), col = square->GetCol();
+    int row = pSquare->GetRow(), col = pSquare->GetCol();
 
     ChangeColor(SILVER);
     
@@ -43,9 +43,9 @@ const Dimensions& InfoBox::GetSize() const {
 bool InfoBox::InArea(const Square &square) const {
     int row = square.GetRow(),
         col = square.GetCol(),
-        rowMin = this->square->GetRow(),
+        rowMin = pSquare->GetRow(),
         rowMax = rowMin + size.GetHeight(),
-        colMin = this->square->GetCol(),
+        colMin = pSquare->GetCol(),
         colMax = colMin + size.GetWidth();
 
     return (row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);

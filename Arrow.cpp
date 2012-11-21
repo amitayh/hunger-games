@@ -3,35 +3,35 @@
 #include "Player.h"
 
 Arrow::Arrow(Player &shooter, Square &square) {
-    this->square = &square;
+    pSquare = &square;
     direction = shooter.GetDirection();
     hit = false;
 }
 
 Arrow::~Arrow() {
-    square->Clear();
+    pSquare->Clear();
 }
 
 void Arrow::SetSquare(Square &square) {
     if (square.HasWall()) {
         hit = true;
     } else {
-        this->square = &square;
+        this->pSquare = &square;
         CheckHit();
     }
 }
 
 void Arrow::Update(Game &game) {
     if (!CheckHit() && game.GetTick() % MOVE_INTERVAL == 0) {
-        Square &nextSquare = GetNextSquare(game.GetGrid(), *square, direction);
-        square->Clear();
+        Square &nextSquare = GetNextSquare(game.GetGrid(), *pSquare, direction);
+        pSquare->Clear();
         SetSquare(nextSquare);
     }
 }
 
 bool Arrow::CheckHit() {
-    if (square) {
-        List &players = square->GetPlayers();
+    if (pSquare) {
+        List &players = pSquare->GetPlayers();
         if (!players.IsEmpty()) {
             // Hit first player on square
             Player *player = (Player *) players.Peek();
@@ -58,7 +58,7 @@ void Arrow::Draw() const {
             ch = '>';
             break;
     }
-    square->Draw(ch, WHITE);
+    pSquare->Draw(ch, WHITE);
 }
 
 bool Arrow::GetHit() const {

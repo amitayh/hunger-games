@@ -10,8 +10,8 @@
 using namespace std;
 
 Square::Square() {
-    droppingObject = NULL;
-    wall = NULL;
+    pDroppingObject = NULL;
+    pWall = NULL;
 }
 
 void Square::StepIn(Player &player) {
@@ -29,19 +29,19 @@ void Square::InitPosition(int row, int col) {
 }
 
 void Square::SetDroppingObject(DroppingObject &droppingObject) {
-    this->droppingObject = &droppingObject;
+    pDroppingObject = &droppingObject;
 }
 
 void Square::UnsetDroppingObject() {
-    droppingObject = NULL;
+    pDroppingObject = NULL;
 }
 
 bool Square::HasDroppingObject() {
-    return (droppingObject != NULL);
+    return (pDroppingObject != NULL);
 }
 
 void Square::SetWall(Wall &wall) {
-    this->wall = &wall;
+    pWall = &wall;
 }
 
 List &Square::GetPlayers() {
@@ -49,16 +49,16 @@ List &Square::GetPlayers() {
 }
 
 DroppingObject &Square::GetDroppingObject() {
-    return *droppingObject;
+    return *pDroppingObject;
 }
 
 bool Square::HasWall() {
-    return (wall != NULL);
+    return (pWall != NULL);
 }
 
 void Square::Clear() const {
-    if (droppingObject) {
-        droppingObject->Draw();
+    if (pDroppingObject) {
+        pDroppingObject->Draw();
     } else {
         Draw(' ');
     }
@@ -95,7 +95,7 @@ Direction Square::GetDirection(const Square &otherSquare) const {
 }
 
 bool Square::IsEmpty() const {
-    return (!droppingObject && !wall && players.IsEmpty());
+    return (!pDroppingObject && !pWall && players.IsEmpty());
 }
 
 int Square::GetRow() const {

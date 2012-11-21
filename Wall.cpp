@@ -1,10 +1,10 @@
 #include "Wall.h"
 
 Wall::Wall(Square &square) {
-    this->square = &square;
+    pSquare = &square;
     square.SetWall(*this);
 }
 
 void Wall::Draw() const {
-    square->Draw('#', GREY);
+    pSquare->Draw('#', GREY);
 }
