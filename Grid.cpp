@@ -25,7 +25,7 @@ int Grid::GetCols() {
     return cols;
 }
 
-Square *Grid::GetSquare(int row, int col) {
+Square &Grid::GetSquare(int row, int col) {
     if (row >= rows) {
         row %= rows;
     } else if (row < 0) {
@@ -36,10 +36,10 @@ Square *Grid::GetSquare(int row, int col) {
     } else if (col < 0) {
         col = cols + col;
     }
-    return &squares[row][col];
+    return squares[row][col];
 }
 
-Square *Grid::GetRandomSquare() {
+Square &Grid::GetRandomSquare() {
     int row = rand() % rows, col = rand() % cols;
     return GetSquare(row, col);
 }

@@ -1,9 +1,9 @@
 #include "DroppingObject.h"
 #include "Square.h"
 
-DroppingObject::DroppingObject(Type type, Square *square) {
-    square->SetDroppingObject(*this);
-    this->square = square;
+DroppingObject::DroppingObject(Type type, Square &square) {
+    square.SetDroppingObject(*this);
+    this->square = &square;
     this->type = type;
     pickedUp = false;
 }
@@ -28,8 +28,8 @@ void DroppingObject::Affect(Player &player) {
     pickedUp = true;
 }
 
-Square *DroppingObject::GetSquare() {
-    return square;
+Square &DroppingObject::GetSquare() {
+    return *square;
 }
 
 void DroppingObject::Draw() const {

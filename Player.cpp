@@ -2,12 +2,12 @@
 #include "Game.h"
 #include "DroppingObject.h"
 
-Player::Player(char name, Square *square, int power, Direction direction) {
+Player::Player(char name, Square &square, int power, Direction direction) {
     this->direction = direction;
     this->name = name;
     this->power = power;
-    this->square = square;
-    square->StepIn(*this);
+    this->square = &square;
+    square.StepIn(*this);
     remainingArrows = INITIAL_NUM_ARROWS;
     lastArrowTick = 0;
 }
@@ -16,14 +16,14 @@ Player::~Player() {
     StepOut();
 }
 
-void Player::SetSquare(Square *square) {
-    if (square->HasDroppingObject()) {
-        DroppingObject &droppingObject = square->GetDroppingObject();
+void Player::SetSquare(Square &square) {
+    if (square.HasDroppingObject()) {
+        DroppingObject &droppingObject = square.GetDroppingObject();
         // Pick up dropping object
         droppingObject.Affect(*this);
     }
 
-    List &players = square->GetPlayers();
+    List &players = square.GetPlayers();
     if (!players.IsEmpty()) {
         ListIterator it(players);
         while (power > 0 && !it.Done()) {
@@ -34,8 +34,8 @@ void Player::SetSquare(Square *square) {
     }
 
     StepOut();
-    square->StepIn(*this);
-    this->square = square;
+    square.StepIn(*this);
+    this->square = &square;
 }
 
 void Player::StepOut() {
@@ -66,7 +66,7 @@ void Player::Update(Game &game) {
     }
 }
 
-Square *Player::GetNextMove(Game &game) {
+Square &Player::GetNextMove(Game &game) {
     Grid &grid = game.GetGrid();
 
     // Find closest food / quiver
@@ -78,14 +78,14 @@ Square *Player::GetNextMove(Game &game) {
         SetRandomDirection();
     }
 
-    Square *nextSquare = GetNextSquare(grid, square, direction);
+    Square *nextSquare = &GetNextSquare(grid, *square, direction);
     while (nextSquare->HasWall()) {
         // Change direction to avoid the wall
         SetRandomDirection();
-        nextSquare = GetNextSquare(grid, square, direction);
+        nextSquare = &GetNextSquare(grid, *square, direction);
     }
 
-    return nextSquare;
+    return *nextSquare;
 }
 
 DroppingObject *Player::FindClosestObject(List &objects) const {
@@ -109,11 +109,11 @@ DroppingObject *Player::FindClosestObject(List &objects) const {
     return closest;
 }
 
-bool Player::CheckWallsInPath(Grid &grid, const Square *target) const {
+bool Player::CheckWallsInPath(Grid &grid, const Square &target) const {
     Square *current = square;
-    while (current != target) {
+    while (current != &target) {
         Direction direction = current->GetDirection(target);
-        current = GetNextSquare(grid, current, direction);
+        current = &GetNextSquare(grid, *current, direction);
         if (current->HasWall()) {
             // Found a wall, no need to continue
             return false;
@@ -141,8 +141,8 @@ void Player::SetRandomDirection() {
 }
 
 void Player::ShootArrow(Game &game) {
-    Square *arrowSquare = GetNextSquare(game.GetGrid(), square, direction);
-    if (!arrowSquare->HasWall()) {
+    Square &arrowSquare = GetNextSquare(game.GetGrid(), *square, direction);
+    if (!arrowSquare.HasWall()) {
         Arrow *arrow = new Arrow(*this, arrowSquare);
         game.AddArrow(*arrow);
         lastArrowTick = game.GetTick();
@@ -163,31 +163,31 @@ bool Player::HasPlayersInRange(List &players) const {
 }
 
 bool Player::PlayerInRange(Player &oponent) const {
-    const Square *oponentSquare = oponent.GetSquare();
+    const Square &oponentSquare = oponent.GetSquare();
     Direction oponentDirection = oponent.GetDirection();
 
     // Yuck
     if (
-        (direction == RIGHT && square->GetCol() < oponentSquare->GetCol()) ||
-        (direction == LEFT && square->GetCol() > oponentSquare->GetCol())
+        (direction == RIGHT && square->GetCol() < oponentSquare.GetCol()) ||
+        (direction == LEFT && square->GetCol() > oponentSquare.GetCol())
     ) {
         if (oponentDirection == DOWN) {
-            return (square->GetRow() > oponentSquare->GetRow());
+            return (square->GetRow() > oponentSquare.GetRow());
         } else if (oponentDirection == UP) {
-            return (square->GetRow() < oponentSquare->GetRow());
+            return (square->GetRow() < oponentSquare.GetRow());
         } else {
-            return (square->GetRow() == oponentSquare->GetRow());
+            return (square->GetRow() == oponentSquare.GetRow());
         }      
     } else if (
-        (direction == DOWN && square->GetRow() < oponentSquare->GetRow()) ||
-        (direction == UP && square->GetRow() > oponentSquare->GetRow())
+        (direction == DOWN && square->GetRow() < oponentSquare.GetRow()) ||
+        (direction == UP && square->GetRow() > oponentSquare.GetRow())
     ) {
         if (oponentDirection == RIGHT) {
-            return (square->GetCol() > oponentSquare->GetCol());
+            return (square->GetCol() > oponentSquare.GetCol());
         } else if (oponentDirection == LEFT) {
-            return (square->GetCol() < oponentSquare->GetCol());
+            return (square->GetCol() < oponentSquare.GetCol());
         } else {
-            return (square->GetCol() == oponentSquare->GetCol());
+            return (square->GetCol() == oponentSquare.GetCol());
         }
     }
 
@@ -222,8 +222,8 @@ void Player::DecreasePower(int amount) {
     IncreasePower(-amount);
 }
 
-const Square *Player::GetSquare() const {
-    return square;
+const Square &Player::GetSquare() const {
+    return *square;
 }
 
 char Player::GetName() const {

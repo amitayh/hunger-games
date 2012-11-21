@@ -36,14 +36,14 @@ void Game::AddPlayer(int row, int col) {
     AddPlayer(grid.GetSquare(row, col));
 }
 
-void Game::AddPlayer(Square *square) {
+void Game::AddPlayer(Square &square) {
     char name = 'A' + players.GetSize();
     players.Push(new Player(name, square));
 }
 
 void Game::AddWall(int row, int col) {
-    Square *square = grid.GetSquare(row, col);
-    if (!square->HasWall()) {
+    Square &square = grid.GetSquare(row, col);
+    if (!square.HasWall()) {
         walls.Push(new Wall(square));
     }
 }
@@ -238,23 +238,23 @@ void Game::DropObjects() {
 }
 
 void Game::DropObject(DroppingObject::Type type) {
-    Square *square = GetValidDropSquare();
+    Square &square = GetValidDropSquare();
     DroppingObject *object = new DroppingObject(type, square);
     droppingObjects.Push(object);
     object->Draw();
 }
 
-Square *Game::GetValidDropSquare() {
-    Square *square;
+Square &Game::GetValidDropSquare() {
+    Square *square = &grid.GetRandomSquare();
     do {
-        square = grid.GetRandomSquare();
-    } while (!IsValidDrop(square));
-    return square;
+        square = &grid.GetRandomSquare();
+    } while (!IsValidDrop(*square));
+    return *square;
 }
 
-bool Game::IsValidDrop(Square *square) {
+bool Game::IsValidDrop(Square &square) {
     bool result = true;
-    if (!square->IsEmpty()) {
+    if (!square.IsEmpty()) {
         // Square is occupied
         result = false;
     } else if (infoBox.InArea(square)) {
@@ -265,7 +265,7 @@ bool Game::IsValidDrop(Square *square) {
         while (result && !it.Done()) {
             ListNode *node = it.Current();
             Player *player = (Player *) node->GetData();
-            double distance = square->GetDistance(player->GetSquare());
+            double distance = square.GetDistance(player->GetSquare());
             if (distance <= MIN_DISTANCE_FROM_PLAYERS) {
                 // Square is too close to one of the players
                 result = false;

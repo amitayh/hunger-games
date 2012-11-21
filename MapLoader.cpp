@@ -38,8 +38,7 @@ bool MapLoader::Load(const string &filename) {
 
         // Add additional players if needed
         for (int i = players; i < MIN_NUM_PLAYERS; i++) {
-            Square *square = game->GetValidDropSquare();
-            game->AddPlayer(square);
+            game->AddPlayer(game->GetValidDropSquare());
         }
 
         map.close();

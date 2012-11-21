@@ -7,8 +7,8 @@ using namespace std;
 
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
-void InfoBox::SetSquare(Square *square) {
-    this->square = square;
+void InfoBox::SetSquare(Square &square) {
+    this->square = &square;
 }
 
 void InfoBox::Draw(List &players) const {
@@ -40,9 +40,9 @@ const Dimensions& InfoBox::GetSize() const {
     return size;
 }
 
-bool InfoBox::InArea(const Square *square) const {
-    int row = square->GetRow(),
-        col = square->GetCol(),
+bool InfoBox::InArea(const Square &square) const {
+    int row = square.GetRow(),
+        col = square.GetCol(),
         rowMin = this->square->GetRow(),
         rowMax = rowMin + size.GetHeight(),
         colMin = this->square->GetCol(),

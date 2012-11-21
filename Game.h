@@ -48,7 +48,7 @@ class Game
     void DropObjects();
     void DropObject(DroppingObject::Type type);
     void EndGame(Player *winner = NULL);
-    bool IsValidDrop(Square *square);
+    bool IsValidDrop(Square &square);
     void ShowMenu();
 
 public:
@@ -56,7 +56,7 @@ public:
     ~Game();
 
     void AddPlayer(int row, int col);
-    void AddPlayer(Square *square);
+    void AddPlayer(Square &square);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
     void AddArrow(Arrow &arrow);
@@ -65,7 +65,7 @@ public:
     List &GetPlayers();
     List &GetDroppingObjects();
     Grid &GetGrid();
-    Square *GetValidDropSquare();
+    Square &GetValidDropSquare();
 
     void Run();
     void Pause();

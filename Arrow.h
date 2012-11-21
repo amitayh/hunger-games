@@ -15,11 +15,11 @@ class Arrow
     Direction direction;
     bool hit;
 
-    void SetSquare(Square *square);
+    void SetSquare(Square &square);
     bool CheckHit();
 
 public:
-    Arrow(Player &shooter, Square *square);
+    Arrow(Player &shooter, Square &square);
     ~Arrow();
 
     void Update(Game &game);

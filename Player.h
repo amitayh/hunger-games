@@ -23,19 +23,19 @@ class Player
     int remainingArrows;
     unsigned int lastArrowTick;
 
-    void SetSquare(Square *square);
+    void SetSquare(Square &square);
     void Fight(Player &oponent);
     void SetRandomDirection();
     void ShootArrow(Game &game);
-    Square *GetNextMove(Game &game);
+    Square &GetNextMove(Game &game);
     DroppingObject *FindClosestObject(List &objects) const;
-    bool CheckWallsInPath(Grid &grid, const Square *target) const;
+    bool CheckWallsInPath(Grid &grid, const Square &target) const;
     bool HasPlayersInRange(List &players) const;
     bool PlayerInRange(Player &oponent) const;
     void StepOut();
 
 public:
-    Player(char name, Square *square, int power = INITIAL_POWER, Direction direction = RIGHT);
+    Player(char name, Square &square, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
     void Update(Game &game);
@@ -47,7 +47,7 @@ public:
     int GetPower() const;
     int GetRemainingArrows() const;
     Direction GetDirection() const;
-    const Square *GetSquare() const;
+    const Square &GetSquare() const;
     void Draw() const;
 };
 

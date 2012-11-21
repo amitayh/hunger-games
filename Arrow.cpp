@@ -2,8 +2,8 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player &shooter, Square *square) {
-    this->square = square;
+Arrow::Arrow(Player &shooter, Square &square) {
+    this->square = &square;
     direction = shooter.GetDirection();
     hit = false;
 }
@@ -12,18 +12,18 @@ Arrow::~Arrow() {
     square->Clear();
 }
 
-void Arrow::SetSquare(Square *square) {
-    if (square->HasWall()) {
+void Arrow::SetSquare(Square &square) {
+    if (square.HasWall()) {
         hit = true;
     } else {
-        this->square = square;
+        this->square = &square;
         CheckHit();
     }
 }
 
 void Arrow::Update(Game &game) {
     if (!CheckHit() && game.GetTick() % MOVE_INTERVAL == 0) {
-        Square *nextSquare = GetNextSquare(game.GetGrid(), square, direction);
+        Square &nextSquare = GetNextSquare(game.GetGrid(), *square, direction);
         square->Clear();
         SetSquare(nextSquare);
     }

@@ -34,8 +34,8 @@ public:
 
     void Clear() const;
     void Draw(char ch, Color color = SILVER) const;
-    double GetDistance(const Square *otherSquare) const;
-    Direction GetDirection(const Square *otherSquare) const;
+    double GetDistance(const Square &otherSquare) const;
+    Direction GetDirection(const Square &otherSquare) const;
     bool IsEmpty() const;
     int GetRow() const;
     int GetCol() const;

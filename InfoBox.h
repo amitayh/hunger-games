@@ -17,10 +17,10 @@ class InfoBox
 public:
     InfoBox();
 
-    void SetSquare(Square *square);
+    void SetSquare(Square &square);
     void Draw(List &players) const;
     const Dimensions& GetSize() const;
-    bool InArea(const Square *square) const;
+    bool InArea(const Square &square) const;
 };
 
 #endif

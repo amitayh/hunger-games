@@ -70,14 +70,14 @@ void Square::Draw(char ch, Color color) const {
     cout << ch;
 }
 
-double Square::GetDistance(const Square *otherSquare) const {
-    double deltaY = row - otherSquare->GetRow(), deltaX = col - otherSquare->GetCol();
+double Square::GetDistance(const Square &otherSquare) const {
+    double deltaY = row - otherSquare.GetRow(), deltaX = col - otherSquare.GetCol();
     return sqrt((deltaY * deltaY) + (deltaX * deltaX));
 }
 
-Direction Square::GetDirection(const Square *otherSquare) const {
-    double deltaY = row - otherSquare->GetRow(),
-           deltaX = col - otherSquare->GetCol(),
+Direction Square::GetDirection(const Square &otherSquare) const {
+    double deltaY = row - otherSquare.GetRow(),
+           deltaX = col - otherSquare.GetCol(),
            angle = atan2(deltaY, deltaX) / PI;
 
     Direction direction;
