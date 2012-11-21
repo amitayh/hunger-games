@@ -1,35 +1,35 @@
 #include "DroppingObject.h"
 #include "Square.h"
 
-DroppingObject::DroppingObject(Type type, Square *square) {
-    square->SetDroppingObject(this);
-    this->square = square;
+DroppingObject::DroppingObject(Type type, Square &square) {
+    square.SetDroppingObject(*this);
+    this->square = &square;
     this->type = type;
     pickedUp = false;
 }
 
 DroppingObject::~DroppingObject() {
-    square->SetDroppingObject(NULL);
+    square->UnsetDroppingObject();
     square->Clear();
 }
 
-void DroppingObject::Affect(Player *player) {
+void DroppingObject::Affect(Player &player) {
     switch (type) {
         case FOOD:
-            player->IncreasePower(200);
+            player.IncreasePower(200);
             break;
         case QUIVER:
-            player->AddArrows(3);
+            player.AddArrows(3);
             break;
         case BOMB:
-            player->DecreasePower(750);
+            player.DecreasePower(750);
             break;
     }
     pickedUp = true;
 }
 
-Square *DroppingObject::GetSquare() {
-    return square;
+Square &DroppingObject::GetSquare() {
+    return *square;
 }
 
 void DroppingObject::Draw() const {

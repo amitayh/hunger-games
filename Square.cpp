@@ -14,12 +14,12 @@ Square::Square() {
     wall = NULL;
 }
 
-void Square::StepIn(Player *player) {
-    players.Push(player);
+void Square::StepIn(Player &player) {
+    players.Push(&player);
 }
 
-void Square::StepOut(Player *player) {
-    ListNode *node = players.Find(player);
+void Square::StepOut(Player &player) {
+    ListNode *node = players.Find(&player);
     players.Remove(node);
 }
 
@@ -28,24 +28,32 @@ void Square::InitPosition(int row, int col) {
     this->col = col;
 }
 
-void Square::SetDroppingObject(DroppingObject *droppingObject) {
-    this->droppingObject = droppingObject;
+void Square::SetDroppingObject(DroppingObject &droppingObject) {
+    this->droppingObject = &droppingObject;
 }
 
-void Square::SetWall(Wall *wall) {
-    this->wall = wall;
+void Square::UnsetDroppingObject() {
+    droppingObject = NULL;
 }
 
-List *Square::GetPlayers() {
-    return &players;
+bool Square::HasDroppingObject() {
+    return (droppingObject != NULL);
 }
 
-DroppingObject *Square::GetDroppingObject() {
-    return droppingObject;
+void Square::SetWall(Wall &wall) {
+    this->wall = &wall;
 }
 
-Wall *Square::GetWall() {
-    return wall;
+List &Square::GetPlayers() {
+    return players;
+}
+
+DroppingObject &Square::GetDroppingObject() {
+    return *droppingObject;
+}
+
+bool Square::HasWall() {
+    return (wall != NULL);
 }
 
 void Square::Clear() const {
@@ -62,14 +70,14 @@ void Square::Draw(char ch, Color color) const {
     cout << ch;
 }
 
-double Square::GetDistance(const Square *otherSquare) const {
-    double deltaY = row - otherSquare->GetRow(), deltaX = col - otherSquare->GetCol();
+double Square::GetDistance(const Square &otherSquare) const {
+    double deltaY = row - otherSquare.GetRow(), deltaX = col - otherSquare.GetCol();
     return sqrt((deltaY * deltaY) + (deltaX * deltaX));
 }
 
-Direction Square::GetDirection(const Square *otherSquare) const {
-    double deltaY = row - otherSquare->GetRow(),
-           deltaX = col - otherSquare->GetCol(),
+Direction Square::GetDirection(const Square &otherSquare) const {
+    double deltaY = row - otherSquare.GetRow(),
+           deltaX = col - otherSquare.GetCol(),
            angle = atan2(deltaY, deltaX) / PI;
 
     Direction direction;

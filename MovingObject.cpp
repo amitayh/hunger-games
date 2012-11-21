@@ -1,7 +1,7 @@
 #include "MovingObject.h"
 
-Square *GetNextSquare(Grid *grid, const Square *square, Direction direction) {
-    int row = square->GetRow(), col = square->GetCol();
+Square &GetNextSquare(Grid &grid, const Square &square, Direction direction) {
+    int row = square.GetRow(), col = square.GetCol();
     switch (direction) {
         case UP:
             row--;
@@ -16,5 +16,5 @@ Square *GetNextSquare(Grid *grid, const Square *square, Direction direction) {
             col++;
             break;
     }
-    return grid->GetSquare(row, col);
+    return grid.GetSquare(row, col);
 }

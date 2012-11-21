@@ -8,8 +8,7 @@ class Wall
     Square *square;
 
 public:
-    Wall(Square *square);
-    ~Wall();
+    Wall(Square &square);
 
     void Draw() const;
 };

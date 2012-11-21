@@ -1,12 +1,8 @@
 #include "Wall.h"
 
-Wall::Wall(Square *square) {
-    this->square = square;
-    square->SetWall(this);
-}
-
-Wall::~Wall() {
-    square->SetWall(NULL);
+Wall::Wall(Square &square) {
+    this->square = &square;
+    square.SetWall(*this);
 }
 
 void Wall::Draw() const {

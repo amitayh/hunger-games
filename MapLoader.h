@@ -15,7 +15,7 @@ class MapLoader
     Game *game;
 
 public:
-    MapLoader(Game *game);
+    MapLoader(Game &game);
 
     bool Load(const string &filename);
 };

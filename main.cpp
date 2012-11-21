@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv) {
     Game game;
-    MapLoader loader = MapLoader(&game);
+    MapLoader loader = MapLoader(game);
     if (argc > 1 && loader.Load(argv[1])) {
         game.Run();
     } else {

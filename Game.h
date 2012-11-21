@@ -26,7 +26,7 @@ class Game
     };
 
     unsigned int tick;
-    bool paused;
+    bool running;
     Grid grid;
     List walls;
     List players;
@@ -36,7 +36,7 @@ class Game
     Menu menu;
 
     void Loop();
-    void Update();
+    bool Update();
     void Draw();
     void UpdatePlayers();
     void DrawPlayers();
@@ -48,7 +48,7 @@ class Game
     void DropObjects();
     void DropObject(DroppingObject::Type type);
     void EndGame(Player *winner = NULL);
-    bool IsValidDrop(Square *square);
+    bool IsValidDrop(Square &square);
     void ShowMenu();
 
 public:
@@ -56,16 +56,16 @@ public:
     ~Game();
 
     void AddPlayer(int row, int col);
-    void AddPlayer(Square *square);
+    void AddPlayer(Square &square);
     void AddWall(int row, int col);
     void AddInfoBox(int row, int col);
-    void AddArrow(Arrow *arrow);
+    void AddArrow(Arrow &arrow);
     bool CheckProbability(int probability) const;
     unsigned int GetTick() const;
-    List *GetPlayers();
-    List *GetDroppingObjects();
-    Grid *GetGrid();
-    Square *GetValidDropSquare();
+    List &GetPlayers();
+    List &GetDroppingObjects();
+    Grid &GetGrid();
+    Square &GetValidDropSquare();
 
     void Run();
     void Pause();

@@ -46,7 +46,7 @@ class ListIterator
     List *list;
     ListNode *current;
 public:
-    ListIterator(List *list);
+    ListIterator(List &list);
 
     ListNode *Current();
     bool Done() const;

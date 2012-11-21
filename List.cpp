@@ -71,7 +71,7 @@ void *List::Pop() {
 }
 
 ListNode *List::Find(const void *data) {
-    ListIterator it(this);
+    ListIterator it(*this);
     ListNode *result = NULL, *current;
     while (!result && !it.Done()) {
         current = it.Current();
@@ -104,9 +104,9 @@ bool List::IsEmpty() const {
 
 // List iterator implementation
 
-ListIterator::ListIterator(List *list) {
-    this->list = list;
-    current = list->GetHead()->GetNext();
+ListIterator::ListIterator(List &list) {
+    this->list = &list;
+    current = list.GetHead()->GetNext();
 }
 
 ListNode *ListIterator::Current() {
