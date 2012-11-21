@@ -26,7 +26,7 @@ class Game
     };
 
     unsigned int tick;
-    bool paused;
+    bool running;
     Grid grid;
     List walls;
     List players;
@@ -36,7 +36,7 @@ class Game
     Menu menu;
 
     void Loop();
-    void Update();
+    bool Update();
     void Draw();
     void UpdatePlayers();
     void DrawPlayers();

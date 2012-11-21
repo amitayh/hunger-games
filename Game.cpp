@@ -74,17 +74,17 @@ bool Game::CheckProbability(int probability) const {
 }
 
 void Game::Run() {
-    paused = false;
+    running = true;
     DrawWalls();
     Loop();
 }
 
 void Game::Pause() {
-    paused = true;
+    running = false;
 }
 
 void Game::Resume() {
-    paused = false;
+    running = true;
     clrscr();
     DrawWalls();
     DrawDroppingObjects();
@@ -104,17 +104,14 @@ void Game::EndGame(Player *winner) {
 }
 
 void Game::Loop() {
-    while (!paused) {
+    while (running) {
         if (kbhit() && getch() == ESCAPSE_KEY) {
             ShowMenu();
-        } else {
-            Update();
-            if (!paused) {
-                Draw();
-                DropObjects();
-                tick++;
-                Sleep(1000 / FRAMES_PER_SECOND);
-            }
+        } else if (Update()) {
+            Draw();
+            DropObjects();
+            tick++;
+            Sleep(1000 / FRAMES_PER_SECOND);
         }
     }
 }
@@ -131,10 +128,11 @@ void Game::ShowMenu() {
     }
 }
 
-void Game::Update() {
+bool Game::Update() {
     UpdateArrows();
     UpdatePlayers();
     UpdateDroppingObjects();
+    return running;
 }
 
 void Game::Draw() {
@@ -169,7 +167,7 @@ void Game::DrawArrows() {
 
 void Game::UpdatePlayers() {
     ListIterator it(players);
-    while (!it.Done()) {
+    while (running && !it.Done()) {
         ListNode *node = it.Current();
         Player *player = (Player *) node->GetData();
         player->Update(*this);
@@ -197,7 +195,7 @@ void Game::DrawPlayers() {
 
 void Game::UpdateDroppingObjects() {
     ListIterator it(droppingObjects);
-    while (!it.Done()) {
+    while (running && !it.Done()) {
         ListNode *node = it.Current();
         DroppingObject *droppingObject = (DroppingObject *) node->GetData();
         if (droppingObject->GetPickedUp()) {
