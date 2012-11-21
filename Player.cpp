@@ -7,7 +7,7 @@ Player::Player(char name, Square *square, int power, Direction direction) {
     this->name = name;
     this->power = power;
     this->square = square;
-    square->StepIn(this);
+    square->StepIn(*this);
     remainingArrows = INITIAL_NUM_ARROWS;
     lastArrowTick = 0;
 }
@@ -34,14 +34,14 @@ void Player::SetSquare(Square *square) {
     }
 
     StepOut();
-    square->StepIn(this);
+    square->StepIn(*this);
     this->square = square;
 }
 
 void Player::StepOut() {
     if (square) {
         square->Clear();
-        square->StepOut(this);
+        square->StepOut(*this);
     }
 }
 
@@ -144,7 +144,7 @@ void Player::ShootArrow(Game &game) {
     Square *arrowSquare = GetNextSquare(game.GetGrid(), square, direction);
     if (!arrowSquare->HasWall()) {
         Arrow *arrow = new Arrow(*this, arrowSquare);
-        game.AddArrow(arrow);
+        game.AddArrow(*arrow);
         lastArrowTick = game.GetTick();
         remainingArrows--;
     }

@@ -21,8 +21,8 @@ class Square
 public:
     Square();
 
-    void StepIn(Player *player);
-    void StepOut(Player *player);
+    void StepIn(Player &player);
+    void StepOut(Player &player);
     void InitPosition(int row, int col);
     void SetDroppingObject(DroppingObject &droppingObject);
     void UnsetDroppingObject();

@@ -64,8 +64,8 @@ void Game::AddInfoBox(int row, int col) {
     infoBox.SetSquare(grid.GetSquare(row, col));
 }
 
-void Game::AddArrow(Arrow *arrow) {
-    arrows.Push(arrow);
+void Game::AddArrow(Arrow &arrow) {
+    arrows.Push(&arrow);
 }
 
 bool Game::CheckProbability(int probability) const {

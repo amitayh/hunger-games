@@ -14,12 +14,12 @@ Square::Square() {
     wall = NULL;
 }
 
-void Square::StepIn(Player *player) {
-    players.Push(player);
+void Square::StepIn(Player &player) {
+    players.Push(&player);
 }
 
-void Square::StepOut(Player *player) {
-    ListNode *node = players.Find(player);
+void Square::StepOut(Player &player) {
+    ListNode *node = players.Find(&player);
     players.Remove(node);
 }
 
