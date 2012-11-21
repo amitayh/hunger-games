@@ -47,7 +47,7 @@ class Game
     void DrawWalls();
     void DropObjects();
     void DropObject(DroppingObject::Type type);
-    void EndGame(Player *winner = NULL);
+    void EndGame(const Player *winner = NULL);
     bool IsValidDrop(Square &square);
     void ShowMenu();
 

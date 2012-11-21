@@ -91,7 +91,7 @@ void Game::Resume() {
     Draw();
 }
 
-void Game::EndGame(Player *winner) {
+void Game::EndGame(const Player *winner) {
     Pause();
     clrscr();
     gotoxy(0, 0);

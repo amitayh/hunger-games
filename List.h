@@ -34,8 +34,8 @@ public:
     void *Pop();
 
     ListNode *Find(const void *data);
-    ListNode *GetHead();
-    ListNode *GetTail();
+    const ListNode *GetHead() const;
+    const ListNode *GetTail() const;
     void *Peek() const;
     int GetSize() const;
     bool IsEmpty() const;
@@ -43,10 +43,10 @@ public:
 
 class ListIterator
 {
-    List *list;
+    const List *list;
     ListNode *current;
 public:
-    ListIterator(List &list);
+    ListIterator(const List &list);
 
     ListNode *Current();
     bool Done() const;

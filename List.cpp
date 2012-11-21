@@ -82,11 +82,11 @@ ListNode *List::Find(const void *data) {
     return result;
 }
 
-ListNode *List::GetHead() {
+const ListNode *List::GetHead() const {
     return &head;
 }
 
-ListNode *List::GetTail() {
+const ListNode *List::GetTail() const {
     return &tail;
 }
 
@@ -104,7 +104,7 @@ bool List::IsEmpty() const {
 
 // List iterator implementation
 
-ListIterator::ListIterator(List &list) {
+ListIterator::ListIterator(const List &list) {
     this->list = &list;
     current = list.GetHead()->GetNext();
 }
