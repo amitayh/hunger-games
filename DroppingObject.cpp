@@ -1,7 +1,6 @@
 #include "DroppingObject.h"
-#include "Square.h"
 
-DroppingObject::DroppingObject(Type type, Square& square) {
+DroppingObject::DroppingObject(Type type, Grid::Square& square) {
     square.setDroppingObject(*this);
     this->type = type;
     pSquare = &square;
@@ -28,7 +27,7 @@ void DroppingObject::affect(Player& player) {
     pickedUp = true;
 }
 
-Square& DroppingObject::getSquare() const {
+Grid::Square& DroppingObject::getSquare() const {
     return *pSquare;
 }
 

@@ -2,37 +2,21 @@
 
 // List node implementation
 
-ListNode::ListNode(const void* data, ListNode* prev, ListNode* next) {
+List::Node::Node(const void* data, Node* prev, Node* next) {
     this->data = data;
     this->prev = prev;
     this->next = next;
 }
 
-void ListNode::setPrev(ListNode* prev) {
-    this->prev = prev;
-}
-
-void ListNode::setNext(ListNode* next) {
-    this->next = next;
-}
-
-const void* ListNode::getData() const {
+const void* List::Node::getData() const {
     return data;
-}
-
-ListNode* ListNode::getNext() const {
-    return next;
-}
-
-ListNode* ListNode::getPrev() const {
-    return prev;
 }
 
 // List container implementation
 
 List::List() {
-    head.setNext(&tail);
-    tail.setPrev(&head);
+    head.next = &tail;
+    tail.prev = &head;
     size = 0;
 }
 
@@ -42,38 +26,38 @@ List::~List() {
     }
 }
 
-void List::insert(const void* data, ListNode* after) {
-    ListNode* node = new ListNode(data, after, after->getNext());
-    after->getNext()->setPrev(node);
-    after->setNext(node);
+void List::insert(const void* data, Node* after) {
+    Node* node = new Node(data, after, after->next);
+    after->next->prev = node;
+    after->next = node;
     size++;
 }
 
-void List::remove(ListNode* node) {
-    node->getPrev()->setNext(node->getNext());
-    node->getNext()->setPrev(node->getPrev());
+void List::remove(Node* node) {
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
     delete node;
     size--;
 }
 
 void List::push(const void* data) {
-    insert(data, tail.getPrev());
+    insert(data, tail.prev);
 }
 
 const void* List::pop() {
     if (size) {
-        ListNode* node = tail.getPrev();
-        const void* data = node->getData();
+        Node* node = tail.prev;
+        const void* data = node->data;
         remove(node);
         return data;
     }
     return NULL;
 }
 
-ListNode* List::find(const void* data) const {
-    ListNode* result = NULL;
-    ListNode* current;
-    ListIterator it(*this);
+List::Node* List::find(const void* data) const {
+    Node* result = NULL;
+    Node* current;
+    Iterator it(*this);
     while (!result && !it.done()) {
         current = it.getCurrent();
         if (current->getData() == data) {
@@ -83,16 +67,8 @@ ListNode* List::find(const void* data) const {
     return result;
 }
 
-const ListNode* List::getHead() const {
-    return &head;
-}
-
-const ListNode* List::getTail() const {
-    return &tail;
-}
-
 const void* List::peek() const {
-    return size ? head.getNext()->getData() : NULL;
+    return size ? head.next->data : NULL;
 }
 
 int List::getSize() const {
@@ -105,17 +81,17 @@ bool List::isEmpty() const {
 
 // List iterator implementation
 
-ListIterator::ListIterator(const List& list) {
+List::Iterator::Iterator(const List& list) {
     this->list = &list;
-    current = list.getHead()->getNext();
+    current = list.head.next;
 }
 
-ListNode* ListIterator::getCurrent() {
-    ListNode* node = current;
-    current = current->getNext();
+List::Node* List::Iterator::getCurrent() {
+    List::Node* node = current;
+    current = current->next;
     return node;
 }
 
-bool ListIterator::done() const {
-    return (current == list->getTail());
+bool List::Iterator::done() const {
+    return (current == &list->tail);
 }

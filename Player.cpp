@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "DroppingObject.h"
 
-Player::Player(char name, Square& square, int power, Direction direction) {
+Player::Player(char name, Grid::Square& square, int power, Direction direction) {
     this->direction = direction;
     this->name = name;
     this->power = power;
@@ -17,7 +17,7 @@ Player::~Player() {
     stepOut();
 }
 
-void Player::setSquare(Square& square) {
+void Player::setSquare(Grid::Square& square) {
     if (square.hasDroppingObject()) {
         // Pick up dropping object
         DroppingObject& droppingObject = square.getDroppingObject();
@@ -27,9 +27,9 @@ void Player::setSquare(Square& square) {
     const List& players = square.getPlayers();
     if (!players.isEmpty()) {
         // Fight other players on square
-        ListIterator it(players);
+        List::Iterator it(players);
         while (power > 0 && !it.done()) {
-            ListNode* node = it.getCurrent();
+            List::Node* node = it.getCurrent();
             Player* player = (Player*) node->getData();
             fight(*player);
         }
@@ -41,11 +41,9 @@ void Player::setSquare(Square& square) {
 }
 
 void Player::stepOut() const {
-    if (pSquare) {
-        // Notify square that player is leaving
-        pSquare->clear();
-        pSquare->stepOut(*this);
-    }
+    // Notify square that player is leaving
+    pSquare->stepOut(*this);
+    pSquare->clear();
 }
 
 void Player::update(Game& game) {
@@ -69,7 +67,7 @@ void Player::update(Game& game) {
     }
 }
 
-Square& Player::getNextMove(Game& game) {
+Grid::Square& Player::getNextMove(const Game& game) {
     const Grid& grid = game.getGrid();
 
     // Find closest food / quiver
@@ -82,7 +80,7 @@ Square& Player::getNextMove(Game& game) {
         setRandomDirection();
     }
 
-    Square* nextSquare = &getNextSquare(grid, *pSquare, direction);
+    Grid::Square* nextSquare = &getNextSquare(grid, *pSquare, direction);
     while (nextSquare->hasWall()) {
         // Change direction to avoid the wall
         setRandomDirection();
@@ -96,10 +94,10 @@ DroppingObject* Player::findClosestObject(const List& objects) const {
     DroppingObject* closest = NULL;
     if (!objects.isEmpty()) {
         double closestDistance = 0;
-        ListIterator it(objects);
+        List::Iterator it(objects);
         while (!it.done()) {
             // Iterate over the objects list
-            ListNode* node = it.getCurrent();
+            List::Node* node = it.getCurrent();
             DroppingObject* current = (DroppingObject*) node->getData();
             if (current->getType() != DroppingObject::Type::BOMB) {
                 // Don't go for the bombs!
@@ -115,23 +113,23 @@ DroppingObject* Player::findClosestObject(const List& objects) const {
     return closest;
 }
 
-bool Player::checkWallsInPath(const Grid& grid, const Square& target) const {
-    Square* current = pSquare;
-    while (current != &target) {
+bool Player::checkWallsInPath(const Grid& grid, const Grid::Square& target) const {
+    bool result = true;
+    Grid::Square* current = pSquare;
+    while (result && current != &target) {
         // Simulate the actual movement and check for walls in the path
         Direction direction = current->getDirection(target);
         current = &getNextSquare(grid, *current, direction);
         if (current->hasWall()) {
             // Found a wall, no need to continue
-            return false;
+            result = false;
         }
     }
-    // The path is clear!
-    return true;
+    return result;
 }
 
 void Player::setRandomDirection() {
-    // Set a direction randomly (player will only turn right or left)
+    // Set a direction randomly. Player will only turn right or left (from his perspective)
     Direction directions[2];
     switch (direction) {
         case UP:
@@ -149,7 +147,7 @@ void Player::setRandomDirection() {
 }
 
 void Player::shootArrow(Game& game) {
-    Square& arrowSquare = getNextSquare(game.getGrid(), *pSquare, direction);
+    Grid::Square& arrowSquare = getNextSquare(game.getGrid(), *pSquare, direction);
     if (!arrowSquare.hasWall()) {
         // Don't shoot directly at a wall
         Arrow* arrow = new Arrow(*this, arrowSquare);
@@ -160,11 +158,11 @@ void Player::shootArrow(Game& game) {
 }
 
 bool Player::hasPlayersInRange(const List& players) const {
-    ListIterator it(players);
+    List::Iterator it(players);
     bool inRange = false;
     while (!inRange && !it.done()) {
         // Iterate over the players list
-        ListNode* node = it.getCurrent();
+        List::Node* node = it.getCurrent();
         Player* player = (Player*) node->getData();
         if (player != this) {
             // Check if opponent may be hit if an arrow will be shot
@@ -177,7 +175,7 @@ bool Player::hasPlayersInRange(const List& players) const {
 bool Player::playerInRange(const Player& opponent) const {
     // Basic algorithm: check opponent's square and direction.
     // Compare with player's square and direction and decide whether or not to shoot
-    const Square& opponentSquare = opponent.getSquare();
+    const Grid::Square& opponentSquare = opponent.getSquare();
     Direction opponentDirection = opponent.getDirection();
 
     // Yuck, I know...
@@ -218,7 +216,7 @@ void Player::fight(Player& opponent) {
         opponent.decreasePower(10);
         decreasePower(200);
     } else {
-        // Player and opponent are equal
+        // Player and opponent are equally matched
         opponent.decreasePower(50);
         decreasePower(50);
     }
@@ -236,7 +234,7 @@ void Player::decreasePower(int amount) {
     increasePower(-amount);
 }
 
-const Square& Player::getSquare() const {
+const Grid::Square& Player::getSquare() const {
     return *pSquare;
 }
 

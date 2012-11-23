@@ -11,15 +11,15 @@ class Arrow
         MOVE_INTERVAL = 1
     };
 
-    Square* pSquare;
+    Grid::Square* pSquare;
     Direction direction;
     bool hit;
 
-    void setSquare(Square& square);
+    void setSquare(Grid::Square& square);
     bool checkHit();
 
 public:
-    Arrow(Player& shooter, Square& square);
+    Arrow(Player& shooter, Grid::Square& square);
     ~Arrow();
 
     void update(Game& game);

@@ -7,12 +7,12 @@ using namespace std;
 
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
-void InfoBox::setSquare(Square& square) {
+void InfoBox::setSquare(Grid::Square& square) {
     pSquare = &square;
 }
 
 void InfoBox::draw(const List& players) const {
-    ListIterator it(players);
+    List::Iterator it(players);
     int row = pSquare->getRow(), col = pSquare->getCol();
 
     changeColor(SILVER);
@@ -26,7 +26,7 @@ void InfoBox::draw(const List& players) const {
         gotoxy(col, row + i);
         if (!it.done()) {
             // Print player info
-            ListNode* node = it.getCurrent();
+            List::Node* node = it.getCurrent();
             Player* player = (Player*) node->getData();
             printf("%c %-4d %-3d\n", player->getName(), player->getPower(), player->getRemainingArrows());
         } else {
@@ -40,7 +40,7 @@ const Dimensions& InfoBox::getSize() const {
     return size;
 }
 
-bool InfoBox::inArea(const Square& square) const {
+bool InfoBox::inArea(const Grid::Square& square) const {
     int row = square.getRow(),
         col = square.getCol(),
         rowMin = pSquare->getRow(),

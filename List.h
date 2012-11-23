@@ -3,55 +3,48 @@
 
 #include <stdlib.h>
 
-class ListNode
-{
-    const void* data;
-    ListNode* prev;
-    ListNode* next;
-
-public:
-    ListNode(const void* data = NULL, ListNode* prev = NULL, ListNode* next = NULL);
-
-    void setPrev(ListNode* prev);
-    void setNext(ListNode* next);
-
-    const void* getData() const;
-    ListNode* getNext() const;
-    ListNode* getPrev() const;
-};
-
 class List
 {
-    ListNode head, tail; // Dummy nodes
-    int size;
-
 public:
+    // List node
+    class Node
+    {
+        const void* data;
+        Node* prev;
+        Node* next;
+    public:
+        Node(const void* data = NULL, Node* prev = NULL, Node* next = NULL);
+        const void* getData() const;
+        friend class List;
+    };
+
+    // List iterator
+    class Iterator
+    {
+        const List* list;
+        Node* current;
+    public:
+        Iterator(const List& list);
+        Node* getCurrent();
+        bool done() const;
+    };
+
     List();
     ~List();
 
-    void insert(const void* data, ListNode* after);
-    void remove(ListNode* node);
+    void insert(const void* data, Node* after);
+    void remove(Node* node);
     void push(const void* data);
     const void* pop();
 
-    ListNode* find(const void* data) const;
-    const ListNode* getHead() const;
-    const ListNode* getTail() const;
+    Node* find(const void* data) const;
     const void* peek() const;
     int getSize() const;
     bool isEmpty() const;
-};
 
-class ListIterator
-{
-    const List* list;
-    ListNode* current;
-public:
-    ListIterator(const List& list);
-
-    ListNode* getCurrent();
-
-    bool done() const;
+private:
+    Node head, tail; // Dummy nodes
+    int size;
 };
 
 #endif

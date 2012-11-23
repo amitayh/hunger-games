@@ -1,7 +1,7 @@
 #ifndef _INFO_BOX_H
 #define _INFO_BOX_H
 
-#include "Square.h"
+#include "Grid.h"
 #include "Dimensions.h"
 
 class InfoBox
@@ -11,17 +11,17 @@ class InfoBox
         HEIGHT = 5
     };
 
-    Square* pSquare;
+    Grid::Square* pSquare;
     Dimensions size;
 
 public:
     InfoBox();
 
-    void setSquare(Square& square);
+    void setSquare(Grid::Square& square);
 
     void draw(const List& players) const;
     const Dimensions& getSize() const;
-    bool inArea(const Square& square) const;
+    bool inArea(const Grid::Square& square) const;
 };
 
 #endif

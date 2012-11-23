@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player& shooter, Square& square) {
+Arrow::Arrow(Player& shooter, Grid::Square& square) {
     pSquare = &square;
     direction = shooter.getDirection();
     hit = false;
@@ -12,7 +12,7 @@ Arrow::~Arrow() {
     pSquare->clear();
 }
 
-void Arrow::setSquare(Square& square) {
+void Arrow::setSquare(Grid::Square& square) {
     if (square.hasWall()) {
         hit = true;
     } else {
@@ -23,7 +23,7 @@ void Arrow::setSquare(Square& square) {
 
 void Arrow::update(Game& game) {
     if (!checkHit() && game.getTick() % MOVE_INTERVAL == 0) {
-        Square& nextSquare = getNextSquare(game.getGrid(), *pSquare, direction);
+        Grid::Square& nextSquare = getNextSquare(game.getGrid(), *pSquare, direction);
         pSquare->clear();
         setSquare(nextSquare);
     }

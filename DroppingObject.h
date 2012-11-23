@@ -12,18 +12,18 @@ public:
         BOMB
     };
 
-    DroppingObject(Type type, Square& square);
+    DroppingObject(Type type, Grid::Square& square);
     ~DroppingObject();
 
     void affect(Player& player);
 
     void draw() const;
     bool getPickedUp() const;
-    Square& getSquare() const;
+    Grid::Square& getSquare() const;
     Type getType() const;
 
 private:
-    Square *pSquare;
+    Grid::Square *pSquare;
     Type type;
     bool pickedUp;
 };

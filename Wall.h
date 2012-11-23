@@ -1,14 +1,14 @@
 #ifndef _WALL_H
 #define _WALL_H
 
-#include "Square.h"
+#include "Grid.h"
 
 class Wall
 {
-    Square* pSquare;
+    Grid::Square* pSquare;
 
 public:
-    Wall(Square& square);
+    Wall(Grid::Square& square);
 
     void draw() const;
 };

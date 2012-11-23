@@ -16,27 +16,27 @@ class Player
         MOVE_INTERVAL                   = 2
     };
 
-    Square* pSquare;
+    Grid::Square* pSquare;
     Direction direction;
     char name;
     int power;
     int remainingArrows;
     unsigned int lastArrowTick;
 
-    void setSquare(Square& square);
+    void setSquare(Grid::Square& square);
     void fight(Player& opponent);
     void setRandomDirection();
     void shootArrow(Game& game);
-    Square& getNextMove(Game& game);
+    Grid::Square& getNextMove(const Game& game);
 
     DroppingObject* findClosestObject(const List& objects) const;
-    bool checkWallsInPath(const Grid& grid, const Square& target) const;
+    bool checkWallsInPath(const Grid& grid, const Grid::Square& target) const;
     bool hasPlayersInRange(const List& players) const;
     bool playerInRange(const Player& opponent) const;
     void stepOut() const;
 
 public:
-    Player(char name, Square& square, int power = INITIAL_POWER, Direction direction = RIGHT);
+    Player(char name, Grid::Square& square, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
     void update(Game& game);
@@ -48,7 +48,7 @@ public:
     int getPower() const;
     int getRemainingArrows() const;
     Direction getDirection() const;
-    const Square& getSquare() const;
+    const Grid::Square& getSquare() const;
     void draw() const;
 };
 

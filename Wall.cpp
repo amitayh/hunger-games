@@ -1,6 +1,6 @@
 #include "Wall.h"
 
-Wall::Wall(Square& square) {
+Wall::Wall(Grid::Square& square) {
     pSquare = &square;
     square.setWall(*this);
 }

@@ -16,7 +16,7 @@ const int ESCAPSE_KEY = 27;
 class Game
 {
     enum {
-        FRAMES_PER_SECOND           = 25,
+        FRAMES_PER_SECOND           = 30,
         DROP_FOOD_PROBABILITY       = 2,
         DROP_QUIVER_PROBABILITY     = 2,
         DROP_BOMB_PROBABILITY       = 1,
@@ -57,7 +57,7 @@ class Game
     void drawArrows() const;
     void drawDroppingObjects() const;
     void drawWalls() const;
-    bool isValidDrop(const Square& square) const;
+    bool isValidDrop(const Grid::Square& square) const;
 
 public:
     Game();
@@ -67,15 +67,15 @@ public:
     void pause();
     void resume();
     void addPlayer(int row, int col);
-    void addPlayer(Square& square);
+    void addPlayer(Grid::Square& square);
     void addWall(int row, int col);
     void addInfoBox(int row, int col);
-    void addArrow(Arrow& arrow);
+    void addArrow(const Arrow& arrow);
     
     const List& getPlayers() const;
     const List& getDroppingObjects() const;
     const Grid& getGrid() const;
-    Square& getValidDropSquare() const;
+    Grid::Square& getValidDropSquare() const;
     bool checkProbability(int probability) const;
     unsigned int getTick() const;
 };
