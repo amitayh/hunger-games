@@ -84,6 +84,7 @@ bool Game::checkProbability(int probability) const {
 
 void Game::run() {
     status = RUNNING;
+    clrscr();
     drawWalls();
     loop();
 }

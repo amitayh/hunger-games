@@ -6,6 +6,7 @@
 
 const double PI = 3.141592653589793;
 
+// Pseudo declarations to enable compilation
 class Player;
 class DroppingObject;
 class Wall;
