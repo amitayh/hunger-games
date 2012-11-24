@@ -13,7 +13,9 @@ void InfoBox::setSquare(Grid::Square& square) {
 
 void InfoBox::draw(const List& players) const {
     List::Iterator it(players);
-    int row = pSquare->getRow(), col = pSquare->getCol();
+    int row = pSquare->getRow(),
+        col = pSquare->getCol(),
+        height = size.getHeight();
 
     changeColor(SILVER);
     
@@ -22,7 +24,7 @@ void InfoBox::draw(const List& players) const {
     gotoxy(col, row + 1);
     cout << "----------";
 
-    for (int i = 2; i < size.getHeight(); i++) {
+    for (int i = 2; i < height; i++) {
         gotoxy(col, row + i);
         if (!it.done()) {
             // Print player info
