@@ -11,8 +11,8 @@ Game::Game() {
     srand((unsigned int) time(NULL));
 
     // Initialize menu
-    menu.addOption("Resume");
-    menu.addOption("Quit");
+    menuResume = menu.addOption("Resume");
+    menuQuit = menu.addOption("Quit");
 
     // Initialize game
     status = PENDING;
@@ -133,13 +133,11 @@ void Game::loop() {
 
 void Game::showMenu() {
     pause();
-    switch (menu.choose()) {
-        case MENU_RESUME:
-            resume();
-            break;
-        case MENU_QUIT:
-            endGame();
-            break;
+    int option = menu.choose();
+    if (option == menuResume) {
+        resume();
+    } else if (option == menuQuit) {
+        endGame();
     }
 }
 

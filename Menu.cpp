@@ -16,16 +16,17 @@ Menu::~Menu() {
     }
 }
 
-bool Menu::addOption(const char* option) {
+int Menu::addOption(const char* option) {
     if (numOptions < MAX_OPTIONS) {
+        // Add the option and return its number
         options[numOptions] = strdup(option);
         numOptions++;
-        return true;
+        return numOptions;
     }
-    return false;
+    return 0;
 }
 
-int Menu::choose() const {
+void Menu::show() const {
     clrscr();
     gotoxy(0, 0);
     changeColor(SILVER);
@@ -33,9 +34,14 @@ int Menu::choose() const {
     cout << "Choose an option" << endl;
     cout << "----------------" << endl;
     
+    // Print options
     for (int i = 0; i < numOptions; i++) {
-        printf("%d. %s\n", i + 1, options[i]);
+        cout << (i + 1) << ". " << options[i] << endl;
     }
+}
+
+int Menu::choose() const {
+    show();
 
     int option;
     do {

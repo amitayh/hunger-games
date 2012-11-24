@@ -12,8 +12,9 @@ public:
     Menu();
     ~Menu();
 
-    bool addOption(const char* option);
+    int addOption(const char* option);
 
+    void show() const;
     int choose() const;
 };
 

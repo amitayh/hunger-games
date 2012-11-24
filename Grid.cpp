@@ -130,19 +130,19 @@ double Grid::Square::getDistance(const Square& otherSquare) const {
 }
 
 Direction Grid::Square::getDirection(const Square& otherSquare) const {
-    // Calculate the average direction from square to otherSquare
-    // The center (O) is the square. The function checks in which of the
-    // four regions the other square 
+    // Calculate the average direction from square to otherSquare. The center (O) represents
+    // the square. The function checks in which of the four regions the other square is
+    // and returns LEFT, RIGHT, UP or DOWN accordingly
     // 
-    //  \   ^   /
+    //  \   UP  /
     //   \  |  / 
     //    \ | /  
     //     \|/   
-    // <----O---->
+    // LEFT-O-RIGHT
     //     /|\
     //    / | \
     //   /  |  \
-    //  /   v   \
+    //  /  DOWN \
 
     double deltaY = row - otherSquare.getRow(),
            deltaX = col - otherSquare.getCol(),

@@ -20,9 +20,7 @@ class Game
         DROP_FOOD_PROBABILITY       = 2,
         DROP_QUIVER_PROBABILITY     = 2,
         DROP_BOMB_PROBABILITY       = 1,
-        MIN_DISTANCE_FROM_PLAYERS   = 2,
-        MENU_RESUME                 = 1,
-        MENU_QUIT                   = 2
+        MIN_DISTANCE_FROM_PLAYERS   = 2
     };
 
     enum Status {
@@ -33,6 +31,7 @@ class Game
     };
 
     unsigned int tick;
+    int menuResume, menuQuit;
     Status status;
     Grid grid;
     List walls;
