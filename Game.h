@@ -16,7 +16,7 @@ const int ESCAPSE_KEY = 27;
 class Game
 {
     enum {
-        FRAMES_PER_SECOND           = 30,
+        FRAMES_PER_SECOND           = 25,
         DROP_FOOD_PROBABILITY       = 2,
         DROP_QUIVER_PROBABILITY     = 2,
         DROP_BOMB_PROBABILITY       = 1,

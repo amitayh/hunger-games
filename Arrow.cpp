@@ -9,13 +9,16 @@ Arrow::Arrow(Player& shooter, Grid::Square& square) {
 }
 
 Arrow::~Arrow() {
+    // Clear square before deletion
     pSquare->clear();
 }
 
 void Arrow::setSquare(Grid::Square& square) {
     if (square.hasWall()) {
+        // Arrow hit a wall
         hit = true;
     } else {
+        // Move to next square
         pSquare = &square;
         checkHit();
     }

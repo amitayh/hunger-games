@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv) {
     Game game;
-    MapLoader loader = MapLoader(game);
+    MapLoader loader(game);
     if (argc > 1 && loader.load(argv[1])) {
         game.run();
     } else {
