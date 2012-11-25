@@ -265,6 +265,10 @@ Grid::Square& Game::getValidDropSquare() const {
     return *square;
 }
 
+bool Game::isValidDrop(int row, int col) const {
+    return isValidDrop(grid.getSquare(row, col));
+}
+
 bool Game::isValidDrop(const Grid::Square& square) const {
     bool result = true;
     if (!square.isEmpty()) {

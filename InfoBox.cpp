@@ -5,7 +5,9 @@
 
 using namespace std;
 
-InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
+InfoBox::InfoBox(): size(WIDTH, HEIGHT) {
+    pSquare = NULL;
+}
 
 void InfoBox::setSquare(Grid::Square& square) {
     pSquare = &square;
@@ -43,12 +45,15 @@ const Dimensions& InfoBox::getSize() const {
 }
 
 bool InfoBox::inArea(const Grid::Square& square) const {
-    int row = square.getRow(),
-        col = square.getCol(),
-        rowMin = pSquare->getRow(),
-        rowMax = rowMin + size.getHeight(),
-        colMin = pSquare->getCol(),
-        colMax = colMin + size.getWidth();
+    if (pSquare) {
+        int row = square.getRow(),
+            col = square.getCol(),
+            rowMin = pSquare->getRow(),
+            rowMax = rowMin + size.getHeight(),
+            colMin = pSquare->getCol(),
+            colMax = colMin + size.getWidth();
 
-    return (row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
+        return (row >= rowMin && row <= rowMax && col >= colMin && col <= colMax);
+    }
+    return false;
 }
