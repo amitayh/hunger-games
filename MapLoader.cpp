@@ -19,6 +19,7 @@ bool MapLoader::load(const string& filename) const {
             for (int col = 0; col < cols; col++) {
                 if (map.eof()) {
                     // Oops! Something went wrong...
+                    map.close();
                     return false;
                 }
                 switch (map.get()) {
@@ -26,8 +27,10 @@ bool MapLoader::load(const string& filename) const {
                         pGame->addWall(row, col);
                         break;
                     case CHAR_PLAYER:
-                        pGame->addPlayer(row, col);
-                        players++;
+                        if (pGame->isValidDrop(row, col)) {
+                            pGame->addPlayer(row, col);
+                            players++;
+                        }
                         break;
                     case CHAR_INFO_BOX:
                         if (!addedInfoBox) {

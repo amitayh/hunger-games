@@ -56,7 +56,6 @@ class Game
     void drawArrows() const;
     void drawDroppingObjects() const;
     void drawWalls() const;
-    bool isValidDrop(const Grid::Square& square) const;
 
 public:
     Game();
@@ -75,6 +74,8 @@ public:
     const List& getDroppingObjects() const;
     const Grid& getGrid() const;
     Grid::Square& getValidDropSquare() const;
+    bool isValidDrop(int row, int col) const;
+    bool isValidDrop(const Grid::Square& square) const;
     bool checkProbability(int probability) const;
     unsigned int getTick() const;
 };
