@@ -1,15 +1,31 @@
 #ifndef _MOVING_OBJECT_H
 #define _MOVING_OBJECT_H
 
-#include "Grid.h"
+#include "Object.h"
 
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+class Game;
+
+class MovingObject : public Object
+{
+public:
+    enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+    
+    MovingObject();
+    ~MovingObject();
+
+    virtual void move(Game& game) = 0;
+    static Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
+
+    Direction getDirection() const;
+
+protected:
+    Direction direction;
+    int moveInterval;
 };
-
-Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
 
 #endif

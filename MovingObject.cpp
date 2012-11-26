@@ -1,6 +1,15 @@
 #include "MovingObject.h"
 
-Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction) {
+MovingObject::MovingObject() {
+    moveInterval = 1;
+}
+
+MovingObject::~MovingObject() {
+    // Clear square before deletion
+    pSquare->clear();
+}
+
+Grid::Square& MovingObject::getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction) {
     int row = square.getRow(), col = square.getCol();
     switch (direction) {
         case UP:
@@ -17,4 +26,8 @@ Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direct
             break;
     }
     return grid.getSquare(row, col);
+}
+
+MovingObject::Direction MovingObject::getDirection() const {
+    return direction;
 }
