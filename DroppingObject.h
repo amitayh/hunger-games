@@ -6,25 +6,18 @@
 class DroppingObject
 {
 public:
-    enum Type {
-        FOOD,
-        QUIVER,
-        BOMB
-    };
-
-    DroppingObject(Type type, Grid::Square& square);
+    DroppingObject();
     ~DroppingObject();
 
-    void affect(Player& player);
-
-    void draw() const;
+    virtual void affect(Player& player) = 0;
+    void setSquare(Grid::Square& square);
+    
+    virtual void draw() const = 0;
     bool getPickedUp() const;
     Grid::Square& getSquare() const;
-    Type getType() const;
 
-private:
+protected:
     Grid::Square *pSquare;
-    Type type;
     bool pickedUp;
 };
 

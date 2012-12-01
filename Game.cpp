@@ -3,6 +3,9 @@
 #include "Player.h"
 #include "Wall.h"
 #include "InfoBox.h"
+#include "Food.h"
+#include "Quiver.h"
+#include "Bomb.h"
 #include <time.h>
 #include <conio.h>
 
@@ -240,18 +243,18 @@ void Game::drawWalls() const {
 
 void Game::dropObjects() {
     if (checkProbability(DROP_FOOD_PROBABILITY)) {
-        dropObject(DroppingObject::Type::FOOD);
+        dropObject(new Food);
     }
     if (checkProbability(DROP_QUIVER_PROBABILITY)) {
-        dropObject(DroppingObject::Type::QUIVER);
+        dropObject(new Quiver);
     }
     if (checkProbability(DROP_BOMB_PROBABILITY)) {
-        dropObject(DroppingObject::Type::BOMB);
+        dropObject(new Bomb);
     }
 }
 
-void Game::dropObject(DroppingObject::Type type) {
-    DroppingObject* object = new DroppingObject(type, getValidDropSquare());
+void Game::dropObject(DroppingObject* object) {
+    object->setSquare(getValidDropSquare());
     droppingObjects.push(object);
     object->draw();
 }

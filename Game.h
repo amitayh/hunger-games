@@ -47,7 +47,7 @@ class Game
     void updateArrows();
     void updateDroppingObjects();
     void dropObjects();
-    void dropObject(DroppingObject::Type type);
+    void dropObject(DroppingObject* object);
     void endGame(const Player* winner = NULL);
     void showMenu();
 
