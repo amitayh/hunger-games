@@ -3,6 +3,9 @@
 #include "Player.h"
 #include "Wall.h"
 #include "InfoBox.h"
+#include "Food.h"
+#include "Quiver.h"
+#include "Bomb.h"
 #include <time.h>
 #include <conio.h>
 
@@ -45,13 +48,19 @@ void Game::addPlayer(int row, int col) {
 void Game::addPlayer(Grid::Square& square) {
     // Name the players sequentially (A, B, C...)
     char name = 'A' + players.getSize();
-    players.push(new Player(name, square));
+    Player* player = new Player(name);
+    player->setGame(*this);
+    player->setSquare(square);
+    players.push(player);
 }
 
 void Game::addWall(int row, int col) {
     Grid::Square& square = grid.getSquare(row, col);
     if (!square.hasWall()) {
-        walls.push(new Wall(square));
+        Wall* wall = new Wall;
+        wall->setGame(*this);
+        wall->setSquare(square);
+        walls.push(wall);
     }
 }
 
@@ -69,11 +78,14 @@ void Game::addInfoBox(int row, int col) {
         addWall(row + i, col + width);
     }
 
+    infoBox.setGame(*this);
     infoBox.setSquare(grid.getSquare(row, col));
 }
 
-void Game::addArrow(const Arrow& arrow) {
+void Game::addArrow(Arrow& arrow, Grid::Square& square) {
     // The arrow is pre-allocated by the shooting player
+    arrow.setGame(*this);
+    arrow.setSquare(square);
     arrows.push(&arrow);
 }
 
@@ -153,7 +165,7 @@ void Game::updateArrows() {
     while (!it.done()) {
         List::Node* node = it.getCurrent();
         Arrow* arrow = (Arrow*) node->getData();
-        arrow->update(*this);
+        arrow->update();
         if (arrow->getHit()) {
             // Arrow hit a wall/player - remove it
             arrows.remove(node);
@@ -167,7 +179,7 @@ void Game::updatePlayers() {
     while (status == RUNNING && !it.done()) {
         List::Node* node = it.getCurrent();
         Player* player = (Player*) node->getData();
-        player->update(*this);
+        player->update();
         if (!player->getPower()) {
             // Player is dead - remove him
             players.remove(node);
@@ -198,7 +210,7 @@ void Game::draw() const {
     // Draw updating objects
     drawArrows();
     drawPlayers();
-    infoBox.draw(players);
+    infoBox.draw();
     gotoxy(grid.getCols(), grid.getRows()); // Hide cursor from main window
 }
 
@@ -240,18 +252,19 @@ void Game::drawWalls() const {
 
 void Game::dropObjects() {
     if (checkProbability(DROP_FOOD_PROBABILITY)) {
-        dropObject(DroppingObject::Type::FOOD);
+        dropObject(new Food);
     }
     if (checkProbability(DROP_QUIVER_PROBABILITY)) {
-        dropObject(DroppingObject::Type::QUIVER);
+        dropObject(new Quiver);
     }
     if (checkProbability(DROP_BOMB_PROBABILITY)) {
-        dropObject(DroppingObject::Type::BOMB);
+        dropObject(new Bomb);
     }
 }
 
-void Game::dropObject(DroppingObject::Type type) {
-    DroppingObject* object = new DroppingObject(type, getValidDropSquare());
+void Game::dropObject(DroppingObject* object) {
+    object->setGame(*this);
+    object->setSquare(getValidDropSquare());
     droppingObjects.push(object);
     object->draw();
 }

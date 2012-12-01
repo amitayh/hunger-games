@@ -3,8 +3,6 @@
 
 #include "MovingObject.h"
 
-class Game;
-
 class Player : public MovingObject
 {
     enum {
@@ -16,30 +14,27 @@ class Player : public MovingObject
         MOVE_INTERVAL                   = 2
     };
 
-    Grid::Square* pSquare;
-    MovingObject::Direction direction;
     char name;
     int power;
     int remainingArrows;
     unsigned int lastArrowTick;
 
-    void setSquare(Grid::Square& square);
     void fight(Player& opponent);
     void setRandomDirection();
-    void shootArrow(Game& game);
-    Grid::Square& getNextMove(const Game& game);
+    void shootArrow();
+    Grid::Square& getNextMove();
 
-    DroppingObject* findClosestObject(const List& objects) const;
-    bool checkWallsInPath(const Grid& grid, const Grid::Square& target) const;
-    bool hasPlayersInRange(const List& players) const;
+    DroppingObject* findClosestObject() const;
+    bool checkWallsInPath(const Grid::Square& target) const;
+    bool hasPlayersInRange() const;
     bool playerInRange(const Player& opponent) const;
-    void stepOut() const;
 
 public:
-    Player(char name, Grid::Square& square, int power = INITIAL_POWER, MovingObject::Direction direction = MovingObject::Direction::RIGHT);
+    Player(char name, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
-    void update(Game& game);
+    void setSquare(Grid::Square& square);
+    void update();
     void increasePower(int amount);
     void decreasePower(int amount);
     void addArrows(int amount);
@@ -47,7 +42,6 @@ public:
     char getName() const;
     int getPower() const;
     int getRemainingArrows() const;
-    const Grid::Square& getSquare() const;
     void draw() const;
 };
 

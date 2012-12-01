@@ -1,10 +1,15 @@
 #include "Arrow.h"
-#include "Player.h"
 #include "Game.h"
+#include "Player.h"
 
 Arrow::Arrow(Player& shooter) {
     direction = shooter.getDirection();
     hit = false;
+}
+
+Arrow::~Arrow() {
+    // Clear square before deletion
+    pSquare->clear();
 }
 
 void Arrow::setSquare(Grid::Square& square) {
@@ -18,9 +23,9 @@ void Arrow::setSquare(Grid::Square& square) {
     }
 }
 
-void Arrow::move(Game& game) {
-    if (!checkHit() && game.getTick() % moveInterval == 0) {
-        Grid::Square& nextSquare = MovingObject::getNextSquare(game.getGrid(), *pSquare, direction);
+void Arrow::update() {
+    if (!checkHit() && pGame->getTick() % MOVE_INTERVAL == 0) {
+        Grid::Square& nextSquare = getNextSquare();
         pSquare->clear();
         setSquare(nextSquare);
     }

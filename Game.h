@@ -47,7 +47,7 @@ class Game
     void updateArrows();
     void updateDroppingObjects();
     void dropObjects();
-    void dropObject(DroppingObject::Type type);
+    void dropObject(DroppingObject* object);
     void endGame(const Player* winner = NULL);
     void showMenu();
 
@@ -68,7 +68,7 @@ public:
     void addPlayer(Grid::Square& square);
     void addWall(int row, int col);
     void addInfoBox(int row, int col);
-    void addArrow(const Arrow& arrow);
+    void addArrow(Arrow& arrow, Grid::Square& square);
     
     const List& getPlayers() const;
     const List& getDroppingObjects() const;

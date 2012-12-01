@@ -1,12 +1,12 @@
 #include "MovingObject.h"
+#include "Game.h"
 
-MovingObject::MovingObject() {
-    moveInterval = 1;
+Direction MovingObject::getDirection() const {
+    return direction;
 }
 
-MovingObject::~MovingObject() {
-    // Clear square before deletion
-    pSquare->clear();
+Grid::Square& MovingObject::getNextSquare() const {
+    return getNextSquare(pGame->getGrid(), *pSquare, direction);
 }
 
 Grid::Square& MovingObject::getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction) {
@@ -26,8 +26,4 @@ Grid::Square& MovingObject::getNextSquare(const Grid& grid, const Grid::Square& 
             break;
     }
     return grid.getSquare(row, col);
-}
-
-MovingObject::Direction MovingObject::getDirection() const {
-    return direction;
 }

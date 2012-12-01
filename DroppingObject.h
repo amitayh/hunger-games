@@ -1,30 +1,21 @@
 #ifndef _DROPPING_OBJECT_H
 #define _DROPPING_OBJECT_H
 
+#include "Object.h"
 #include "Player.h"
 
-class DroppingObject
+class DroppingObject : public Object
 {
 public:
-    enum Type {
-        FOOD,
-        QUIVER,
-        BOMB
-    };
-
-    DroppingObject(Type type, Grid::Square& square);
+    DroppingObject();
     ~DroppingObject();
 
-    void affect(Player& player);
+    virtual void affect(Player& player) = 0;
+    void setSquare(Grid::Square& square);
 
-    void draw() const;
     bool getPickedUp() const;
-    Grid::Square& getSquare() const;
-    Type getType() const;
 
-private:
-    Grid::Square *pSquare;
-    Type type;
+protected:
     bool pickedUp;
 };
 
