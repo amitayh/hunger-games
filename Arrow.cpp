@@ -26,7 +26,7 @@ void Arrow::setSquare(Grid::Square& square) {
 
 void Arrow::update(Game& game) {
     if (!checkHit() && game.getTick() % MOVE_INTERVAL == 0) {
-        Grid::Square& nextSquare = getNextSquare(game.getGrid(), *pSquare, direction);
+        Grid::Square& nextSquare = getNextSquare(game.getGrid());
         pSquare->clear();
         setSquare(nextSquare);
     }

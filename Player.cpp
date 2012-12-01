@@ -74,11 +74,11 @@ Grid::Square& Player::getNextMove(const Game& game) {
         setRandomDirection();
     }
 
-    Grid::Square* nextSquare = &getNextSquare(grid, *pSquare, direction);
+    Grid::Square* nextSquare = &getNextSquare(grid);
     while (nextSquare->hasWall()) {
         // Change direction to avoid the wall
         setRandomDirection();
-        nextSquare = &getNextSquare(grid, *pSquare, direction);
+        nextSquare = &getNextSquare(grid);
     }
 
     return *nextSquare;
@@ -141,7 +141,7 @@ void Player::setRandomDirection() {
 }
 
 void Player::shootArrow(Game& game) {
-    Grid::Square& arrowSquare = getNextSquare(game.getGrid(), *pSquare, direction);
+    Grid::Square& arrowSquare = getNextSquare(game.getGrid());
     if (!arrowSquare.hasWall()) {
         // Don't shoot directly at a wall
         Arrow* arrow = new Arrow(*this, arrowSquare);

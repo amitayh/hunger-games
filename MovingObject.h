@@ -6,6 +6,13 @@
 
 class Game;
 
+enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
 class MovingObject : public Object
 {
 public:
@@ -15,17 +22,9 @@ public:
 
 protected:
     Direction direction;
+
+    Grid::Square& getNextSquare(const Grid& grid) const;
+    static Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
 };
-
-/////////////////////////////////////////////////////////////////////
-
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
-
-Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
 
 #endif
