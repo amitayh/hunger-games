@@ -9,15 +9,6 @@ DroppingObject::~DroppingObject() {
     pSquare->clear();
 }
 
-void DroppingObject::setSquare(Grid::Square& square) {
-    square.setDroppingObject(*this);
-    pSquare = &square;
-}
-
-Grid::Square& DroppingObject::getSquare() const {
-    return *pSquare;
-}
-
 bool DroppingObject::getPickedUp() const {
     return pickedUp;
 }
