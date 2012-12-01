@@ -122,17 +122,17 @@ bool Player::checkWallsInPath(const Grid::Square& target) const {
 
 void Player::setRandomDirection() {
     // Set a direction randomly. Player will only turn right or left (from his perspective)
-    MovingObject::Direction directions[2];
+    Direction directions[2];
     switch (direction) {
-        case MovingObject::Direction::UP:
-        case MovingObject::Direction::DOWN:
-            directions[0] = MovingObject::Direction::LEFT;
-            directions[1] = MovingObject::Direction::RIGHT;
+        case UP:
+        case DOWN:
+            directions[0] = LEFT;
+            directions[1] = RIGHT;
             break;
-        case MovingObject::Direction::LEFT:
-        case MovingObject::Direction::RIGHT:
-            directions[0] = MovingObject::Direction::UP;
-            directions[1] = MovingObject::Direction::DOWN;
+        case LEFT:
+        case RIGHT:
+            directions[0] = UP;
+            directions[1] = DOWN;
             break;
     }
     direction = directions[rand() % 2];
