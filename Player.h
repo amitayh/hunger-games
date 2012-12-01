@@ -25,7 +25,7 @@ class Player : public MovingObject
     Grid::Square& getNextMove();
 
     DroppingObject* findClosestObject() const;
-    bool checkWallsInPath(const Grid::Square& target) const;
+    bool isClearPath(const Grid::Square& target) const;
     bool hasPlayersInRange() const;
     bool playerInRange(const Player& opponent) const;
 

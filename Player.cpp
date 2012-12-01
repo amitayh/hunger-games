@@ -64,8 +64,8 @@ void Player::update() {
 Grid::Square& Player::getNextMove() {
     // Find closest food / quiver
     DroppingObject* closest = findClosestObject();
-    if (closest && checkWallsInPath(closest->getSquare())) {
-        // Move towards the closest if it exists and the path is clear (no walls)
+    if (closest && isClearPath(closest->getSquare())) {
+        // Move towards the closest if it exists and the path is clear
         direction = pSquare->getDirection(closest->getSquare());
     } else if (pGame->checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
         // Randomly change direction
@@ -105,15 +105,15 @@ DroppingObject* Player::findClosestObject() const {
     return closest;
 }
 
-bool Player::checkWallsInPath(const Grid::Square& target) const {
+bool Player::isClearPath(const Grid::Square& target) const {
     bool result = true;
     Grid::Square* current = pSquare;
     while (result && current != &target) {
         // Simulate the actual movement and check for walls in the path
         Direction direction = current->getDirection(target);
         current = &getNextSquare(pGame->getGrid(), *current, direction);
-        if (current->hasWall()) {
-            // Found a wall, no need to continue
+        if (current != &target && !current->isEmpty()) {
+            // Path is not clear
             result = false;
         }
     }
