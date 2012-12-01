@@ -91,7 +91,7 @@ DroppingObject* Player::findClosestObject() const {
             // Iterate over the objects list
             List::Node* node = it.getCurrent();
             DroppingObject* current = (DroppingObject*) node->getData();
-            //if (current->getType() != DroppingObject::Type::BOMB) {
+            if (current->getType() != DroppingObject::Type::BOMB) {
                 // Don't go for the bombs!
                 double distance = pSquare->getDistance(current->getSquare());
                 if (!closest || distance < closestDistance) {
@@ -99,7 +99,7 @@ DroppingObject* Player::findClosestObject() const {
                     closestDistance = distance;
                     closest = current;
                 }
-            //}
+            }
         }
     }
     return closest;

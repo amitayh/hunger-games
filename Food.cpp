@@ -1,5 +1,9 @@
 #include "Food.h"
 
+Food::Food() {
+    type = FOOD;
+}
+
 void Food::affect(Player& player) {
     player.increasePower(200);
     pickedUp = true;

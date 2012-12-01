@@ -7,6 +7,12 @@
 class DroppingObject : public Object
 {
 public:
+    enum Type {
+        FOOD,
+        QUIVER,
+        BOMB
+    };
+
     DroppingObject();
     ~DroppingObject();
 
@@ -14,9 +20,11 @@ public:
     void setSquare(Grid::Square& square);
 
     bool getPickedUp() const;
+    Type getType() const;
 
 protected:
     bool pickedUp;
+    Type type;
 };
 
 #endif

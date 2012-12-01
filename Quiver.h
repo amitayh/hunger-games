@@ -6,6 +6,8 @@
 class Quiver : public DroppingObject
 {
 public:
+    Quiver();
+
     void affect(Player& player);
 
     void draw() const;

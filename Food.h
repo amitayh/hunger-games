@@ -6,6 +6,8 @@
 class Food : public DroppingObject
 {
 public:
+    Food();
+
     void affect(Player& player);
 
     void draw() const;

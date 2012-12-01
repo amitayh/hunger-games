@@ -17,3 +17,7 @@ void DroppingObject::setSquare(Grid::Square& square) {
 bool DroppingObject::getPickedUp() const {
     return pickedUp;
 }
+
+DroppingObject::Type DroppingObject::getType() const {
+    return type;
+}
