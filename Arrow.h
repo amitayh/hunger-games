@@ -9,7 +9,6 @@ class Arrow : public MovingObject
         MOVE_INTERVAL = 1
     };
 
-    Direction direction;
     bool hit;
 
     bool checkHit();

@@ -10,6 +10,11 @@ class MovingObject : public Object
 {
 public:
     virtual void update(Game& game) = 0;
+
+    Direction getDirection() const;
+
+protected:
+    Direction direction;
 };
 
 /////////////////////////////////////////////////////////////////////

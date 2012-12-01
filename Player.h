@@ -14,7 +14,6 @@ class Player : public MovingObject
         MOVE_INTERVAL                   = 2
     };
 
-    Direction direction;
     char name;
     int power;
     int remainingArrows;
@@ -44,7 +43,6 @@ public:
     char getName() const;
     int getPower() const;
     int getRemainingArrows() const;
-    Direction getDirection() const;
     void draw() const;
 };
 

@@ -1,5 +1,9 @@
 #include "MovingObject.h"
 
+Direction MovingObject::getDirection() const {
+    return direction;
+}
+
 Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction) {
     int row = square.getRow(), col = square.getCol();
     switch (direction) {

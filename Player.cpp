@@ -246,10 +246,6 @@ int Player::getRemainingArrows() const {
     return remainingArrows;
 }
 
-Direction Player::getDirection() const {
-    return direction;
-}
-
 void Player::draw() const {
     pSquare->draw(name, CYAN);
 }
