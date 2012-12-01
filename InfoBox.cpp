@@ -8,6 +8,25 @@ using namespace std;
 
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
+void InfoBox::setSquare(Grid::Square& square) {
+    Object::setSquare(square);
+
+    int width = size.getWidth(),
+        height = size.getHeight(),
+        row = square.getRow(),
+        col = square.getCol();
+
+    // Add walls around the info box
+    for (int i = 0; i < width + 2; i++) {
+        pGame->addWall(row - 1, col + i - 1);
+        pGame->addWall(row + height, col + i - 1);
+    }
+    for (int i = 0; i < height; i++) {
+        pGame->addWall(row + i, col - 1);
+        pGame->addWall(row + i, col + width);
+    }
+}
+
 void InfoBox::draw() const {
     List::Iterator it(pGame->getPlayers());
     int row = pSquare->getRow(),
@@ -33,10 +52,6 @@ void InfoBox::draw() const {
             cout << "          ";
         }
     }
-}
-
-const Dimensions& InfoBox::getSize() const {
-    return size;
 }
 
 bool InfoBox::inArea(const Grid::Square& square) const {

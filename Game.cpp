@@ -65,19 +65,6 @@ void Game::addWall(int row, int col) {
 }
 
 void Game::addInfoBox(int row, int col) {
-    Dimensions size = infoBox.getSize();
-    int width = size.getWidth(), height = size.getHeight();
-
-    // Add walls around the info box
-    for (int i = 0; i < width + 2; i++) {
-        addWall(row - 1, col + i - 1);
-        addWall(row + height, col + i - 1);
-    }
-    for (int i = 0; i < height; i++) {
-        addWall(row + i, col - 1);
-        addWall(row + i, col + width);
-    }
-
     infoBox.setGame(*this);
     infoBox.setSquare(grid.getSquare(row, col));
 }

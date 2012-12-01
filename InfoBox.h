@@ -16,8 +16,9 @@ class InfoBox : public Object
 public:
     InfoBox();
 
+    void setSquare(Grid::Square& square);
+
     void draw() const;
-    const Dimensions& getSize() const;
     bool inArea(const Grid::Square& square) const;
 };
 
