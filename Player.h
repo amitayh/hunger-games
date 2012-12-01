@@ -5,7 +5,7 @@
 
 class Game;
 
-class Player
+class Player : public MovingObject
 {
     enum {
         INITIAL_POWER                   = 1000,
@@ -17,7 +17,7 @@ class Player
     };
 
     Grid::Square* pSquare;
-    Direction direction;
+    MovingObject::Direction direction;
     char name;
     int power;
     int remainingArrows;
@@ -36,7 +36,7 @@ class Player
     void stepOut() const;
 
 public:
-    Player(char name, Grid::Square& square, int power = INITIAL_POWER, Direction direction = RIGHT);
+    Player(char name, Grid::Square& square, int power = INITIAL_POWER, MovingObject::Direction direction = MovingObject::Direction::RIGHT);
     ~Player();
 
     void update(Game& game);
@@ -47,7 +47,6 @@ public:
     char getName() const;
     int getPower() const;
     int getRemainingArrows() const;
-    Direction getDirection() const;
     const Grid::Square& getSquare() const;
     void draw() const;
 };

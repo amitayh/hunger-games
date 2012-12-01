@@ -19,13 +19,14 @@ public:
     ~MovingObject();
 
     virtual void move(Game& game) = 0;
-    static Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
 
     Direction getDirection() const;
 
 protected:
     Direction direction;
     int moveInterval;
+
+    Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "List.h"
 #include "Console.h"
+#include "MovingObject.h"
 
 const double PI = 3.141592653589793;
 
@@ -39,7 +40,7 @@ public:
         void clear() const;
         void draw(char ch, Color color = SILVER) const;
         double getDistance(const Square& otherSquare) const;
-        Direction getDirection(const Square& otherSquare) const;
+        MovingObject::Direction getDirection(const Square& otherSquare) const;
         DroppingObject& getDroppingObject() const;
         const List& getPlayers() const;
         bool hasDroppingObject() const;
@@ -52,14 +53,14 @@ public:
     Grid(int rows = DEFAULT_NUM_ROWS, int cols = DEFAULT_NUM_COLS);
     ~Grid();
     
-    Grid::Square& getSquare(int row, int col) const;
-    Grid::Square& getRandomSquare() const;
+    Square& getSquare(int row, int col) const;
+    Square& getRandomSquare() const;
     int getRows() const;
     int getCols() const;
 
 private:
     int rows, cols;
-    Grid::Square** squares;
+    Square** squares;
 };
 
 #endif
