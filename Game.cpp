@@ -54,7 +54,9 @@ void Game::addPlayer(Grid::Square& square) {
 void Game::addWall(int row, int col) {
     Grid::Square& square = grid.getSquare(row, col);
     if (!square.hasWall()) {
-        walls.push(new Wall(square));
+        Wall* wall = new Wall;
+        wall->setSquare(square);
+        walls.push(wall);
     }
 }
 

@@ -3,9 +3,7 @@
 
 #include "MovingObject.h"
 
-class Game;
-
-class Player
+class Player : public MovingObject
 {
     enum {
         INITIAL_POWER                   = 1000,
@@ -16,14 +14,12 @@ class Player
         MOVE_INTERVAL                   = 2
     };
 
-    Grid::Square* pSquare;
     Direction direction;
     char name;
     int power;
     int remainingArrows;
     unsigned int lastArrowTick;
 
-    void setSquare(Grid::Square& square);
     void fight(Player& opponent);
     void setRandomDirection();
     void shootArrow(Game& game);
@@ -39,6 +35,7 @@ public:
     Player(char name, Grid::Square& square, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
+    void setSquare(Grid::Square& square);
     void update(Game& game);
     void increasePower(int amount);
     void decreasePower(int amount);
@@ -48,7 +45,6 @@ public:
     int getPower() const;
     int getRemainingArrows() const;
     Direction getDirection() const;
-    const Grid::Square& getSquare() const;
     void draw() const;
 };
 

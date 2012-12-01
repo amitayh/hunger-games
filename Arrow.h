@@ -3,25 +3,22 @@
 
 #include "MovingObject.h"
 
-class Game;
-
-class Arrow
+class Arrow : public MovingObject
 {
     enum {
         MOVE_INTERVAL = 1
     };
 
-    Grid::Square* pSquare;
     Direction direction;
     bool hit;
 
-    void setSquare(Grid::Square& square);
     bool checkHit();
 
 public:
     Arrow(Player& shooter, Grid::Square& square);
     ~Arrow();
 
+    void setSquare(Grid::Square& square);
     void update(Game& game);
 
     void draw() const;

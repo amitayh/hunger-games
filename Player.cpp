@@ -234,10 +234,6 @@ void Player::decreasePower(int amount) {
     increasePower(-amount);
 }
 
-const Grid::Square& Player::getSquare() const {
-    return *pSquare;
-}
-
 char Player::getName() const {
     return name;
 }

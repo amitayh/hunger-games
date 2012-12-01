@@ -9,6 +9,11 @@ DroppingObject::~DroppingObject() {
     pSquare->clear();
 }
 
+void DroppingObject::setSquare(Grid::Square& square) {
+    Object::setSquare(square);
+    square.setDroppingObject(*this);
+}
+
 bool DroppingObject::getPickedUp() const {
     return pickedUp;
 }

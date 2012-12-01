@@ -11,6 +11,8 @@ public:
     ~DroppingObject();
 
     virtual void affect(Player& player) = 0;
+    void setSquare(Grid::Square& square);
+
     bool getPickedUp() const;
 
 protected:
