@@ -14,11 +14,11 @@ class Arrow : public MovingObject
     bool checkHit();
 
 public:
-    Arrow(Player& shooter, Grid::Square& square);
+    Arrow(Player& shooter);
     ~Arrow();
 
     void setSquare(Grid::Square& square);
-    void update(Game& game);
+    void update();
 
     void draw() const;
     bool getHit() const;

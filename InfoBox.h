@@ -11,11 +11,10 @@ class InfoBox : public Object
         HEIGHT = 5
     };
 
-    const List* pPlayers;
     Dimensions size;
 
 public:
-    InfoBox(const List& players);
+    InfoBox();
 
     void draw() const;
     const Dimensions& getSize() const;

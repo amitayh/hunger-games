@@ -1,16 +1,15 @@
 #include "InfoBox.h"
+#include "Game.h"
 #include "Player.h"
 #include "Gotoxy.h"
 #include <iostream>
 
 using namespace std;
 
-InfoBox::InfoBox(const List& players): size(WIDTH, HEIGHT) {
-    pPlayers = &players;
-}
+InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
 void InfoBox::draw() const {
-    List::Iterator it(*pPlayers);
+    List::Iterator it(pGame->getPlayers());
     int row = pSquare->getRow(),
         col = pSquare->getCol(),
         height = size.getHeight();

@@ -1,11 +1,12 @@
 #include "MovingObject.h"
+#include "Game.h"
 
 Direction MovingObject::getDirection() const {
     return direction;
 }
 
-Grid::Square& MovingObject::getNextSquare(const Grid& grid) const {
-    return getNextSquare(grid, *pSquare, direction);
+Grid::Square& MovingObject::getNextSquare() const {
+    return getNextSquare(pGame->getGrid(), *pSquare, direction);
 }
 
 Grid::Square& MovingObject::getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction) {

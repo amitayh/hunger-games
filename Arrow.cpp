@@ -2,8 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player& shooter, Grid::Square& square) {
-    pSquare = &square;
+Arrow::Arrow(Player& shooter) {
     direction = shooter.getDirection();
     hit = false;
 }
@@ -24,9 +23,9 @@ void Arrow::setSquare(Grid::Square& square) {
     }
 }
 
-void Arrow::update(Game& game) {
-    if (!checkHit() && game.getTick() % MOVE_INTERVAL == 0) {
-        Grid::Square& nextSquare = getNextSquare(game.getGrid());
+void Arrow::update() {
+    if (!checkHit() && pGame->getTick() % MOVE_INTERVAL == 0) {
+        Grid::Square& nextSquare = getNextSquare();
         pSquare->clear();
         setSquare(nextSquare);
     }

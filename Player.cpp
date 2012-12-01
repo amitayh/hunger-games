@@ -40,55 +40,53 @@ void Player::setSquare(Grid::Square& square) {
     pSquare = &square;
 }
 
-void Player::update(Game& game) {
+void Player::update() {
     if (power > 0) {
-        unsigned int tick = game.getTick();
+        unsigned int tick = pGame->getTick();
 
         if (tick % MOVE_INTERVAL == 0) {
             // Move to next square
-            setSquare(getNextMove(game));
+            setSquare(getNextMove());
         }
 
         if (
             remainingArrows &&                                  // Player still has arrows
-            game.checkProbability(SHOOT_ARROW_PROBABILITY) &&   // Check probability, don't shoot on every chance
+            pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
             tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&  // Check minimum ticks between arrows
-            hasPlayersInRange(game.getPlayers())                // Shoot only if there is a reasonable chance of hitting an opponent
+            hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
         ) {
             // Shoot an arrow if conditions are met
-            shootArrow(game);
+            shootArrow();
         }
     }
 }
 
-Grid::Square& Player::getNextMove(const Game& game) {
-    const Grid& grid = game.getGrid();
-
+Grid::Square& Player::getNextMove() {
     // Find closest food / quiver
-    DroppingObject* closest = findClosestObject(game.getDroppingObjects());
-    if (closest && checkWallsInPath(grid, closest->getSquare())) {
+    DroppingObject* closest = findClosestObject();
+    if (closest && checkWallsInPath(closest->getSquare())) {
         // Move towards the closest if it exists and the path is clear (no walls)
         direction = pSquare->getDirection(closest->getSquare());
-    } else if (game.checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
+    } else if (pGame->checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
         // Randomly change direction
         setRandomDirection();
     }
 
-    Grid::Square* nextSquare = &getNextSquare(grid);
+    Grid::Square* nextSquare = &getNextSquare();
     while (nextSquare->hasWall()) {
         // Change direction to avoid the wall
         setRandomDirection();
-        nextSquare = &getNextSquare(grid);
+        nextSquare = &getNextSquare();
     }
 
     return *nextSquare;
 }
 
-DroppingObject* Player::findClosestObject(const List& objects) const {
+DroppingObject* Player::findClosestObject() const {
     DroppingObject* closest = NULL;
-    if (!objects.isEmpty()) {
+    if (!pGame->getDroppingObjects().isEmpty()) {
         double closestDistance = 0;
-        List::Iterator it(objects);
+        List::Iterator it(pGame->getDroppingObjects());
         while (!it.done()) {
             // Iterate over the objects list
             List::Node* node = it.getCurrent();
@@ -107,13 +105,13 @@ DroppingObject* Player::findClosestObject(const List& objects) const {
     return closest;
 }
 
-bool Player::checkWallsInPath(const Grid& grid, const Grid::Square& target) const {
+bool Player::checkWallsInPath(const Grid::Square& target) const {
     bool result = true;
     Grid::Square* current = pSquare;
     while (result && current != &target) {
         // Simulate the actual movement and check for walls in the path
         Direction direction = current->getDirection(target);
-        current = &getNextSquare(grid, *current, direction);
+        current = &getNextSquare(pGame->getGrid(), *current, direction);
         if (current->hasWall()) {
             // Found a wall, no need to continue
             result = false;
@@ -140,19 +138,19 @@ void Player::setRandomDirection() {
     direction = directions[rand() % 2];
 }
 
-void Player::shootArrow(Game& game) {
-    Grid::Square& arrowSquare = getNextSquare(game.getGrid());
+void Player::shootArrow() {
+    Grid::Square& arrowSquare = getNextSquare();
     if (!arrowSquare.hasWall()) {
         // Don't shoot directly at a wall
-        Arrow* arrow = new Arrow(*this, arrowSquare);
-        game.addArrow(*arrow); // Update game
-        lastArrowTick = game.getTick();
+        Arrow* arrow = new Arrow(*this);
+        pGame->addArrow(*arrow, arrowSquare); // Update game
+        lastArrowTick = pGame->getTick();
         remainingArrows--;
     }
 }
 
-bool Player::hasPlayersInRange(const List& players) const {
-    List::Iterator it(players);
+bool Player::hasPlayersInRange() const {
+    List::Iterator it(pGame->getPlayers());
     bool inRange = false;
     while (!inRange && !it.done()) {
         // Iterate over the players list

@@ -21,12 +21,12 @@ class Player : public MovingObject
 
     void fight(Player& opponent);
     void setRandomDirection();
-    void shootArrow(Game& game);
-    Grid::Square& getNextMove(const Game& game);
+    void shootArrow();
+    Grid::Square& getNextMove();
 
-    DroppingObject* findClosestObject(const List& objects) const;
-    bool checkWallsInPath(const Grid& grid, const Grid::Square& target) const;
-    bool hasPlayersInRange(const List& players) const;
+    DroppingObject* findClosestObject() const;
+    bool checkWallsInPath(const Grid::Square& target) const;
+    bool hasPlayersInRange() const;
     bool playerInRange(const Player& opponent) const;
 
 public:
@@ -34,7 +34,7 @@ public:
     ~Player();
 
     void setSquare(Grid::Square& square);
-    void update(Game& game);
+    void update();
     void increasePower(int amount);
     void decreasePower(int amount);
     void addArrows(int amount);

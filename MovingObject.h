@@ -16,14 +16,14 @@ enum Direction {
 class MovingObject : public Object
 {
 public:
-    virtual void update(Game& game) = 0;
+    virtual void update() = 0;
 
     Direction getDirection() const;
 
 protected:
     Direction direction;
 
-    Grid::Square& getNextSquare(const Grid& grid) const;
+    Grid::Square& getNextSquare() const;
     static Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
 };
 
