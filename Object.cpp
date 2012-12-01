@@ -5,12 +5,6 @@ Object::Object() {
     pSquare = NULL;
 }
 
-Object::~Object() {
-    if (pSquare) {
-        pSquare->clear();
-    }
-}
-
 void Object::setGame(Game& game) {
     pGame = &game;
 }
