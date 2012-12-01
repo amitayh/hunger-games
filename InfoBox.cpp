@@ -5,16 +5,12 @@
 
 using namespace std;
 
-InfoBox::InfoBox(): size(WIDTH, HEIGHT) {
-    pSquare = NULL;
+InfoBox::InfoBox(const List& players): size(WIDTH, HEIGHT) {
+    pPlayers = &players;
 }
 
-void InfoBox::setSquare(Grid::Square& square) {
-    pSquare = &square;
-}
-
-void InfoBox::draw(const List& players) const {
-    List::Iterator it(players);
+void InfoBox::draw() const {
+    List::Iterator it(*pPlayers);
     int row = pSquare->getRow(),
         col = pSquare->getCol(),
         height = size.getHeight();

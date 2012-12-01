@@ -6,6 +6,9 @@
 class Object
 {
 public:
+    Object();
+    ~Object();
+
     virtual void setSquare(Grid::Square& square);
     
     virtual void draw() const = 0;

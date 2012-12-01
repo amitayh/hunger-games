@@ -9,7 +9,7 @@
 #include <time.h>
 #include <conio.h>
 
-Game::Game() {
+Game::Game(): infoBox(players) {
     // Initialize random number generator
     srand((unsigned int) time(NULL));
 
@@ -48,7 +48,9 @@ void Game::addPlayer(int row, int col) {
 void Game::addPlayer(Grid::Square& square) {
     // Name the players sequentially (A, B, C...)
     char name = 'A' + players.getSize();
-    players.push(new Player(name, square));
+    Player* player = new Player(name);
+    player->setSquare(square);
+    players.push(player);
 }
 
 void Game::addWall(int row, int col) {
@@ -203,7 +205,7 @@ void Game::draw() const {
     // Draw updating objects
     drawArrows();
     drawPlayers();
-    infoBox.draw(players);
+    infoBox.draw();
     gotoxy(grid.getCols(), grid.getRows()); // Hide cursor from main window
 }
 

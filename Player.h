@@ -28,10 +28,9 @@ class Player : public MovingObject
     bool checkWallsInPath(const Grid& grid, const Grid::Square& target) const;
     bool hasPlayersInRange(const List& players) const;
     bool playerInRange(const Player& opponent) const;
-    void stepOut() const;
 
 public:
-    Player(char name, Grid::Square& square, int power = INITIAL_POWER, Direction direction = RIGHT);
+    Player(char name, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
     void setSquare(Grid::Square& square);

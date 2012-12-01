@@ -1,7 +1,7 @@
 #include "Bomb.h"
 
 void Bomb::affect(Player& player) {
-    player.increasePower(200);
+    player.decreasePower(750);
     pickedUp = true;
 }
 

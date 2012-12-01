@@ -70,7 +70,10 @@ void Grid::Square::stepOut(const Player& player) {
     // The List::find() method performs a linear search (O(n) efficiency), however
     // in most cases the list will not contain more than one player
     List::Node* node = players.find(&player);
-    players.remove(node);
+    if (node) {
+        players.remove(node);
+        clear();
+    }
 }
 
 void Grid::Square::initPosition(int row, int col) {

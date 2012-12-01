@@ -2,19 +2,17 @@
 #include "Game.h"
 #include "DroppingObject.h"
 
-Player::Player(char name, Grid::Square& square, int power, Direction direction) {
+Player::Player(char name, int power, Direction direction) {
     this->direction = direction;
     this->name = name;
     this->power = power;
-    pSquare = &square;
-    square.stepIn(*this);
     remainingArrows = INITIAL_NUM_ARROWS;
     lastArrowTick = 0;
 }
 
 Player::~Player() {
     // Clear square before deletion
-    stepOut();
+    pSquare->stepOut(*this);
 }
 
 void Player::setSquare(Grid::Square& square) {
@@ -35,15 +33,11 @@ void Player::setSquare(Grid::Square& square) {
         }
     }
 
-    stepOut();
+    if (pSquare) {
+        pSquare->stepOut(*this);
+    }
     square.stepIn(*this);
     pSquare = &square;
-}
-
-void Player::stepOut() const {
-    // Notify square that player is leaving
-    pSquare->stepOut(*this);
-    pSquare->clear();
 }
 
 void Player::update(Game& game) {
