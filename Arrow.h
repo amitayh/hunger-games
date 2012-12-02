@@ -6,7 +6,6 @@
 class Arrow : public MovingObject
 {
 public:
-    Arrow(Player& shooter);
     ~Arrow();
 
     void setSquare(Grid::Square& square);
@@ -19,6 +18,8 @@ protected:
     enum {
         MOVE_INTERVAL = 1
     };
+
+    Arrow(Player& shooter); // Make the class abstract
 
     Color color;
     bool hit;

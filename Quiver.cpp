@@ -5,7 +5,7 @@ Quiver::Quiver() {
 }
 
 void Quiver::affect(Player& player) {
-    player.addArrows(3);
+    ++player.getArrowsBag();
     pickedUp = true;
 }
 

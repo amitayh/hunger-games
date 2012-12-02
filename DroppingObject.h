@@ -13,7 +13,6 @@ public:
         BOMB
     };
 
-    DroppingObject();
     ~DroppingObject();
 
     virtual void affect(Player& player) = 0;
@@ -25,6 +24,8 @@ public:
 protected:
     bool pickedUp;
     Type type;
+
+    DroppingObject(); // Make the class abstract
 };
 
 #endif

@@ -3,11 +3,33 @@
 
 #include "MovingObject.h"
 
+class Arrow;
+
 class Player : public MovingObject
 {
+public:
+    class ArrowsBag
+    {
+        int remaining[3];
+    public:
+        enum Type {
+            REGULAR,
+            EXPLODING,
+            PENETRATING
+        };
+        bool isEmpty() const;
+        int getRemaining(Type type) const;
+        Arrow* getArrow(Player& shooter);
+        ArrowsBag& operator++();
+        friend class Player;
+    };
+
+private:
     enum {
         INITIAL_POWER                   = 1000,
-        INITIAL_NUM_ARROWS              = 4,
+        INITIAL_NUM_REGULAR_ARROWS      = 2,
+        INITIAL_NUM_EXPLODING_ARROWS    = 1,
+        INITIAL_NUM_PENETRATING_ARROWS  = 1,
         MIN_TICKS_BETWEEN_ARROWS        = 3,
         SHOOT_ARROW_PROBABILITY         = 20,
         CHANGE_DIRECTION_PROBABILITY    = 10,
@@ -16,7 +38,7 @@ class Player : public MovingObject
 
     char name;
     int power;
-    int remainingArrows;
+    ArrowsBag arrowsBag;
     unsigned int lastArrowTick;
 
     void fight(Player& opponent);
@@ -37,11 +59,10 @@ public:
     void update();
     void increasePower(int amount);
     void decreasePower(int amount);
-    void addArrows(int amount);
+    ArrowsBag& getArrowsBag();
 
     char getName() const;
     int getPower() const;
-    int getRemainingArrows() const;
     void draw() const;
 };
 

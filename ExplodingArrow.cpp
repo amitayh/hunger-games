@@ -2,7 +2,7 @@
 #include "Game.h"
 
 ExplodingArrow::ExplodingArrow(Player& shooter): Arrow(shooter) {
-    color = OLIVE;
+    color = MAGENTA;
 }
 
 bool ExplodingArrow::checkHit() {

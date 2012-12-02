@@ -36,7 +36,7 @@ void InfoBox::draw() const {
     changeColor(SILVER);
     
     gotoxy(col, row);
-    cout << "P HP   A";
+    cout << "HP   R E P";
     gotoxy(col, row + 1);
     cout << "----------";
 
@@ -46,7 +46,14 @@ void InfoBox::draw() const {
             // Print player info
             List::Node* node = it.getCurrent();
             Player* player = (Player*) node->getData();
-            printf("%c %-4d %-3d\n", player->getName(), player->getPower(), player->getRemainingArrows());
+            Player::ArrowsBag* arrowsBag = &player->getArrowsBag();
+            printf(
+                "%4d%2d%2d%2d\n",
+                player->getPower(),
+                arrowsBag->getRemaining(Player::ArrowsBag::REGULAR),
+                arrowsBag->getRemaining(Player::ArrowsBag::EXPLODING),
+                arrowsBag->getRemaining(Player::ArrowsBag::PENETRATING)
+            );
         } else {
             // Print empty line
             cout << "          ";

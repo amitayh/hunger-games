@@ -1,12 +1,17 @@
 #include "Player.h"
 #include "Game.h"
 #include "DroppingObject.h"
+#include "RegularArrow.h"
+#include "ExplodingArrow.h"
+#include "PenetratingArrow.h"
 
 Player::Player(char name, int power, Direction direction) {
     this->direction = direction;
     this->name = name;
     this->power = power;
-    remainingArrows = INITIAL_NUM_ARROWS;
+    arrowsBag.remaining[ArrowsBag::REGULAR] = INITIAL_NUM_REGULAR_ARROWS;
+    arrowsBag.remaining[ArrowsBag::EXPLODING] = INITIAL_NUM_EXPLODING_ARROWS;
+    arrowsBag.remaining[ArrowsBag::PENETRATING] = INITIAL_NUM_PENETRATING_ARROWS;
     lastArrowTick = 0;
 }
 
@@ -50,7 +55,7 @@ void Player::update() {
         }
 
         if (
-            remainingArrows &&                                  // Player still has arrows
+            !arrowsBag.isEmpty() &&                                // Player still has arrows
             pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
             tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&  // Check minimum ticks between arrows
             hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
@@ -142,10 +147,9 @@ void Player::shootArrow() {
     Grid::Square& arrowSquare = getNextSquare();
     if (!arrowSquare.hasWall()) {
         // Don't shoot directly at a wall
-        Arrow* arrow = new Arrow(*this);
+        Arrow* arrow = arrowsBag.getArrow(*this);
         pGame->addArrow(*arrow, arrowSquare); // Update game
         lastArrowTick = pGame->getTick();
-        remainingArrows--;
     }
 }
 
@@ -214,10 +218,6 @@ void Player::fight(Player& opponent) {
     }
 }
 
-void Player::addArrows(int amount) {
-    remainingArrows += amount;
-}
-
 void Player::increasePower(int amount) {
     power = __max(power + amount, 0);
 }
@@ -234,10 +234,56 @@ int Player::getPower() const {
     return power;
 }
 
-int Player::getRemainingArrows() const {
-    return remainingArrows;
+Player::ArrowsBag& Player::getArrowsBag() {
+    return arrowsBag;
 }
 
 void Player::draw() const {
     pSquare->draw(name, CYAN);
+}
+
+// Player quiver
+
+bool Player::ArrowsBag::isEmpty() const {
+    return (remaining[REGULAR] + remaining[EXPLODING] + remaining[PENETRATING] == 0);
+}
+
+int Player::ArrowsBag::getRemaining(Player::ArrowsBag::Type type) const {
+    return remaining[type];
+}
+
+Arrow* Player::ArrowsBag::getArrow(Player& shooter) {
+    Arrow* arrow = NULL;
+    if (!isEmpty()) {
+        int available[3], numAvailable = 0, type;
+        for (type = 0; type < 3; type++) {
+            if (remaining[type] > 0) {
+                available[numAvailable] = type;
+                numAvailable++;
+            }
+        }
+
+        int random = rand() % numAvailable;
+        type = available[random];
+        switch (type) {
+            case REGULAR:
+                arrow = new RegularArrow(shooter);
+                break;
+            case EXPLODING:
+                arrow = new ExplodingArrow(shooter);
+                break;
+            case PENETRATING:
+                arrow = new PenetratingArrow(shooter);
+                break;
+        }
+        remaining[type]--;
+    }
+    return arrow;
+}
+
+Player::ArrowsBag& Player::ArrowsBag::operator++() {
+    remaining[REGULAR]++;
+    remaining[EXPLODING]++;
+    remaining[PENETRATING]++;
+    return *this;
 }
