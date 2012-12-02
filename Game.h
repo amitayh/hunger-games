@@ -64,8 +64,10 @@ public:
     void run();
     void pause();
     void resume();
-    void addPlayer(int row, int col);
-    void addPlayer(Grid::Square& square);
+    void addBot(int row, int col);
+    void addBot(Grid::Square& square);
+    void addHuman(int row, int col);
+    void addHuman(Grid::Square& square);
     void addWall(int row, int col);
     void addInfoBox(int row, int col);
     void addArrow(Arrow& arrow, Grid::Square& square);
