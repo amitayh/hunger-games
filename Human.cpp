@@ -9,34 +9,34 @@ void Human::update() {
         ArrowsBag::Type arrowType;
         bool shoot = false;
 
-        if (key >= 'A' && key <= 'Z') {
-            // Convert to lowercase
-            key -= ('A' - 'a');
+        if (key >= 'a' && key <= 'z') {
+            // Convert to uppercase
+            key += ('A' - 'a');
         }
 
         // Check keyboard input
         switch (key) {
-            case CHAR_LEFT:
+            case KEY_LEFT:
                 direction = LEFT;
                 break;
-            case CHAR_RIGHT:
+            case KEY_RIGHT:
                 direction = RIGHT;
                 break;
-            case CHAR_UP:
+            case KEY_UP:
                 direction = UP;
                 break;
-            case CHAR_DOWN:
+            case KEY_DOWN:
                 direction = DOWN;
                 break;
-            case CHAR_SHOOT_REGULAR_ARROW:
+            case KEY_SHOOT_REGULAR_ARROW:
                 arrowType = ArrowsBag::REGULAR;
                 shoot = true;
                 break;
-            case CHAR_SHOOT_EXPLODING_ARROW:
+            case KEY_SHOOT_EXPLODING_ARROW:
                 arrowType = ArrowsBag::EXPLODING;
                 shoot = true;
                 break;
-            case CHAR_SHOOT_PENETRATING_ARROW:
+            case KEY_SHOOT_PENETRATING_ARROW:
                 arrowType = ArrowsBag::PENETRATING;
                 shoot = true;
                 break;

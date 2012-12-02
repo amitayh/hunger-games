@@ -39,24 +39,18 @@ protected:
         MOVE_INTERVAL                   = 2
     };
 
+    Player(char name); // Make class abstract
+
     char name;
     int power;
     ArrowsBag arrowsBag;
     unsigned int lastArrowTick;
 
     void fight(Player& opponent);
-    void setRandomDirection();
-    void shootArrow();
     void shootArrow(ArrowsBag::Type type);
-    Grid::Square& getNextMove();
-
-    DroppingObject* findClosestObject() const;
-    bool isClearPath(const Grid::Square& target) const;
-    bool hasPlayersInRange() const;
-    bool playerInRange(const Player& opponent) const;
+    void shootArrow();
 
 public:
-    Player(char name);
     ~Player();
 
     void setSquare(Grid::Square& square);
