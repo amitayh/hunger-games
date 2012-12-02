@@ -1,46 +1,55 @@
 #include "Human.h"
 #include "Game.h"
-#include <conio.h>
 
 Human::Human(char name): Player(name) {}
 
 void Human::update() {
     if (power > 0) {
-        unsigned int tick = pGame->getTick();
+        char key = pGame->getKey();
+        ArrowsBag::Type arrowType;
+        bool shoot = false;
 
-        if (kbhit()) {
-            int key = getch();
-            switch (key) {
-                case CHAR_LEFT:
-                    direction = LEFT;
-                    break;
-                case CHAR_RIGHT:
-                    direction = RIGHT;
-                    break;
-                case CHAR_UP:
-                    direction = UP;
-                    break;
-                case CHAR_DOWN:
-                    direction = DOWN;
-                    break;
-            }
+        if (key >= 'A' && key <= 'Z') {
+            // Convert to lowercase
+            key -= ('A' - 'a');
         }
 
-        if (tick % MOVE_INTERVAL == 0) {
+        // Check keyboard input
+        switch (key) {
+            case CHAR_LEFT:
+                direction = LEFT;
+                break;
+            case CHAR_RIGHT:
+                direction = RIGHT;
+                break;
+            case CHAR_UP:
+                direction = UP;
+                break;
+            case CHAR_DOWN:
+                direction = DOWN;
+                break;
+            case CHAR_SHOOT_REGULAR_ARROW:
+                arrowType = ArrowsBag::REGULAR;
+                shoot = true;
+                break;
+            case CHAR_SHOOT_EXPLODING_ARROW:
+                arrowType = ArrowsBag::EXPLODING;
+                shoot = true;
+                break;
+            case CHAR_SHOOT_PENETRATING_ARROW:
+                arrowType = ArrowsBag::PENETRATING;
+                shoot = true;
+                break;
+        }
+
+        Grid::Square* square = &getNextSquare();
+        if (pGame->getTick() % MOVE_INTERVAL == 0 && !square->hasWall()) {
             // Move to next square
-            setSquare(getNextSquare());
+            setSquare(*square);
         }
 
-        /*
-        if (
-            !arrowsBag.isEmpty() &&                             // Player still has arrows
-            pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
-            tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&  // Check minimum ticks between arrows
-            hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
-        ) {
-            // Shoot an arrow if conditions are met
-            shootArrow();
+        if (shoot) {
+            shootArrow(arrowType);
         }
-        */
     }
 }

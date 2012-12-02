@@ -18,9 +18,10 @@ public:
             PENETRATING
         };
         ArrowsBag();
-        Arrow* getArrow();
+        Arrow* getArrow(Type type);
         bool isEmpty() const;
         int getRemaining(Type type) const;
+        Type getAvailableType() const;
         ArrowsBag& operator+=(int amount);
         ArrowsBag& operator++();
         friend class Player;
@@ -46,6 +47,7 @@ protected:
     void fight(Player& opponent);
     void setRandomDirection();
     void shootArrow();
+    void shootArrow(ArrowsBag::Type type);
     Grid::Square& getNextMove();
 
     DroppingObject* findClosestObject() const;

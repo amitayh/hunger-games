@@ -6,10 +6,13 @@
 class Human : public Player
 {
     enum {
-        CHAR_LEFT   = 'A',
-        CHAR_RIGHT  = 'D',
-        CHAR_UP     = 'W',
-        CHAR_DOWN   = 'S'
+        CHAR_LEFT                       = 'a',
+        CHAR_RIGHT                      = 'd',
+        CHAR_UP                         = 'w',
+        CHAR_DOWN                       = 's',
+        CHAR_SHOOT_REGULAR_ARROW        = 'p',
+        CHAR_SHOOT_EXPLODING_ARROW      = 'i',
+        CHAR_SHOOT_PENETRATING_ARROW    = 'o'
     };
 
 public:

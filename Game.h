@@ -40,6 +40,7 @@ class Game
     List droppingObjects;
     InfoBox infoBox;
     Menu menu;
+    char key;
 
     void loop();
     void update();
@@ -81,6 +82,7 @@ public:
     bool isValidDrop(const Grid::Square& square) const;
     bool checkProbability(int probability) const;
     unsigned int getTick() const;
+    char getKey() const;
 };
 
 #endif

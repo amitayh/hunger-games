@@ -141,7 +141,8 @@ void Game::endGame(const Player* winner) {
 void Game::loop() {
     // Main game loop
     while (status == RUNNING) {
-        if (kbhit() && getch() == ESCAPSE_KEY) {
+        key = kbhit() ? getch() : NULL;
+        if (key == ESCAPSE_KEY) {
             // User pressed escape - show menu
             showMenu();
         } else {
@@ -332,4 +333,8 @@ const List& Game::getDroppingObjects() const {
 
 const Grid& Game::getGrid() const {
     return grid;
+}
+
+char Game::getKey() const {
+    return key;
 }
