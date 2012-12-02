@@ -5,14 +5,6 @@
 
 class Arrow : public MovingObject
 {
-    enum {
-        MOVE_INTERVAL = 1
-    };
-
-    bool hit;
-
-    bool checkHit();
-
 public:
     Arrow(Player& shooter);
     ~Arrow();
@@ -22,6 +14,16 @@ public:
 
     void draw() const;
     bool getHit() const;
+
+protected:
+    enum {
+        MOVE_INTERVAL = 1
+    };
+
+    Color color;
+    bool hit;
+
+    virtual bool checkHit();
 };
 
 #endif

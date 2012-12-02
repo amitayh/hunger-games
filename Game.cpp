@@ -76,6 +76,17 @@ void Game::addArrow(Arrow& arrow, Grid::Square& square) {
     arrows.push(&arrow);
 }
 
+void Game::clearWall(Grid::Square& square) {
+    Wall* wall = &square.getWall();
+    List::Node* node = walls.find(wall);
+    if (node) {
+        walls.remove(node);
+        square.unsetWall();
+        square.clear();
+        delete wall;
+    }
+}
+
 bool Game::checkProbability(int probability) const {
     int random = rand() % 100;
     return (random < probability);

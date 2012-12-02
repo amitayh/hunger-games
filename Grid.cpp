@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include "Player.h"
 #include "DroppingObject.h"
+#include "Wall.h"
 #include "Gotoxy.h"
 #include <iostream>
 
@@ -93,6 +94,10 @@ void Grid::Square::setWall(Wall& wall) {
     pWall = &wall;
 }
 
+void Grid::Square::unsetWall() {
+    pWall = NULL;
+}
+
 const List& Grid::Square::getPlayers() const {
     return players;
 }
@@ -101,10 +106,17 @@ DroppingObject& Grid::Square::getDroppingObject() const {
     return *pDroppingObject;
 }
 
+Wall& Grid::Square::getWall() const {
+    return *pWall;
+}
+
 void Grid::Square::clear() const {
     if (pDroppingObject) {
         // Draw dropping object
         pDroppingObject->draw();
+    } else if (pWall) {
+        // Draw wall
+        pWall->draw();
     } else {
         // Blank square
         draw(' ');

@@ -13,14 +13,8 @@ Arrow::~Arrow() {
 }
 
 void Arrow::setSquare(Grid::Square& square) {
-    if (square.hasWall()) {
-        // Arrow hit a wall
-        hit = true;
-    } else {
-        // Move to next square
-        pSquare = &square;
-        checkHit();
-    }
+    pSquare = &square;
+    checkHit();
 }
 
 void Arrow::update() {
@@ -60,7 +54,7 @@ void Arrow::draw() const {
             ch = '>';
             break;
     }
-    pSquare->draw(ch, WHITE);
+    pSquare->draw(ch, color);
 }
 
 bool Arrow::getHit() const {
