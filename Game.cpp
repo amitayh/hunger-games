@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Arrow.h"
-#include "Player.h"
+#include "Bot.h"
+#include "Human.h"
 #include "Wall.h"
 #include "InfoBox.h"
 #include "Food.h"
@@ -41,14 +42,27 @@ Game::~Game() {
     }
 }
 
-void Game::addPlayer(int row, int col) {
-    addPlayer(grid.getSquare(row, col));
+void Game::addBot(int row, int col) {
+    addBot(grid.getSquare(row, col));
 }
 
-void Game::addPlayer(Grid::Square& square) {
+void Game::addBot(Grid::Square& square) {
     // Name the players sequentially (A, B, C...)
     char name = 'A' + players.getSize();
-    Player* player = new Player(name);
+    Bot* player = new Bot(name);
+    player->setGame(*this);
+    player->setSquare(square);
+    players.push(player);
+}
+
+void Game::addHuman(int row, int col) {
+    addHuman(grid.getSquare(row, col));
+}
+
+void Game::addHuman(Grid::Square& square) {
+    // Name the players sequentially (A, B, C...)
+    char name = 'A' + players.getSize();
+    Human* player = new Human(name);
     player->setGame(*this);
     player->setSquare(square);
     players.push(player);
@@ -127,7 +141,8 @@ void Game::endGame(const Player* winner) {
 void Game::loop() {
     // Main game loop
     while (status == RUNNING) {
-        if (kbhit() && getch() == ESCAPSE_KEY) {
+        key = kbhit() ? getch() : NULL;
+        if (key == ESCAPSE_KEY) {
             // User pressed escape - show menu
             showMenu();
         } else {
@@ -318,4 +333,8 @@ const List& Game::getDroppingObjects() const {
 
 const Grid& Game::getGrid() const {
     return grid;
+}
+
+char Game::getKey() const {
+    return key;
 }

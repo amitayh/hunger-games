@@ -17,14 +17,17 @@ public:
             EXPLODING,
             PENETRATING
         };
+        ArrowsBag();
+        Arrow* getArrow(Type type);
         bool isEmpty() const;
         int getRemaining(Type type) const;
-        Arrow* getArrow();
+        Type getAvailableType() const;
+        ArrowsBag& operator+=(int amount);
         ArrowsBag& operator++();
         friend class Player;
     };
 
-private:
+protected:
     enum {
         INITIAL_POWER                   = 1000,
         INITIAL_NUM_REGULAR_ARROWS      = 2,
@@ -44,6 +47,7 @@ private:
     void fight(Player& opponent);
     void setRandomDirection();
     void shootArrow();
+    void shootArrow(ArrowsBag::Type type);
     Grid::Square& getNextMove();
 
     DroppingObject* findClosestObject() const;
@@ -52,11 +56,10 @@ private:
     bool playerInRange(const Player& opponent) const;
 
 public:
-    Player(char name, int power = INITIAL_POWER, Direction direction = RIGHT);
+    Player(char name);
     ~Player();
 
     void setSquare(Grid::Square& square);
-    void update();
     void increasePower(int amount);
     void decreasePower(int amount);
     ArrowsBag& getArrowsBag();

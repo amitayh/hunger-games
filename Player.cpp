@@ -5,10 +5,10 @@
 #include "ExplodingArrow.h"
 #include "PenetratingArrow.h"
 
-Player::Player(char name, int power, Direction direction) {
-    this->direction = direction;
+Player::Player(char name) {
     this->name = name;
-    this->power = power;
+    power = INITIAL_POWER;
+    direction = RIGHT;
     arrowsBag.remaining[ArrowsBag::REGULAR] = INITIAL_NUM_REGULAR_ARROWS;
     arrowsBag.remaining[ArrowsBag::EXPLODING] = INITIAL_NUM_EXPLODING_ARROWS;
     arrowsBag.remaining[ArrowsBag::PENETRATING] = INITIAL_NUM_PENETRATING_ARROWS;
@@ -43,27 +43,6 @@ void Player::setSquare(Grid::Square& square) {
     }
     square.stepIn(*this);
     pSquare = &square;
-}
-
-void Player::update() {
-    if (power > 0) {
-        unsigned int tick = pGame->getTick();
-
-        if (tick % MOVE_INTERVAL == 0) {
-            // Move to next square
-            setSquare(getNextMove());
-        }
-
-        if (
-            !arrowsBag.isEmpty() &&                             // Player still has arrows
-            pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
-            tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&  // Check minimum ticks between arrows
-            hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
-        ) {
-            // Shoot an arrow if conditions are met
-            shootArrow();
-        }
-    }
 }
 
 Grid::Square& Player::getNextMove() {
@@ -144,10 +123,17 @@ void Player::setRandomDirection() {
 }
 
 void Player::shootArrow() {
+    shootArrow(arrowsBag.getAvailableType());
+}
+
+void Player::shootArrow(ArrowsBag::Type type) {
     Grid::Square& arrowSquare = getNextSquare();
-    if (!arrowSquare.hasWall()) {
-        // Don't shoot directly at a wall
-        Arrow* arrow = arrowsBag.getArrow();
+    if (
+        !arrowSquare.hasWall() &&                                   // Don't shoot directly at a wall
+        arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
+        pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
+    ) {
+        Arrow* arrow = arrowsBag.getArrow(type);
         arrow->setDirection(direction);
         pGame->addArrow(*arrow, arrowSquare); // Update game
         lastArrowTick = pGame->getTick();
@@ -243,19 +229,24 @@ void Player::draw() const {
     pSquare->draw(name, CYAN);
 }
 
-// Player quiver
+// Player arrows bag
+
+Player::ArrowsBag::ArrowsBag() {
+    remaining[REGULAR] = remaining[EXPLODING] = remaining[PENETRATING] = 0;
+}
 
 bool Player::ArrowsBag::isEmpty() const {
     return (remaining[REGULAR] + remaining[EXPLODING] + remaining[PENETRATING] == 0);
 }
 
-int Player::ArrowsBag::getRemaining(Player::ArrowsBag::Type type) const {
+int Player::ArrowsBag::getRemaining(Type type) const {
     return remaining[type];
 }
 
-Arrow* Player::ArrowsBag::getArrow() {
-    Arrow* arrow = NULL;
+Player::ArrowsBag::Type Player::ArrowsBag::getAvailableType() const {
+    Type result;
     if (!isEmpty()) {
+        // Check which arrow type is available
         int available[3], numAvailable = 0, type;
         for (type = 0; type < 3; type++) {
             if (remaining[type] > 0) {
@@ -264,8 +255,17 @@ Arrow* Player::ArrowsBag::getArrow() {
             }
         }
 
+        // Choose randomly from available types
         int random = rand() % numAvailable;
-        type = available[random];
+        result = (Type) available[random];
+    }
+    return result;
+}
+
+Arrow* Player::ArrowsBag::getArrow(Type type) {
+    Arrow* arrow = NULL;
+    if (remaining[type] > 0) {
+        // Allocate arrow
         switch (type) {
             case REGULAR:
                 arrow = new RegularArrow;
@@ -277,14 +277,21 @@ Arrow* Player::ArrowsBag::getArrow() {
                 arrow = new PenetratingArrow;
                 break;
         }
+
+        // Decrease counter
         remaining[type]--;
     }
     return arrow;
 }
 
-Player::ArrowsBag& Player::ArrowsBag::operator++() {
-    remaining[REGULAR]++;
-    remaining[EXPLODING]++;
-    remaining[PENETRATING]++;
+Player::ArrowsBag& Player::ArrowsBag::operator+=(int amount) {
+    remaining[REGULAR] += amount;
+    remaining[EXPLODING] += amount;
+    remaining[PENETRATING] += amount;
     return *this;
+}
+
+Player::ArrowsBag& Player::ArrowsBag::operator++() {
+    // Add one arrow of each type
+    return (*this += 1);
 }
