@@ -19,7 +19,7 @@ protected:
         MOVE_INTERVAL = 1
     };
 
-    Arrow(Player& shooter); // Make the class abstract
+    Arrow(); // Make the class abstract
 
     Color color;
     bool hit;

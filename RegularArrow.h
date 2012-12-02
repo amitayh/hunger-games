@@ -6,7 +6,7 @@
 class RegularArrow : public Arrow
 {
 public:
-    RegularArrow(Player& shooter);
+    RegularArrow();
 
 protected:
     bool checkHit();

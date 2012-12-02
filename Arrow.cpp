@@ -2,8 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player& shooter) {
-    direction = shooter.getDirection();
+Arrow::Arrow() {
     hit = false;
 }
 

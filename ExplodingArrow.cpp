@@ -1,7 +1,7 @@
 #include "ExplodingArrow.h"
 #include "Game.h"
 
-ExplodingArrow::ExplodingArrow(Player& shooter): Arrow(shooter) {
+ExplodingArrow::ExplodingArrow() {
     color = MAGENTA;
 }
 

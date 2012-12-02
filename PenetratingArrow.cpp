@@ -1,5 +1,5 @@
 #include "PenetratingArrow.h"
 
-PenetratingArrow::PenetratingArrow(Player& shooter): Arrow(shooter) {
+PenetratingArrow::PenetratingArrow() {
     color = TEAL;
 }

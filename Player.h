@@ -19,7 +19,7 @@ public:
         };
         bool isEmpty() const;
         int getRemaining(Type type) const;
-        Arrow* getArrow(Player& shooter);
+        Arrow* getArrow();
         ArrowsBag& operator++();
         friend class Player;
     };

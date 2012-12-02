@@ -17,6 +17,7 @@ class MovingObject : public Object
 {
 public:
     virtual void update() = 0;
+    void setDirection(Direction direction);
 
     Direction getDirection() const;
 

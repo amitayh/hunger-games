@@ -1,6 +1,10 @@
 #include "MovingObject.h"
 #include "Game.h"
 
+void MovingObject::setDirection(Direction direction) {
+    this->direction = direction;
+}
+
 Direction MovingObject::getDirection() const {
     return direction;
 }

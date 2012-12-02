@@ -6,7 +6,7 @@
 class ExplodingArrow : public Arrow
 {
 public:
-    ExplodingArrow(Player& shooter);
+    ExplodingArrow();
 
 protected:
     bool checkHit();

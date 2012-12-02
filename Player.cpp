@@ -55,7 +55,7 @@ void Player::update() {
         }
 
         if (
-            !arrowsBag.isEmpty() &&                                // Player still has arrows
+            !arrowsBag.isEmpty() &&                             // Player still has arrows
             pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
             tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&  // Check minimum ticks between arrows
             hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
@@ -147,7 +147,8 @@ void Player::shootArrow() {
     Grid::Square& arrowSquare = getNextSquare();
     if (!arrowSquare.hasWall()) {
         // Don't shoot directly at a wall
-        Arrow* arrow = arrowsBag.getArrow(*this);
+        Arrow* arrow = arrowsBag.getArrow();
+        arrow->setDirection(direction);
         pGame->addArrow(*arrow, arrowSquare); // Update game
         lastArrowTick = pGame->getTick();
     }
@@ -252,7 +253,7 @@ int Player::ArrowsBag::getRemaining(Player::ArrowsBag::Type type) const {
     return remaining[type];
 }
 
-Arrow* Player::ArrowsBag::getArrow(Player& shooter) {
+Arrow* Player::ArrowsBag::getArrow() {
     Arrow* arrow = NULL;
     if (!isEmpty()) {
         int available[3], numAvailable = 0, type;
@@ -267,13 +268,13 @@ Arrow* Player::ArrowsBag::getArrow(Player& shooter) {
         type = available[random];
         switch (type) {
             case REGULAR:
-                arrow = new RegularArrow(shooter);
+                arrow = new RegularArrow;
                 break;
             case EXPLODING:
-                arrow = new ExplodingArrow(shooter);
+                arrow = new ExplodingArrow;
                 break;
             case PENETRATING:
-                arrow = new PenetratingArrow(shooter);
+                arrow = new PenetratingArrow;
                 break;
         }
         remaining[type]--;

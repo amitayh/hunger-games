@@ -6,7 +6,7 @@
 class PenetratingArrow : public Arrow
 {
 public:
-    PenetratingArrow(Player& shooter);
+    PenetratingArrow();
 };
 
 #endif

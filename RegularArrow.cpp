@@ -1,6 +1,6 @@
 #include "RegularArrow.h"
 
-RegularArrow::RegularArrow(Player& shooter): Arrow(shooter) {
+RegularArrow::RegularArrow() {
     color = WHITE;
 }
 
