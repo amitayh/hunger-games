@@ -49,10 +49,7 @@ void Game::addBot(int row, int col) {
 void Game::addBot(Grid::Square& square) {
     // Name the players sequentially (A, B, C...)
     char name = 'A' + players.getSize();
-    Bot* player = new Bot(name);
-    player->setGame(*this);
-    player->setSquare(square);
-    players.push(player);
+    addObject(new Bot(name), square, players);
 }
 
 void Game::addHuman(int row, int col) {
@@ -60,21 +57,13 @@ void Game::addHuman(int row, int col) {
 }
 
 void Game::addHuman(Grid::Square& square) {
-    // Name the players sequentially (A, B, C...)
-    char name = 'A' + players.getSize();
-    Human* player = new Human(name);
-    player->setGame(*this);
-    player->setSquare(square);
-    players.push(player);
+    addObject(new Human, square, players);
 }
 
 void Game::addWall(int row, int col) {
     Grid::Square& square = grid.getSquare(row, col);
     if (!square.hasWall()) {
-        Wall* wall = new Wall;
-        wall->setGame(*this);
-        wall->setSquare(square);
-        walls.push(wall);
+        addObject(new Wall, square, walls);
     }
 }
 
@@ -85,9 +74,13 @@ void Game::addInfoBox(int row, int col) {
 
 void Game::addArrow(Arrow& arrow, Grid::Square& square) {
     // The arrow is pre-allocated by the shooting player
-    arrow.setGame(*this);
-    arrow.setSquare(square);
-    arrows.push(&arrow);
+    addObject(&arrow, square, arrows);
+}
+
+void Game::addObject(Object* object, Grid::Square& square, List& list) {
+    object->setGame(*this);
+    object->setSquare(square);
+    list.push(object);
 }
 
 void Game::clearWall(Grid::Square& square) {
@@ -141,7 +134,7 @@ void Game::endGame(const Player* winner) {
 void Game::loop() {
     // Main game loop
     while (status == RUNNING) {
-        key = kbhit() ? getch() : NULL;
+        key = kbhit() ? getch() : '\0';
         if (key == ESCAPSE_KEY) {
             // User pressed escape - show menu
             showMenu();
@@ -265,21 +258,14 @@ void Game::drawWalls() const {
 
 void Game::dropObjects() {
     if (checkProbability(DROP_FOOD_PROBABILITY)) {
-        dropObject(new Food);
+        addObject(new Food, getValidDropSquare(), droppingObjects);
     }
     if (checkProbability(DROP_QUIVER_PROBABILITY)) {
-        dropObject(new Quiver);
+        addObject(new Quiver, getValidDropSquare(), droppingObjects);
     }
     if (checkProbability(DROP_BOMB_PROBABILITY)) {
-        dropObject(new Bomb);
+        addObject(new Bomb, getValidDropSquare(), droppingObjects);
     }
-}
-
-void Game::dropObject(DroppingObject* object) {
-    object->setGame(*this);
-    object->setSquare(getValidDropSquare());
-    droppingObjects.push(object);
-    object->draw();
 }
 
 Grid::Square& Game::getValidDropSquare() const {

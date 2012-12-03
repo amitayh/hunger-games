@@ -1,7 +1,7 @@
 #include "Human.h"
 #include "Game.h"
 
-Human::Human(char name): Player(name) {}
+Human::Human(): Player(DISPLAY_NAME) {}
 
 void Human::update() {
     if (power > 0) {
@@ -42,10 +42,10 @@ void Human::update() {
                 break;
         }
 
-        Grid::Square* square = &getNextSquare();
-        if (pGame->getTick() % MOVE_INTERVAL == 0 && !square->hasWall()) {
+        Grid::Square& square = getNextSquare();
+        if (pGame->getTick() % MOVE_INTERVAL == 0 && !square.hasWall()) {
             // Move to next square
-            setSquare(*square);
+            setSquare(square);
         }
 
         if (shoot) {

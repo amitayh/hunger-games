@@ -10,7 +10,8 @@ class MapLoader
         CHAR_BOT        = 'P',
         CHAR_HUMAN      = 'H',
         CHAR_INFO_BOX   = 'O',
-        MIN_NUM_PLAYERS = 2
+        MIN_NUM_PLAYERS = 2,
+        MAX_NUM_PLAYERS = 3
     };
 
     Game* pGame;

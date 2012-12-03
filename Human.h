@@ -6,6 +6,7 @@
 class Human : public Player
 {
     enum {
+        DISPLAY_NAME                = 'H',
         KEY_LEFT                    = 'A',
         KEY_RIGHT                   = 'D',
         KEY_UP                      = 'W',
@@ -16,7 +17,7 @@ class Human : public Player
     };
 
 public:
-    Human(char name);
+    Human();
 
     void update();
 };
