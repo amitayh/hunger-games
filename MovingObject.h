@@ -13,7 +13,7 @@ enum Direction {
     RIGHT
 };
 
-class MovingObject : public Object
+class MovingObject: public Object
 {
 public:
     virtual void update() = 0;

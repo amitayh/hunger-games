@@ -3,7 +3,7 @@
 
 #include "Player.h"
 
-class Bot : public Player
+class Bot: public Player
 {
     void setRandomDirection();
     Grid::Square& getNextMove();

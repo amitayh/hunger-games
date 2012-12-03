@@ -3,7 +3,7 @@
 
 #include "DroppingObject.h"
 
-class Quiver : public DroppingObject
+class Quiver: public DroppingObject
 {
 public:
     Quiver();

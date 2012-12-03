@@ -4,7 +4,7 @@
 #include "Object.h"
 #include "Dimensions.h"
 
-class InfoBox : public Object
+class InfoBox: public Object
 {
     enum {
         WIDTH = 10,

@@ -3,7 +3,7 @@
 
 #include "Player.h"
 
-class Human : public Player
+class Human: public Player
 {
     enum {
         DISPLAY_NAME                = 'H',
@@ -20,6 +20,8 @@ public:
     Human();
 
     void update();
+
+    void draw() const;
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "MovingObject.h"
 
-class Arrow : public MovingObject
+class Arrow: public MovingObject
 {
 public:
     ~Arrow();
@@ -11,7 +11,6 @@ public:
     void setSquare(Grid::Square& square);
     void update();
 
-    void draw() const;
     bool getHit() const;
 
 protected:
@@ -21,7 +20,6 @@ protected:
 
     Arrow(); // Make the class abstract
 
-    Color color;
     bool hit;
 
     virtual bool checkHit();

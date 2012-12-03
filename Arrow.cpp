@@ -37,25 +37,6 @@ bool Arrow::checkHit() {
     return hit;
 }
 
-void Arrow::draw() const {
-    char ch;
-    switch (direction) {
-        case UP:
-            ch = '^';
-            break;
-        case DOWN:
-            ch = 'v';
-            break;
-        case LEFT:
-            ch = '<';
-            break;
-        case RIGHT:
-            ch = '>';
-            break;
-    }
-    pSquare->draw(ch, color);
-}
-
 bool Arrow::getHit() const {
     return hit;
 }

@@ -3,7 +3,7 @@
 
 #include "DroppingObject.h"
 
-class Bomb : public DroppingObject
+class Bomb: public DroppingObject
 {
 public:
     Bomb();

@@ -3,10 +3,10 @@
 
 #include "Arrow.h"
 
-class RegularArrow : public Arrow
+class RegularArrow: public Arrow
 {
 public:
-    RegularArrow();
+    void draw() const;
 
 protected:
     bool checkHit();

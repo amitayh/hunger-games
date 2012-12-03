@@ -1,5 +1,16 @@
 #include "PenetratingArrow.h"
 
-PenetratingArrow::PenetratingArrow() {
-    color = TEAL;
+void PenetratingArrow::draw() const {
+    char ch;
+    switch (direction) {
+        case UP:
+        case DOWN:
+            ch = '|';
+            break;
+        case LEFT:
+        case RIGHT:
+            ch = '-';
+            break;
+    }
+    pSquare->draw(ch, WHITE);
 }

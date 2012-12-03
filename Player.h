@@ -5,7 +5,7 @@
 
 class Arrow;
 
-class Player : public MovingObject
+class Player: public MovingObject
 {
 public:
     class ArrowsBag

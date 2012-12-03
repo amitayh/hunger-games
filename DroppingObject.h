@@ -4,7 +4,7 @@
 #include "Object.h"
 #include "Player.h"
 
-class DroppingObject : public Object
+class DroppingObject: public Object
 {
 public:
     enum Type {
@@ -13,6 +13,7 @@ public:
         BOMB
     };
 
+    DroppingObject();
     ~DroppingObject();
 
     virtual void affect(Player& player) = 0;
@@ -24,8 +25,6 @@ public:
 protected:
     bool pickedUp;
     Type type;
-
-    DroppingObject(); // Make the class abstract
 };
 
 #endif

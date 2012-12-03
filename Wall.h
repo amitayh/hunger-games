@@ -3,7 +3,7 @@
 
 #include "Object.h"
 
-class Wall : public Object 
+class Wall: public Object 
 {
 public:
     void setSquare(Grid::Square& square);

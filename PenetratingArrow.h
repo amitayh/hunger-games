@@ -3,10 +3,10 @@
 
 #include "Arrow.h"
 
-class PenetratingArrow : public Arrow
+class PenetratingArrow: public Arrow
 {
 public:
-    PenetratingArrow();
+    void draw() const;
 };
 
 #endif

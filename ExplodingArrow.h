@@ -3,10 +3,10 @@
 
 #include "Arrow.h"
 
-class ExplodingArrow : public Arrow
+class ExplodingArrow: public Arrow
 {
 public:
-    ExplodingArrow();
+    void draw() const;
 
 protected:
     bool checkHit();
