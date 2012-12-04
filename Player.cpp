@@ -4,6 +4,7 @@
 #include "RegularArrow.h"
 #include "ExplodingArrow.h"
 #include "PenetratingArrow.h"
+#include <exception>
 
 Player::Player(char name) {
     this->name = name;
@@ -46,22 +47,16 @@ void Player::setSquare(Grid::Square& square) {
 }
 
 void Player::shootArrow(ArrowsBag::Type type) {
-    Grid::Square& arrowSquare = getNextSquare();
+    Grid::Square& square = getNextSquare();
     if (
-        !arrowSquare.hasWall() &&                                   // Don't shoot directly at a wall
         arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
         pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
         Arrow* arrow = arrowsBag.getArrow(type);
         arrow->setDirection(direction);
-        pGame->addArrow(*arrow, arrowSquare); // Update game
+        pGame->addArrow(*arrow, square); // Update game
         lastArrowTick = pGame->getTick();
     }
-}
-
-void Player::shootArrow() {
-    // Shoot an arrow from available types randomly
-    shootArrow(arrowsBag.getAvailableType());
 }
 
 void Player::fight(Player& opponent) {
@@ -118,23 +113,23 @@ int Player::ArrowsBag::getRemaining(Type type) const {
     return remaining[type];
 }
 
-Player::ArrowsBag::Type Player::ArrowsBag::getAvailableType() const {
-    Type result;
-    if (!isEmpty()) {
-        // Check which arrow type is available
-        int available[3], numAvailable = 0, type;
-        for (type = 0; type < 3; type++) {
-            if (remaining[type] > 0) {
-                available[numAvailable] = type;
-                numAvailable++;
-            }
-        }
-
-        // Choose randomly from available types
-        int random = rand() % numAvailable;
-        result = (Type) available[random];
+Player::ArrowsBag::Type Player::ArrowsBag::getAvailableRandomType() const {
+    if (isEmpty()) {
+        throw runtime_error("Arrows bag is empty");
     }
-    return result;
+
+    // Check which arrow type is available
+    int available[3], numAvailable = 0;
+    for (int type = 0; type < 3; type++) {
+        if (remaining[type] > 0) {
+            available[numAvailable] = type;
+            numAvailable++;
+        }
+    }
+
+    // Choose randomly from available types
+    int random = rand() % numAvailable;
+    return (Type) available[random];
 }
 
 Arrow* Player::ArrowsBag::getArrow(Type type) {

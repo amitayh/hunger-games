@@ -21,11 +21,22 @@ public:
         Arrow* getArrow(Type type);
         bool isEmpty() const;
         int getRemaining(Type type) const;
-        Type getAvailableType() const;
+        Type getAvailableRandomType() const;
         ArrowsBag& operator+=(int amount);
         ArrowsBag& operator++();
         friend class Player;
     };
+
+    ~Player();
+
+    void setSquare(Grid::Square& square);
+    void increasePower(int amount);
+    void decreasePower(int amount);
+    ArrowsBag& getArrowsBag();
+
+    char getName() const;
+    int getPower() const;
+    void draw() const;
 
 protected:
     enum {
@@ -48,19 +59,6 @@ protected:
 
     void fight(Player& opponent);
     void shootArrow(ArrowsBag::Type type);
-    void shootArrow();
-
-public:
-    ~Player();
-
-    void setSquare(Grid::Square& square);
-    void increasePower(int amount);
-    void decreasePower(int amount);
-    ArrowsBag& getArrowsBag();
-
-    char getName() const;
-    int getPower() const;
-    void draw() const;
 };
 
 #endif

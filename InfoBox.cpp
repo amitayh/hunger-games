@@ -46,13 +46,13 @@ void InfoBox::draw() const {
             // Print player info
             List::Node* node = it.getCurrent();
             Player* player = (Player*) node->getData();
-            Player::ArrowsBag* arrowsBag = &player->getArrowsBag();
+            Player::ArrowsBag& arrowsBag = player->getArrowsBag();
             printf(
                 "%4d%2d%2d%2d\n",
                 player->getPower(),
-                arrowsBag->getRemaining(Player::ArrowsBag::REGULAR),
-                arrowsBag->getRemaining(Player::ArrowsBag::EXPLODING),
-                arrowsBag->getRemaining(Player::ArrowsBag::PENETRATING)
+                arrowsBag.getRemaining(Player::ArrowsBag::REGULAR),
+                arrowsBag.getRemaining(Player::ArrowsBag::EXPLODING),
+                arrowsBag.getRemaining(Player::ArrowsBag::PENETRATING)
             );
         } else {
             // Print empty line
