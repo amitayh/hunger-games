@@ -1,20 +1,23 @@
 #include "Player.h"
 #include "Game.h"
 #include "DroppingObject.h"
+#include "RegularArrow.h"
+#include "ExplodingArrow.h"
+#include "PenetratingArrow.h"
 
-Player::Player(char name, Grid::Square& square, int power, Direction direction) {
-    this->direction = direction;
+Player::Player(char name) {
     this->name = name;
-    this->power = power;
-    pSquare = &square;
-    square.stepIn(*this);
-    remainingArrows = INITIAL_NUM_ARROWS;
+    power = INITIAL_POWER;
+    direction = RIGHT;
+    arrowsBag.remaining[ArrowsBag::REGULAR] = INITIAL_NUM_REGULAR_ARROWS;
+    arrowsBag.remaining[ArrowsBag::EXPLODING] = INITIAL_NUM_EXPLODING_ARROWS;
+    arrowsBag.remaining[ArrowsBag::PENETRATING] = INITIAL_NUM_PENETRATING_ARROWS;
     lastArrowTick = 0;
 }
 
 Player::~Player() {
     // Clear square before deletion
-    stepOut();
+    pSquare->stepOut(*this);
 }
 
 void Player::setSquare(Grid::Square& square) {
@@ -35,175 +38,30 @@ void Player::setSquare(Grid::Square& square) {
         }
     }
 
-    stepOut();
+    if (pSquare) {
+        pSquare->stepOut(*this);
+    }
     square.stepIn(*this);
     pSquare = &square;
 }
 
-void Player::stepOut() const {
-    // Notify square that player is leaving
-    pSquare->stepOut(*this);
-    pSquare->clear();
-}
-
-void Player::update(Game& game) {
-    if (power > 0) {
-        unsigned int tick = game.getTick();
-
-        if (tick % MOVE_INTERVAL == 0) {
-            // Move to next square
-            setSquare(getNextMove(game));
-        }
-
-        if (
-            remainingArrows &&                                  // Player still has arrows
-            game.checkProbability(SHOOT_ARROW_PROBABILITY) &&   // Check probability, don't shoot on every chance
-            tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS &&  // Check minimum ticks between arrows
-            hasPlayersInRange(game.getPlayers())                // Shoot only if there is a reasonable chance of hitting an opponent
-        ) {
-            // Shoot an arrow if conditions are met
-            shootArrow(game);
-        }
-    }
-}
-
-Grid::Square& Player::getNextMove(const Game& game) {
-    const Grid& grid = game.getGrid();
-
-    // Find closest food / quiver
-    DroppingObject* closest = findClosestObject(game.getDroppingObjects());
-    if (closest && checkWallsInPath(grid, closest->getSquare())) {
-        // Move towards the closest if it exists and the path is clear (no walls)
-        direction = pSquare->getDirection(closest->getSquare());
-    } else if (game.checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
-        // Randomly change direction
-        setRandomDirection();
-    }
-
-    Grid::Square* nextSquare = &getNextSquare(grid, *pSquare, direction);
-    while (nextSquare->hasWall()) {
-        // Change direction to avoid the wall
-        setRandomDirection();
-        nextSquare = &getNextSquare(grid, *pSquare, direction);
-    }
-
-    return *nextSquare;
-}
-
-DroppingObject* Player::findClosestObject(const List& objects) const {
-    DroppingObject* closest = NULL;
-    if (!objects.isEmpty()) {
-        double closestDistance = 0;
-        List::Iterator it(objects);
-        while (!it.done()) {
-            // Iterate over the objects list
-            List::Node* node = it.getCurrent();
-            DroppingObject* current = (DroppingObject*) node->getData();
-            if (current->getType() != DroppingObject::Type::BOMB) {
-                // Don't go for the bombs!
-                double distance = pSquare->getDistance(current->getSquare());
-                if (!closest || distance < closestDistance) {
-                    // Found a closer food / quiver - update result
-                    closestDistance = distance;
-                    closest = current;
-                }
-            }
-        }
-    }
-    return closest;
-}
-
-bool Player::checkWallsInPath(const Grid& grid, const Grid::Square& target) const {
-    bool result = true;
-    Grid::Square* current = pSquare;
-    while (result && current != &target) {
-        // Simulate the actual movement and check for walls in the path
-        Direction direction = current->getDirection(target);
-        current = &getNextSquare(grid, *current, direction);
-        if (current->hasWall()) {
-            // Found a wall, no need to continue
-            result = false;
-        }
-    }
-    return result;
-}
-
-void Player::setRandomDirection() {
-    // Set a direction randomly. Player will only turn right or left (from his perspective)
-    Direction directions[2];
-    switch (direction) {
-        case UP:
-        case DOWN:
-            directions[0] = LEFT;
-            directions[1] = RIGHT;
-            break;
-        case LEFT:
-        case RIGHT:
-            directions[0] = UP;
-            directions[1] = DOWN;
-            break;
-    }
-    direction = directions[rand() % 2];
-}
-
-void Player::shootArrow(Game& game) {
-    Grid::Square& arrowSquare = getNextSquare(game.getGrid(), *pSquare, direction);
-    if (!arrowSquare.hasWall()) {
-        // Don't shoot directly at a wall
-        Arrow* arrow = new Arrow(*this, arrowSquare);
-        game.addArrow(*arrow); // Update game
-        lastArrowTick = game.getTick();
-        remainingArrows--;
-    }
-}
-
-bool Player::hasPlayersInRange(const List& players) const {
-    List::Iterator it(players);
-    bool inRange = false;
-    while (!inRange && !it.done()) {
-        // Iterate over the players list
-        List::Node* node = it.getCurrent();
-        Player* player = (Player*) node->getData();
-        if (player != this) {
-            // Check if opponent may be hit if an arrow will be shot
-            inRange = playerInRange(*player);
-        }
-    }
-    return inRange;
-}
-
-bool Player::playerInRange(const Player& opponent) const {
-    // Basic algorithm: check opponent's square and direction.
-    // Compare with player's square and direction and decide whether or not to shoot
-    const Grid::Square& opponentSquare = opponent.getSquare();
-    Direction opponentDirection = opponent.getDirection();
-
-    // Yuck, I know...
+void Player::shootArrow(ArrowsBag::Type type) {
+    Grid::Square& arrowSquare = getNextSquare();
     if (
-        (direction == RIGHT && pSquare->getCol() < opponentSquare.getCol()) ||
-        (direction == LEFT && pSquare->getCol() > opponentSquare.getCol())
+        !arrowSquare.hasWall() &&                                   // Don't shoot directly at a wall
+        arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
+        pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
-        if (opponentDirection == DOWN) {
-            return (pSquare->getRow() > opponentSquare.getRow());
-        } else if (opponentDirection == UP) {
-            return (pSquare->getRow() < opponentSquare.getRow());
-        } else {
-            return (pSquare->getRow() == opponentSquare.getRow());
-        }      
-    } else if (
-        (direction == DOWN && pSquare->getRow() < opponentSquare.getRow()) ||
-        (direction == UP && pSquare->getRow() > opponentSquare.getRow())
-    ) {
-        if (opponentDirection == RIGHT) {
-            return (pSquare->getCol() > opponentSquare.getCol());
-        } else if (opponentDirection == LEFT) {
-            return (pSquare->getCol() < opponentSquare.getCol());
-        } else {
-            return (pSquare->getCol() == opponentSquare.getCol());
-        }
+        Arrow* arrow = arrowsBag.getArrow(type);
+        arrow->setDirection(direction);
+        pGame->addArrow(*arrow, arrowSquare); // Update game
+        lastArrowTick = pGame->getTick();
     }
+}
 
-    return false;
+void Player::shootArrow() {
+    // Shoot an arrow from available types randomly
+    shootArrow(arrowsBag.getAvailableType());
 }
 
 void Player::fight(Player& opponent) {
@@ -222,20 +80,12 @@ void Player::fight(Player& opponent) {
     }
 }
 
-void Player::addArrows(int amount) {
-    remainingArrows += amount;
-}
-
 void Player::increasePower(int amount) {
     power = __max(power + amount, 0);
 }
 
 void Player::decreasePower(int amount) {
     increasePower(-amount);
-}
-
-const Grid::Square& Player::getSquare() const {
-    return *pSquare;
 }
 
 char Player::getName() const {
@@ -246,14 +96,77 @@ int Player::getPower() const {
     return power;
 }
 
-int Player::getRemainingArrows() const {
-    return remainingArrows;
-}
-
-Direction Player::getDirection() const {
-    return direction;
+Player::ArrowsBag& Player::getArrowsBag() {
+    return arrowsBag;
 }
 
 void Player::draw() const {
     pSquare->draw(name, CYAN);
+}
+
+// Player arrows bag
+
+Player::ArrowsBag::ArrowsBag() {
+    remaining[REGULAR] = remaining[EXPLODING] = remaining[PENETRATING] = 0;
+}
+
+bool Player::ArrowsBag::isEmpty() const {
+    return (remaining[REGULAR] + remaining[EXPLODING] + remaining[PENETRATING] == 0);
+}
+
+int Player::ArrowsBag::getRemaining(Type type) const {
+    return remaining[type];
+}
+
+Player::ArrowsBag::Type Player::ArrowsBag::getAvailableType() const {
+    Type result;
+    if (!isEmpty()) {
+        // Check which arrow type is available
+        int available[3], numAvailable = 0, type;
+        for (type = 0; type < 3; type++) {
+            if (remaining[type] > 0) {
+                available[numAvailable] = type;
+                numAvailable++;
+            }
+        }
+
+        // Choose randomly from available types
+        int random = rand() % numAvailable;
+        result = (Type) available[random];
+    }
+    return result;
+}
+
+Arrow* Player::ArrowsBag::getArrow(Type type) {
+    Arrow* arrow = NULL;
+    if (remaining[type] > 0) {
+        // Allocate arrow
+        switch (type) {
+            case REGULAR:
+                arrow = new RegularArrow;
+                break;
+            case EXPLODING:
+                arrow = new ExplodingArrow;
+                break;
+            case PENETRATING:
+                arrow = new PenetratingArrow;
+                break;
+        }
+
+        // Decrease counter
+        remaining[type]--;
+    }
+    return arrow;
+}
+
+Player::ArrowsBag& Player::ArrowsBag::operator+=(int amount) {
+    remaining[REGULAR] += amount;
+    remaining[EXPLODING] += amount;
+    remaining[PENETRATING] += amount;
+    return *this;
+}
+
+Player::ArrowsBag& Player::ArrowsBag::operator++() {
+    // Add one arrow of each type
+    return (*this += 1);
 }

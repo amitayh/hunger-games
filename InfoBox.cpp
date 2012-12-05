@@ -1,20 +1,34 @@
 #include "InfoBox.h"
+#include "Game.h"
 #include "Player.h"
 #include "Gotoxy.h"
 #include <iostream>
 
 using namespace std;
 
-InfoBox::InfoBox(): size(WIDTH, HEIGHT) {
-    pSquare = NULL;
-}
+InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
 void InfoBox::setSquare(Grid::Square& square) {
-    pSquare = &square;
+    Object::setSquare(square);
+
+    int width = size.getWidth(),
+        height = size.getHeight(),
+        row = square.getRow(),
+        col = square.getCol();
+
+    // Add walls around the info box
+    for (int i = 0; i < width + 2; i++) {
+        pGame->addWall(row - 1, col + i - 1);
+        pGame->addWall(row + height, col + i - 1);
+    }
+    for (int i = 0; i < height; i++) {
+        pGame->addWall(row + i, col - 1);
+        pGame->addWall(row + i, col + width);
+    }
 }
 
-void InfoBox::draw(const List& players) const {
-    List::Iterator it(players);
+void InfoBox::draw() const {
+    List::Iterator it(pGame->getPlayers());
     int row = pSquare->getRow(),
         col = pSquare->getCol(),
         height = size.getHeight();
@@ -22,7 +36,7 @@ void InfoBox::draw(const List& players) const {
     changeColor(SILVER);
     
     gotoxy(col, row);
-    cout << "P HP   A";
+    cout << "HP   R E P";
     gotoxy(col, row + 1);
     cout << "----------";
 
@@ -32,16 +46,19 @@ void InfoBox::draw(const List& players) const {
             // Print player info
             List::Node* node = it.getCurrent();
             Player* player = (Player*) node->getData();
-            printf("%c %-4d %-3d\n", player->getName(), player->getPower(), player->getRemainingArrows());
+            Player::ArrowsBag* arrowsBag = &player->getArrowsBag();
+            printf(
+                "%4d%2d%2d%2d\n",
+                player->getPower(),
+                arrowsBag->getRemaining(Player::ArrowsBag::REGULAR),
+                arrowsBag->getRemaining(Player::ArrowsBag::EXPLODING),
+                arrowsBag->getRemaining(Player::ArrowsBag::PENETRATING)
+            );
         } else {
             // Print empty line
             cout << "          ";
         }
     }
-}
-
-const Dimensions& InfoBox::getSize() const {
-    return size;
 }
 
 bool InfoBox::inArea(const Grid::Square& square) const {

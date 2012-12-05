@@ -2,9 +2,7 @@
 #include "Game.h"
 #include "Player.h"
 
-Arrow::Arrow(Player& shooter, Grid::Square& square) {
-    pSquare = &square;
-    direction = shooter.getDirection();
+Arrow::Arrow() {
     hit = false;
 }
 
@@ -14,19 +12,13 @@ Arrow::~Arrow() {
 }
 
 void Arrow::setSquare(Grid::Square& square) {
-    if (square.hasWall()) {
-        // Arrow hit a wall
-        hit = true;
-    } else {
-        // Move to next square
-        pSquare = &square;
-        checkHit();
-    }
+    pSquare = &square;
+    checkHit();
 }
 
-void Arrow::update(Game& game) {
-    if (!checkHit() && game.getTick() % MOVE_INTERVAL == 0) {
-        Grid::Square& nextSquare = getNextSquare(game.getGrid(), *pSquare, direction);
+void Arrow::update() {
+    if (!checkHit() && pGame->getTick() % MOVE_INTERVAL == 0) {
+        Grid::Square& nextSquare = getNextSquare();
         pSquare->clear();
         setSquare(nextSquare);
     }
@@ -43,25 +35,6 @@ bool Arrow::checkHit() {
         }
     }
     return hit;
-}
-
-void Arrow::draw() const {
-    char ch;
-    switch (direction) {
-        case UP:
-            ch = '^';
-            break;
-        case DOWN:
-            ch = 'v';
-            break;
-        case LEFT:
-            ch = '<';
-            break;
-        case RIGHT:
-            ch = '>';
-            break;
-    }
-    pSquare->draw(ch, WHITE);
 }
 
 bool Arrow::getHit() const {

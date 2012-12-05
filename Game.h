@@ -40,6 +40,7 @@ class Game
     List droppingObjects;
     InfoBox infoBox;
     Menu menu;
+    char key;
 
     void loop();
     void update();
@@ -47,7 +48,7 @@ class Game
     void updateArrows();
     void updateDroppingObjects();
     void dropObjects();
-    void dropObject(DroppingObject::Type type);
+    void addObject(Object* object, Grid::Square& square, List& list);
     void endGame(const Player* winner = NULL);
     void showMenu();
 
@@ -64,11 +65,14 @@ public:
     void run();
     void pause();
     void resume();
-    void addPlayer(int row, int col);
-    void addPlayer(Grid::Square& square);
+    void addBot(int row, int col);
+    void addBot(Grid::Square& square);
+    void addHuman(int row, int col);
+    void addHuman(Grid::Square& square);
     void addWall(int row, int col);
     void addInfoBox(int row, int col);
-    void addArrow(const Arrow& arrow);
+    void addArrow(Arrow& arrow, Grid::Square& square);
+    void clearWall(Grid::Square& square);
     
     const List& getPlayers() const;
     const List& getDroppingObjects() const;
@@ -78,6 +82,7 @@ public:
     bool isValidDrop(const Grid::Square& square) const;
     bool checkProbability(int probability) const;
     unsigned int getTick() const;
+    char getKey() const;
 };
 
 #endif

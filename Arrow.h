@@ -3,29 +3,26 @@
 
 #include "MovingObject.h"
 
-class Game;
-
-class Arrow
+class Arrow: public MovingObject
 {
+public:
+    ~Arrow();
+
+    void setSquare(Grid::Square& square);
+    void update();
+
+    bool getHit() const;
+
+protected:
     enum {
         MOVE_INTERVAL = 1
     };
 
-    Grid::Square* pSquare;
-    Direction direction;
+    Arrow(); // Make the class abstract
+
     bool hit;
 
-    void setSquare(Grid::Square& square);
-    bool checkHit();
-
-public:
-    Arrow(Player& shooter, Grid::Square& square);
-    ~Arrow();
-
-    void update(Game& game);
-
-    void draw() const;
-    bool getHit() const;
+    virtual bool checkHit();
 };
 
 #endif

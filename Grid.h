@@ -36,12 +36,14 @@ public:
         void setDroppingObject(DroppingObject& droppingObject);
         void unsetDroppingObject();
         void setWall(Wall& wall);
+        void unsetWall();
 
         void clear() const;
         void draw(char ch, Color color = SILVER) const;
         double getDistance(const Square& otherSquare) const;
         Direction getDirection(const Square& otherSquare) const;
         DroppingObject& getDroppingObject() const;
+        Wall& getWall() const;
         const List& getPlayers() const;
         bool hasDroppingObject() const;
         bool hasWall() const;

@@ -3,52 +3,63 @@
 
 #include "MovingObject.h"
 
-class Game;
+class Arrow;
 
-class Player
+class Player: public MovingObject
 {
+public:
+    class ArrowsBag
+    {
+        int remaining[3];
+    public:
+        enum Type {
+            REGULAR,
+            EXPLODING,
+            PENETRATING
+        };
+        ArrowsBag();
+        Arrow* getArrow(Type type);
+        bool isEmpty() const;
+        int getRemaining(Type type) const;
+        Type getAvailableType() const;
+        ArrowsBag& operator+=(int amount);
+        ArrowsBag& operator++();
+        friend class Player;
+    };
+
+protected:
     enum {
         INITIAL_POWER                   = 1000,
-        INITIAL_NUM_ARROWS              = 4,
+        INITIAL_NUM_REGULAR_ARROWS      = 2,
+        INITIAL_NUM_EXPLODING_ARROWS    = 1,
+        INITIAL_NUM_PENETRATING_ARROWS  = 1,
         MIN_TICKS_BETWEEN_ARROWS        = 3,
         SHOOT_ARROW_PROBABILITY         = 20,
         CHANGE_DIRECTION_PROBABILITY    = 10,
         MOVE_INTERVAL                   = 2
     };
 
-    Grid::Square* pSquare;
-    Direction direction;
+    Player(char name); // Make class abstract
+
     char name;
     int power;
-    int remainingArrows;
+    ArrowsBag arrowsBag;
     unsigned int lastArrowTick;
 
-    void setSquare(Grid::Square& square);
     void fight(Player& opponent);
-    void setRandomDirection();
-    void shootArrow(Game& game);
-    Grid::Square& getNextMove(const Game& game);
-
-    DroppingObject* findClosestObject(const List& objects) const;
-    bool checkWallsInPath(const Grid& grid, const Grid::Square& target) const;
-    bool hasPlayersInRange(const List& players) const;
-    bool playerInRange(const Player& opponent) const;
-    void stepOut() const;
+    void shootArrow(ArrowsBag::Type type);
+    void shootArrow();
 
 public:
-    Player(char name, Grid::Square& square, int power = INITIAL_POWER, Direction direction = RIGHT);
     ~Player();
 
-    void update(Game& game);
+    void setSquare(Grid::Square& square);
     void increasePower(int amount);
     void decreasePower(int amount);
-    void addArrows(int amount);
+    ArrowsBag& getArrowsBag();
 
     char getName() const;
     int getPower() const;
-    int getRemainingArrows() const;
-    Direction getDirection() const;
-    const Grid::Square& getSquare() const;
     void draw() const;
 };
 

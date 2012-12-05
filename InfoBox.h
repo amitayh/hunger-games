@@ -1,17 +1,16 @@
 #ifndef _INFO_BOX_H
 #define _INFO_BOX_H
 
-#include "Grid.h"
+#include "Object.h"
 #include "Dimensions.h"
 
-class InfoBox
+class InfoBox: public Object
 {
     enum {
         WIDTH = 10,
         HEIGHT = 5
     };
 
-    Grid::Square* pSquare;
     Dimensions size;
 
 public:
@@ -19,8 +18,7 @@ public:
 
     void setSquare(Grid::Square& square);
 
-    void draw(const List& players) const;
-    const Dimensions& getSize() const;
+    void draw() const;
     bool inArea(const Grid::Square& square) const;
 };
 

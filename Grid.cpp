@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include "Player.h"
 #include "DroppingObject.h"
+#include "Wall.h"
 #include "Gotoxy.h"
 #include <iostream>
 
@@ -70,7 +71,10 @@ void Grid::Square::stepOut(const Player& player) {
     // The List::find() method performs a linear search (O(n) efficiency), however
     // in most cases the list will not contain more than one player
     List::Node* node = players.find(&player);
-    players.remove(node);
+    if (node) {
+        players.remove(node);
+        clear();
+    }
 }
 
 void Grid::Square::initPosition(int row, int col) {
@@ -90,6 +94,10 @@ void Grid::Square::setWall(Wall& wall) {
     pWall = &wall;
 }
 
+void Grid::Square::unsetWall() {
+    pWall = NULL;
+}
+
 const List& Grid::Square::getPlayers() const {
     return players;
 }
@@ -98,10 +106,17 @@ DroppingObject& Grid::Square::getDroppingObject() const {
     return *pDroppingObject;
 }
 
+Wall& Grid::Square::getWall() const {
+    return *pWall;
+}
+
 void Grid::Square::clear() const {
     if (pDroppingObject) {
         // Draw dropping object
         pDroppingObject->draw();
+    } else if (pWall) {
+        // Draw wall
+        pWall->draw();
     } else {
         // Blank square
         draw(' ');

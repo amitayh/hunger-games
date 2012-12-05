@@ -1,4 +1,4 @@
-﻿#include "Game.h"
+#include "Game.h"
 #include "MapLoader.h"
 
 int main(int argc, char **argv) {
