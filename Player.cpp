@@ -9,9 +9,6 @@ Player::Player(char name) {
     this->name = name;
     power = INITIAL_POWER;
     direction = RIGHT;
-    arrowsBag.remaining[ArrowsBag::REGULAR] = INITIAL_NUM_REGULAR_ARROWS;
-    arrowsBag.remaining[ArrowsBag::EXPLODING] = INITIAL_NUM_EXPLODING_ARROWS;
-    arrowsBag.remaining[ArrowsBag::PENETRATING] = INITIAL_NUM_PENETRATING_ARROWS;
     lastArrowTick = 0;
 }
 
@@ -48,7 +45,6 @@ void Player::setSquare(Grid::Square& square) {
 void Player::shootArrow(ArrowsBag::Type type) {
     Grid::Square& arrowSquare = getNextSquare();
     if (
-        !arrowSquare.hasWall() &&                                   // Don't shoot directly at a wall
         arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
         pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
@@ -104,10 +100,16 @@ void Player::draw() const {
     pSquare->draw(name, CYAN);
 }
 
+ostream& operator<<(ostream& out, const Player& player) {
+    return cout << player.power << player.arrowsBag;
+}
+
 // Player arrows bag
 
 Player::ArrowsBag::ArrowsBag() {
-    remaining[REGULAR] = remaining[EXPLODING] = remaining[PENETRATING] = 0;
+    remaining[REGULAR] = INITIAL_NUM_REGULAR;
+    remaining[EXPLODING] = INITIAL_NUM_EXPLODING;
+    remaining[PENETRATING] = INITIAL_NUM_PENETRATING;
 }
 
 bool Player::ArrowsBag::isEmpty() const {
@@ -169,4 +171,14 @@ Player::ArrowsBag& Player::ArrowsBag::operator+=(int amount) {
 Player::ArrowsBag& Player::ArrowsBag::operator++() {
     // Add one arrow of each type
     return (*this += 1);
+}
+
+ostream& operator<<(ostream& out, const Player::ArrowsBag& arrowsBag) {
+    printf(
+        "%2d%2d%2d",
+        arrowsBag.remaining[Player::ArrowsBag::REGULAR],
+        arrowsBag.remaining[Player::ArrowsBag::EXPLODING],
+        arrowsBag.remaining[Player::ArrowsBag::PENETRATING]
+    );
+    return out;
 }

@@ -2,6 +2,9 @@
 #define _PLAYER_H
 
 #include "MovingObject.h"
+#include <ostream>
+
+using namespace std;
 
 class Arrow;
 
@@ -12,6 +15,11 @@ public:
     {
         int remaining[3];
     public:
+        enum {
+            INITIAL_NUM_REGULAR     = 2,
+            INITIAL_NUM_EXPLODING   = 1,
+            INITIAL_NUM_PENETRATING = 1,
+        };
         enum Type {
             REGULAR,
             EXPLODING,
@@ -24,15 +32,13 @@ public:
         Type getAvailableType() const;
         ArrowsBag& operator+=(int amount);
         ArrowsBag& operator++();
+        friend ostream& operator<<(ostream& out, const ArrowsBag& arrowsBag);
         friend class Player;
     };
 
 protected:
     enum {
         INITIAL_POWER                   = 1000,
-        INITIAL_NUM_REGULAR_ARROWS      = 2,
-        INITIAL_NUM_EXPLODING_ARROWS    = 1,
-        INITIAL_NUM_PENETRATING_ARROWS  = 1,
         MIN_TICKS_BETWEEN_ARROWS        = 3,
         SHOOT_ARROW_PROBABILITY         = 20,
         CHANGE_DIRECTION_PROBABILITY    = 10,
@@ -61,6 +67,8 @@ public:
     char getName() const;
     int getPower() const;
     void draw() const;
+
+    friend ostream& operator<<(ostream& out, const Player& player);
 };
 
 #endif
