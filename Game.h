@@ -52,10 +52,7 @@ class Game
     void endGame(Player* winner = NULL);
     void showMenu();
     void draw();
-    void drawPlayers();
-    void drawArrows();
-    void drawDroppingObjects();
-    void drawWalls();
+    void draw(ObjectsList& list);
 
 public:
     Game();

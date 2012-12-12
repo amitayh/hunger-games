@@ -110,7 +110,7 @@ bool Game::checkProbability(int probability) const {
 void Game::run() {
     status = RUNNING;
     clrscr();
-    drawWalls();
+    draw(walls);
     loop();
 }
 
@@ -121,8 +121,8 @@ void Game::pause() {
 void Game::resume() {
     status = RUNNING;
     clrscr();
-    drawWalls();
-    drawDroppingObjects();
+    draw(walls);
+    draw(droppingObjects);
     draw();
 }
 
@@ -225,39 +225,15 @@ void Game::updateDroppingObjects() {
 
 void Game::draw() {
     // Draw updating objects
-    drawArrows();
-    drawPlayers();
+    draw(arrows);
+    draw(players);
     infoBox.draw();
     gotoxy(grid.getCols(), grid.getRows()); // Hide cursor from main window
 }
 
-void Game::drawArrows() {
-    ObjectsIterator it = arrows.begin();
-    while (it != arrows.end()) {
-        (*it)->draw();
-        it++;
-    }
-}
-
-void Game::drawPlayers() {
-    ObjectsIterator it = players.begin();
-    while (it != players.end()) {
-        (*it)->draw();
-        it++;
-    }
-}
-
-void Game::drawDroppingObjects() {
-    ObjectsIterator it = droppingObjects.begin();
-    while (it != droppingObjects.end()) {
-        (*it)->draw();
-        it++;
-    }
-}
-
-void Game::drawWalls() {
-    ObjectsIterator it = walls.begin();
-    while (it != walls.end()) {
+void Game::draw(ObjectsList& list) {
+    ObjectsIterator it = list.begin();
+    while (it != list.end()) {
         (*it)->draw();
         it++;
     }
