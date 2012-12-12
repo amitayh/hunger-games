@@ -1,8 +1,10 @@
 #ifndef _GRID_H
 #define _GRID_H
 
-#include "List.h"
 #include "Console.h"
+#include <list>
+
+using namespace std;
 
 const double PI = 3.141592653589793;
 
@@ -11,6 +13,8 @@ class Player;
 class DroppingObject;
 class Wall;
 enum Direction;
+typedef list<Player*> PlayersList;
+typedef PlayersList::iterator PlayersIterator;
 
 class Grid
 {
@@ -23,20 +27,21 @@ public:
     class Square
     {
         int row, col;
-        List players;
+        PlayersList players;
         DroppingObject* pDroppingObject;
         Wall* pWall;
 
     public:
         Square();
 
-        void stepIn(const Player& player);
-        void stepOut(const Player& player);
+        void stepIn(Player& player);
+        void stepOut(Player& player);
         void initPosition(int row, int col);
         void setDroppingObject(DroppingObject& droppingObject);
         void unsetDroppingObject();
         void setWall(Wall& wall);
         void unsetWall();
+        PlayersList& getPlayers();
 
         void clear() const;
         void draw(char ch, Color color = SILVER) const;
@@ -44,7 +49,6 @@ public:
         Direction getDirection(const Square& otherSquare) const;
         DroppingObject& getDroppingObject() const;
         Wall& getWall() const;
-        const List& getPlayers() const;
         bool hasDroppingObject() const;
         bool hasWall() const;
         bool isEmpty() const;

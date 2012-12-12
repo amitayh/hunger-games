@@ -7,6 +7,7 @@
 #include "Menu.h"
 #include "DroppingObject.h"
 #include "Gotoxy.h"
+#include "List.h"
 #include <iostream>
 
 using namespace std;
