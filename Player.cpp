@@ -101,7 +101,8 @@ void Player::draw() const {
 }
 
 ostream& operator<<(ostream& out, const Player& player) {
-    return cout << player.power << player.arrowsBag;
+    printf("%4d", player.power);
+    return cout << player.arrowsBag;
 }
 
 // Player arrows bag
