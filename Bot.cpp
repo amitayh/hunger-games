@@ -16,7 +16,7 @@ void Bot::update() {
             hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
         ) {
             // Shoot an arrow if conditions are met
-            shootArrow();
+            shootArrow(arrowsBag.getAvailableRandomType());
         }
     }
 }
