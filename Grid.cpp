@@ -63,18 +63,13 @@ Grid::Square::Square() {
     pWall = NULL;
 }
 
-void Grid::Square::stepIn(const Player& player) {
-    players.push(&player);
+void Grid::Square::stepIn(Player& player) {
+    players.push_back(&player);
 }
 
-void Grid::Square::stepOut(const Player& player) {
-    // The List::find() method performs a linear search (O(n) efficiency), however
-    // in most cases the list will not contain more than one player
-    List::Node* node = players.find(&player);
-    if (node) {
-        players.remove(node);
-        clear();
-    }
+void Grid::Square::stepOut(Player& player) {
+    players.remove(&player);
+    clear();
 }
 
 void Grid::Square::initPosition(int row, int col) {
@@ -98,7 +93,7 @@ void Grid::Square::unsetWall() {
     pWall = NULL;
 }
 
-const List& Grid::Square::getPlayers() const {
+ObjectsList& Grid::Square::getPlayers() {
     return players;
 }
 
@@ -179,7 +174,7 @@ Direction Grid::Square::getDirection(const Square& otherSquare) const {
 
 bool Grid::Square::isEmpty() const {
     // Check if square is not occupied by a dropping object, a wall, or a player
-    return (!pDroppingObject && !pWall && players.isEmpty());
+    return (!pDroppingObject && !pWall && players.empty());
 }
 
 int Grid::Square::getRow() const {

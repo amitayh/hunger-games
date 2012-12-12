@@ -28,7 +28,8 @@ void InfoBox::setSquare(Grid::Square& square) {
 }
 
 void InfoBox::draw() const {
-    List::Iterator it(pGame->getPlayers());
+    ObjectsList& players = pGame->getPlayers();
+    ObjectsIterator it = players.begin();
     int row = pSquare->getRow(),
         col = pSquare->getCol(),
         height = size.getHeight();
@@ -42,11 +43,11 @@ void InfoBox::draw() const {
 
     for (int i = 2; i < height; i++) {
         gotoxy(col, row + i);
-        if (!it.done()) {
+        if (it != players.end()) {
             // Print player info
-            List::Node* node = it.getCurrent();
-            Player* player = (Player*) node->getData();
+            Player* player = (Player*) *it;
             cout << *player;
+            it++;
         } else {
             // Print empty line
             cout << "          ";

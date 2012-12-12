@@ -24,14 +24,14 @@ void Player::setSquare(Grid::Square& square) {
         droppingObject.affect(*this);
     }
 
-    const List& players = square.getPlayers();
-    if (!players.isEmpty()) {
+    ObjectsList& players = square.getPlayers();
+    if (!players.empty()) {
         // Fight other players on square
-        List::Iterator it(players);
-        while (power > 0 && !it.done()) {
-            List::Node* node = it.getCurrent();
-            Player* player = (Player*) node->getData();
+        ObjectsIterator it = players.begin();
+        while (it != players.end()) {
+            Player* player = (Player*) *it;
             fight(*player);
+            it++;
         }
     }
 
