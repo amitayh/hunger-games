@@ -1,6 +1,5 @@
 #include "Menu.h"
 #include "Console.h"
-#include "Gotoxy.h"
 #include <iostream>
 #include <conio.h>
 
@@ -27,9 +26,9 @@ int Menu::addOption(const char* option) {
 }
 
 void Menu::show() const {
-    clrscr();
-    gotoxy(0, 0);
-    changeColor(SILVER);
+    Console::clear();
+    Console::gotoPosition(0, 0);
+    Console::changeColor(Console::SILVER);
 
     cout << "Choose an option" << endl;
     cout << "----------------" << endl;

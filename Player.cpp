@@ -97,7 +97,7 @@ Player::ArrowsBag& Player::getArrowsBag() {
 }
 
 void Player::draw() const {
-    pSquare->draw(name, CYAN);
+    pSquare->draw(name, Console::CYAN);
 }
 
 ostream& operator<<(ostream& out, const Player& player) {

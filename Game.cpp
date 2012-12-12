@@ -7,6 +7,7 @@
 #include "Food.h"
 #include "Quiver.h"
 #include "Bomb.h"
+#include <windows.h>
 #include <time.h>
 #include <conio.h>
 
@@ -109,7 +110,7 @@ bool Game::checkProbability(int probability) const {
 
 void Game::run() {
     status = RUNNING;
-    clrscr();
+    Console::clear();
     draw(walls);
     loop();
 }
@@ -120,7 +121,7 @@ void Game::pause() {
 
 void Game::resume() {
     status = RUNNING;
-    clrscr();
+    Console::clear();
     draw(walls);
     draw(droppingObjects);
     draw();
@@ -128,9 +129,9 @@ void Game::resume() {
 
 void Game::endGame(Player* winner) {
     status = ENDED;
-    clrscr();
-    gotoxy(0, 0);
-    changeColor(SILVER);
+    Console::clear();
+    Console::gotoPosition(0, 0);
+    Console::changeColor(Console::SILVER);
     cout << "Game over";
     if (winner) {
         // Print winner's name
@@ -228,7 +229,7 @@ void Game::draw() {
     draw(arrows);
     draw(players);
     infoBox.draw();
-    gotoxy(grid.getCols(), grid.getRows()); // Hide cursor from main window
+    Console::gotoPosition(grid.getRows(), grid.getCols()); // Hide cursor from main window
 }
 
 void Game::draw(ObjectsList& list) {

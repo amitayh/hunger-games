@@ -1,7 +1,6 @@
 #include "InfoBox.h"
 #include "Game.h"
 #include "Player.h"
-#include "Gotoxy.h"
 #include <iostream>
 
 using namespace std;
@@ -34,15 +33,15 @@ void InfoBox::draw() const {
         col = pSquare->getCol(),
         height = size.getHeight();
 
-    changeColor(SILVER);
+    Console::changeColor(Console::SILVER);
     
-    gotoxy(col, row);
+    Console::gotoPosition(row, col);
     cout << "HP   > * -";
-    gotoxy(col, row + 1);
+    Console::gotoPosition(row + 1, col);
     cout << "----------";
 
     for (int i = 2; i < height; i++) {
-        gotoxy(col, row + i);
+        Console::gotoPosition(row + i, col);
         if (it != players.end()) {
             // Print player info
             Player* player = (Player*) *it;

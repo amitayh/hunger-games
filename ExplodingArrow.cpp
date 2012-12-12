@@ -10,5 +10,5 @@ bool ExplodingArrow::checkHit() {
 }
 
 void ExplodingArrow::draw() const {
-    pSquare->draw('*', WHITE);
+    pSquare->draw('*', Console::WHITE);
 }

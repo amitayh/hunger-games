@@ -6,5 +6,5 @@ void Wall::setSquare(Grid::Square& square) {
 }
 
 void Wall::draw() const {
-    pSquare->draw('#', GREY);
+    pSquare->draw('#', Console::GREY);
 }

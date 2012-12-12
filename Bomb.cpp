@@ -10,5 +10,5 @@ void Bomb::affect(Player& player) {
 }
 
 void Bomb::draw() const {
-    pSquare->draw('@', RED);
+    pSquare->draw('@', Console::RED);
 }

@@ -2,7 +2,6 @@
 #include "Player.h"
 #include "DroppingObject.h"
 #include "Wall.h"
-#include "Gotoxy.h"
 #include <iostream>
 
 using namespace std;
@@ -126,10 +125,10 @@ bool Grid::Square::hasWall() const {
     return (pWall != NULL);
 }
 
-void Grid::Square::draw(char ch, Color color) const {
+void Grid::Square::draw(char ch, Console::Color color) const {
     // Draw a single character on square
-    gotoxy(col, row);
-    changeColor(color);
+    Console::gotoPosition(row, col);
+    Console::changeColor(color);
     cout << ch;
 }
 

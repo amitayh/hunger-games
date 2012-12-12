@@ -6,7 +6,6 @@
 #include "InfoBox.h"
 #include "Menu.h"
 #include "DroppingObject.h"
-#include "Gotoxy.h"
 #include <iostream>
 
 using namespace std;

@@ -10,5 +10,5 @@ void Food::affect(Player& player) {
 }
 
 void Food::draw() const {
-    pSquare->draw('$', LIME);
+    pSquare->draw('$', Console::LIME);
 }

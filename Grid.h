@@ -45,7 +45,7 @@ public:
         ObjectsList& getPlayers();
 
         void clear() const;
-        void draw(char ch, Color color = SILVER) const;
+        void draw(char ch, Console::Color color = Console::SILVER) const;
         double getDistance(const Square& otherSquare) const;
         Direction getDirection(const Square& otherSquare) const;
         DroppingObject& getDroppingObject() const;

@@ -10,5 +10,5 @@ void Quiver::affect(Player& player) {
 }
 
 void Quiver::draw() const {
-    pSquare->draw('*', YELLOW);
+    pSquare->draw('*', Console::YELLOW);
 }

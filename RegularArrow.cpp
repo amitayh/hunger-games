@@ -23,5 +23,5 @@ void RegularArrow::draw() const {
             ch = '>';
             break;
     }
-    pSquare->draw(ch, WHITE);
+    pSquare->draw(ch, Console::WHITE);
 }
