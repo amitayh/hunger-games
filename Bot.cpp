@@ -43,14 +43,14 @@ Grid::Square& Bot::getNextMove() {
 }
 
 DroppingObject* Bot::findClosestObject() const {
+    ObjectsList& droppingObjects = pGame->getDroppingObjects();
     DroppingObject* closest = NULL;
-    if (!pGame->getDroppingObjects().isEmpty()) {
+    if (!droppingObjects.empty()) {
         double closestDistance = 0;
-        List::Iterator it(pGame->getDroppingObjects());
-        while (!it.done()) {
+        ObjectsIterator it = droppingObjects.begin();
+        while (it != droppingObjects.end()) {
             // Iterate over the objects list
-            List::Node* node = it.getCurrent();
-            DroppingObject* current = (DroppingObject*) node->getData();
+            DroppingObject* current = (DroppingObject*) *it;
             if (current->getType() != DroppingObject::Type::BOMB) {
                 // Don't go for the bombs!
                 double distance = pSquare->getDistance(current->getSquare());
@@ -60,6 +60,7 @@ DroppingObject* Bot::findClosestObject() const {
                     closest = current;
                 }
             }
+            it++;
         }
     }
     return closest;
@@ -99,16 +100,17 @@ void Bot::setRandomDirection() {
 }
 
 bool Bot::hasPlayersInRange() const {
-    List::Iterator it(pGame->getPlayers());
+    ObjectsList& players = pGame->getPlayers();
+    ObjectsIterator it = players.begin();
     bool inRange = false;
-    while (!inRange && !it.done()) {
+    while (!inRange && it != players.end()) {
         // Iterate over the players list
-        List::Node* node = it.getCurrent();
-        Player* player = (Player*) node->getData();
+        Player* player = (Player*) *it;
         if (player != this) {
             // Check if opponent may be hit if an arrow will be shot
             inRange = playerInRange(*player);
         }
+        it++;
     }
     return inRange;
 }

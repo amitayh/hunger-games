@@ -9,12 +9,13 @@ using namespace std;
 const double PI = 3.141592653589793;
 
 // Pseudo declarations to enable compilation
+class Object;
 class Player;
 class DroppingObject;
 class Wall;
 enum Direction;
-typedef list<Player*> PlayersList;
-typedef PlayersList::iterator PlayersIterator;
+typedef list<Object*> ObjectsList;
+typedef ObjectsList::iterator ObjectsIterator;
 
 class Grid
 {
@@ -27,7 +28,7 @@ public:
     class Square
     {
         int row, col;
-        PlayersList players;
+        ObjectsList players;
         DroppingObject* pDroppingObject;
         Wall* pWall;
 
@@ -41,7 +42,7 @@ public:
         void unsetDroppingObject();
         void setWall(Wall& wall);
         void unsetWall();
-        PlayersList& getPlayers();
+        ObjectsList& getPlayers();
 
         void clear() const;
         void draw(char ch, Color color = SILVER) const;

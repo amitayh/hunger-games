@@ -7,7 +7,6 @@
 #include "Menu.h"
 #include "DroppingObject.h"
 #include "Gotoxy.h"
-#include "List.h"
 #include <iostream>
 
 using namespace std;
@@ -35,10 +34,10 @@ class Game
     int menuResume, menuQuit;
     Status status;
     Grid grid;
-    List walls;
-    List players;
-    List arrows;
-    List droppingObjects;
+    ObjectsList walls;
+    ObjectsList players;
+    ObjectsList arrows;
+    ObjectsList droppingObjects;
     InfoBox infoBox;
     Menu menu;
     char key;
@@ -49,15 +48,14 @@ class Game
     void updateArrows();
     void updateDroppingObjects();
     void dropObjects();
-    void addObject(Object* object, Grid::Square& square, List& list);
-    void endGame(const Player* winner = NULL);
+    void addObject(Object* object, Grid::Square& square, ObjectsList& list);
+    void endGame(Player* winner = NULL);
     void showMenu();
-
-    void draw() const;
-    void drawPlayers() const;
-    void drawArrows() const;
-    void drawDroppingObjects() const;
-    void drawWalls() const;
+    void draw();
+    void drawPlayers();
+    void drawArrows();
+    void drawDroppingObjects();
+    void drawWalls();
 
 public:
     Game();
@@ -74,13 +72,13 @@ public:
     void addInfoBox(int row, int col);
     void addArrow(Arrow& arrow, Grid::Square& square);
     void clearWall(Grid::Square& square);
-    
-    const List& getPlayers() const;
-    const List& getDroppingObjects() const;
+    ObjectsList& getPlayers();
+    ObjectsList& getDroppingObjects();
+    Grid::Square& getValidDropSquare();
+    bool isValidDrop(int row, int col);
+    bool isValidDrop(const Grid::Square& square);
+
     const Grid& getGrid() const;
-    Grid::Square& getValidDropSquare() const;
-    bool isValidDrop(int row, int col) const;
-    bool isValidDrop(const Grid::Square& square) const;
     bool checkProbability(int probability) const;
     unsigned int getTick() const;
     char getKey() const;
