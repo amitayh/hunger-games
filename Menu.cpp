@@ -5,24 +5,9 @@
 
 using namespace std;
 
-Menu::Menu() {
-    numOptions = 0;
-}
-
-Menu::~Menu() {
-    for (int i = 0; i < numOptions; i++) {
-        delete []options[i];
-    }
-}
-
 int Menu::addOption(const char* option) {
-    if (numOptions < MAX_OPTIONS) {
-        // Add the option and return its number
-        options[numOptions] = strdup(option);
-        numOptions++;
-        return numOptions;
-    }
-    return 0;
+    options.push_back(option);
+    return options.size();
 }
 
 void Menu::show() const {
@@ -34,6 +19,7 @@ void Menu::show() const {
     cout << "----------------" << endl;
     
     // Print options
+    int numOptions = options.size();
     for (int i = 0; i < numOptions; i++) {
         cout << (i + 1) << ". " << options[i] << endl;
     }
@@ -42,7 +28,7 @@ void Menu::show() const {
 int Menu::choose() const {
     show();
 
-    int option;
+    int numOptions = options.size(), option;
     do {
         // Get a valid input from user
         option = getch() - '0';

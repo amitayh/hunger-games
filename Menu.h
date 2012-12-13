@@ -1,17 +1,15 @@
 #ifndef _MENU_H
 #define _MENU_H
 
-const int MAX_OPTIONS = 5;
+#include <vector>
+
+using namespace std;
 
 class Menu
 {
-    char* options[MAX_OPTIONS];
-    int numOptions;
+    vector<const char*> options;
 
 public:
-    Menu();
-    ~Menu();
-
     int addOption(const char* option);
 
     void show() const;
