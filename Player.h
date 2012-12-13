@@ -15,11 +15,9 @@ public:
     {
         int remaining[3];
     public:
-        enum {
-            INITIAL_NUM_REGULAR     = 2,
-            INITIAL_NUM_EXPLODING   = 1,
-            INITIAL_NUM_PENETRATING = 1,
-        };
+        static const int INITIAL_NUM_REGULAR;
+        static const int INITIAL_NUM_EXPLODING;
+        static const int INITIAL_NUM_PENETRATING;
         enum Type {
             REGULAR,
             EXPLODING,
@@ -38,25 +36,23 @@ public:
 
     ~Player();
 
-    void setSquare(Grid::Square& square);
+    virtual void setSquare(Grid::Square& square);
     void increasePower(int amount);
     void decreasePower(int amount);
     ArrowsBag& getArrowsBag();
 
     char getName() const;
     int getPower() const;
-    void draw() const;
+    virtual void draw() const;
 
     friend ostream& operator<<(ostream& out, const Player& player);
 
 protected:
-    enum {
-        INITIAL_POWER                   = 1000,
-        MIN_TICKS_BETWEEN_ARROWS        = 3,
-        SHOOT_ARROW_PROBABILITY         = 20,
-        CHANGE_DIRECTION_PROBABILITY    = 10,
-        MOVE_INTERVAL                   = 2
-    };
+    static const int INITIAL_POWER;
+    static const int MIN_TICKS_BETWEEN_ARROWS;
+    static const int SHOOT_ARROW_PROBABILITY;
+    static const int CHANGE_DIRECTION_PROBABILITY;
+    static const int MOVE_INTERVAL;
 
     Player(char name); // Make class abstract
 
@@ -66,7 +62,7 @@ protected:
     unsigned int lastArrowTick;
 
     void fight(Player& opponent);
-    void shootArrow(ArrowsBag::Type type);
+    bool shootArrow(ArrowsBag::Type type);
 };
 
 #endif

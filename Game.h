@@ -10,17 +10,14 @@
 
 using namespace std;
 
-const int ESCAPSE_KEY = 27;
-
 class Game
 {
-    enum {
-        FRAMES_PER_SECOND           = 25,
-        DROP_FOOD_PROBABILITY       = 2,
-        DROP_QUIVER_PROBABILITY     = 2,
-        DROP_BOMB_PROBABILITY       = 1,
-        MIN_DISTANCE_FROM_PLAYERS   = 2
-    };
+    static const int ESCAPSE_KEY;
+    static const int FRAMES_PER_SECOND;
+    static const int DROP_FOOD_PROBABILITY;
+    static const int DROP_QUIVER_PROBABILITY;
+    static const int DROP_BOMB_PROBABILITY;
+    static const int MIN_DISTANCE_FROM_PLAYERS;
 
     enum Status {
         PENDING,

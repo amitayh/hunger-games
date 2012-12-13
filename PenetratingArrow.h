@@ -6,7 +6,7 @@
 class PenetratingArrow: public Arrow
 {
 public:
-    void draw() const;
+    virtual void draw() const;
 };
 
 #endif

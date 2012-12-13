@@ -11,6 +11,13 @@
 #include <time.h>
 #include <conio.h>
 
+const int Game::ESCAPSE_KEY                 = 27;
+const int Game::FRAMES_PER_SECOND           = 25;
+const int Game::DROP_FOOD_PROBABILITY       = 2;
+const int Game::DROP_QUIVER_PROBABILITY     = 2;
+const int Game::DROP_BOMB_PROBABILITY       = 1;
+const int Game::MIN_DISTANCE_FROM_PLAYERS   = 2;
+
 Game::Game() {
     // Initialize random number generator
     srand((unsigned int) time(NULL));
@@ -25,12 +32,6 @@ Game::Game() {
 }
 
 Game::~Game() {
-    // Delete walls
-    ObjectsIterator wall = walls.begin();
-    while (wall != walls.end()) {
-        delete *wall;
-        wall = walls.erase(wall);
-    }
     // Delete players
     ObjectsIterator player = players.begin();
     while (player != players.end()) {
@@ -48,6 +49,12 @@ Game::~Game() {
     while (droppingObject != droppingObjects.end()) {
         delete *droppingObject;
         droppingObject = droppingObjects.erase(droppingObject);
+    }
+    // Delete walls
+    ObjectsIterator wall = walls.begin();
+    while (wall != walls.end()) {
+        delete *wall;
+        wall = walls.erase(wall);
     }
 }
 

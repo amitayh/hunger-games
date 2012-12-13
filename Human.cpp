@@ -1,6 +1,15 @@
 #include "Human.h"
 #include "Game.h"
 
+const char Human::DISPLAY_NAME                = 'H';
+const char Human::KEY_LEFT                    = 'A';
+const char Human::KEY_RIGHT                   = 'D';
+const char Human::KEY_UP                      = 'W';
+const char Human::KEY_DOWN                    = 'S';
+const char Human::KEY_SHOOT_REGULAR_ARROW     = 'P';
+const char Human::KEY_SHOOT_EXPLODING_ARROW   = 'I';
+const char Human::KEY_SHOOT_PENETRATING_ARROW = 'O';
+
 Human::Human(): Player(DISPLAY_NAME) {}
 
 void Human::update() {

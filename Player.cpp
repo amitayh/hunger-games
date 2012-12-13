@@ -6,6 +6,12 @@
 #include "PenetratingArrow.h"
 #include <exception>
 
+const int Player::INITIAL_POWER                   = 1000;
+const int Player::MIN_TICKS_BETWEEN_ARROWS        = 3;
+const int Player::SHOOT_ARROW_PROBABILITY         = 20;
+const int Player::CHANGE_DIRECTION_PROBABILITY    = 10;
+const int Player::MOVE_INTERVAL                   = 2;
+
 Player::Player(char name) {
     this->name = name;
     power = INITIAL_POWER;
@@ -43,7 +49,7 @@ void Player::setSquare(Grid::Square& square) {
     pSquare = &square;
 }
 
-void Player::shootArrow(ArrowsBag::Type type) {
+bool Player::shootArrow(ArrowsBag::Type type) {
     Grid::Square& square = getNextSquare();
     if (
         arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
@@ -53,7 +59,9 @@ void Player::shootArrow(ArrowsBag::Type type) {
         arrow->setDirection(direction);
         pGame->addArrow(*arrow, square); // Update game
         lastArrowTick = pGame->getTick();
+        return true;
     }
+    return false;
 }
 
 void Player::fight(Player& opponent) {
@@ -102,6 +110,10 @@ ostream& operator<<(ostream& out, const Player& player) {
 }
 
 // Player arrows bag
+
+const int Player::ArrowsBag::INITIAL_NUM_REGULAR        = 2;
+const int Player::ArrowsBag::INITIAL_NUM_EXPLODING      = 1;
+const int Player::ArrowsBag::INITIAL_NUM_PENETRATING    = 1;
 
 Player::ArrowsBag::ArrowsBag() {
     remaining[REGULAR] = INITIAL_NUM_REGULAR;

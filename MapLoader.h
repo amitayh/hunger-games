@@ -5,14 +5,12 @@
 
 class MapLoader
 {
-    enum {
-        CHAR_WALL       = 'W',
-        CHAR_BOT        = 'P',
-        CHAR_HUMAN      = 'H',
-        CHAR_INFO_BOX   = 'O',
-        MIN_NUM_PLAYERS = 2,
-        MAX_NUM_PLAYERS = 3
-    };
+    static const char CHAR_WALL;
+    static const char CHAR_BOT;
+    static const char CHAR_HUMAN;
+    static const char CHAR_INFO_BOX;
+    static const int MIN_NUM_PLAYERS;
+    static const int MAX_NUM_PLAYERS;
 
     Game* pGame;
 

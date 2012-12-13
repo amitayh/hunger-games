@@ -6,10 +6,10 @@
 class ExplodingArrow: public Arrow
 {
 public:
-    void draw() const;
+    virtual void draw() const;
 
 protected:
-    bool checkHit();
+    virtual bool checkHit();
 };
 
 #endif

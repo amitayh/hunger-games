@@ -6,19 +6,17 @@
 
 class InfoBox: public Object
 {
-    enum {
-        WIDTH = 10,
-        HEIGHT = 5
-    };
+    static const int WIDTH;
+    static const int HEIGHT;
 
     Dimensions size;
 
 public:
     InfoBox();
 
-    void setSquare(Grid::Square& square);
+    virtual void setSquare(Grid::Square& square);
 
-    void draw() const;
+    virtual void draw() const;
     bool inArea(const Grid::Square& square) const;
 };
 

@@ -6,9 +6,9 @@
 class Wall: public Object 
 {
 public:
-    void setSquare(Grid::Square& square);
+    virtual void setSquare(Grid::Square& square);
 
-    void draw() const;
+    virtual void draw() const;
 };
 
 #endif

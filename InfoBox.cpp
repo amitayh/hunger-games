@@ -5,6 +5,9 @@
 
 using namespace std;
 
+const int InfoBox::WIDTH    = 10;
+const int InfoBox::HEIGHT   = 5;
+
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
 void InfoBox::setSquare(Grid::Square& square) {

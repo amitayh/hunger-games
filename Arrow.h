@@ -8,15 +8,13 @@ class Arrow: public MovingObject
 public:
     ~Arrow();
 
-    void setSquare(Grid::Square& square);
-    void update();
+    virtual void setSquare(Grid::Square& square);
+    virtual void update();
 
     bool getHit() const;
 
 protected:
-    enum {
-        MOVE_INTERVAL = 1
-    };
+    static const int MOVE_INTERVAL;
 
     Arrow(); // Make the class abstract
 

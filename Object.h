@@ -9,6 +9,7 @@ class Object
 {
 public:
     Object();
+    virtual ~Object() {};
 
     void setGame(Game& game);
     virtual void setSquare(Grid::Square& square);

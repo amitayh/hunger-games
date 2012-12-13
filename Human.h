@@ -5,23 +5,21 @@
 
 class Human: public Player
 {
-    enum {
-        DISPLAY_NAME                = 'H',
-        KEY_LEFT                    = 'A',
-        KEY_RIGHT                   = 'D',
-        KEY_UP                      = 'W',
-        KEY_DOWN                    = 'S',
-        KEY_SHOOT_REGULAR_ARROW     = 'P',
-        KEY_SHOOT_EXPLODING_ARROW   = 'I',
-        KEY_SHOOT_PENETRATING_ARROW = 'O'
-    };
+    static const char DISPLAY_NAME;
+    static const char KEY_LEFT;
+    static const char KEY_RIGHT;
+    static const char KEY_UP;
+    static const char KEY_DOWN;
+    static const char KEY_SHOOT_REGULAR_ARROW;
+    static const char KEY_SHOOT_EXPLODING_ARROW;
+    static const char KEY_SHOOT_PENETRATING_ARROW;
 
 public:
     Human();
 
-    void update();
+    virtual void update();
 
-    void draw() const;
+    virtual void draw() const;
 };
 
 #endif

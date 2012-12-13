@@ -6,8 +6,6 @@
 
 using namespace std;
 
-const double PI = 3.141592653589793;
-
 // Pseudo declarations to enable compilation
 class Object;
 class Player;
@@ -20,13 +18,13 @@ typedef ObjectsList::iterator ObjectsIterator;
 class Grid
 {
 public:
-    enum {
-        DEFAULT_NUM_ROWS = 24,
-        DEFAULT_NUM_COLS = 79
-    };
+    static const int DEFAULT_NUM_ROWS;
+    static const int DEFAULT_NUM_COLS;
 
     class Square
     {
+        static const double PI;
+
         int row, col;
         ObjectsList players;
         DroppingObject* pDroppingObject;

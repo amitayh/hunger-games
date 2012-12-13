@@ -16,7 +16,7 @@ class Bot: public Player
 public:
     Bot(char name);
 
-    void update();
+    virtual void update();
 };
 
 #endif
