@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int Menu::addOption(const char* option) {
+int Menu::addOption(const string& option) {
     options.push_back(option);
     return options.size();
 }

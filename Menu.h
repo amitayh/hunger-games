@@ -2,15 +2,16 @@
 #define _MENU_H
 
 #include <vector>
+#include <string>
 
 using namespace std;
 
 class Menu
 {
-    vector<const char*> options;
+    vector<string> options;
 
 public:
-    int addOption(const char* option);
+    int addOption(const string& option);
 
     void show() const;
     int choose() const;
