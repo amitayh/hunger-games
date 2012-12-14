@@ -1,12 +1,15 @@
 #include "DroppingObject.h"
+#include "Game.h"
 
 DroppingObject::DroppingObject() {
     pickedUp = false;
 }
 
 DroppingObject::~DroppingObject() {
-    pSquare->unsetDroppingObject();
-    pSquare->clear();
+    if (pGame->isRunning()) {
+        pSquare->unsetDroppingObject();
+        pSquare->clear();
+    }
 }
 
 void DroppingObject::setSquare(Grid::Square& square) {

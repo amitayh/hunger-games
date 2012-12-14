@@ -118,7 +118,7 @@ bool Game::checkProbability(int probability) const {
 void Game::run() {
     status = RUNNING;
     Console::clear();
-    draw(walls);
+    drawObejctsList(walls);
     loop();
 }
 
@@ -129,9 +129,9 @@ void Game::pause() {
 void Game::resume() {
     status = RUNNING;
     Console::clear();
-    draw(walls);
-    draw(droppingObjects);
-    draw();
+    drawObejctsList(walls);
+    drawObejctsList(droppingObjects);
+    drawUpdatingObjects();
 }
 
 void Game::endGame(Player* winner) {
@@ -157,7 +157,7 @@ void Game::loop() {
         } else {
             update();
             if (status == RUNNING) { // Status may change after the update
-                draw();
+                drawUpdatingObjects();
                 dropObjects();
                 tick++;
                 Sleep(1000 / FRAMES_PER_SECOND);
@@ -231,15 +231,15 @@ void Game::updateDroppingObjects() {
     }
 }
 
-void Game::draw() {
+void Game::drawUpdatingObjects() {
     // Draw updating objects
-    draw(arrows);
-    draw(players);
+    drawObejctsList(arrows);
+    drawObejctsList(players);
     infoBox.draw();
     Console::gotoPosition(grid.getRows(), grid.getCols()); // Hide cursor from main window
 }
 
-void Game::draw(ObjectsList& list) {
+void Game::drawObejctsList(ObjectsList& list) {
     ObjectsIterator it = list.begin();
     while (it != list.end()) {
         (*it)->draw();
@@ -313,4 +313,8 @@ const Grid& Game::getGrid() const {
 
 char Game::getKey() const {
     return key;
+}
+
+bool Game::isRunning() const {
+    return (status == RUNNING);
 }

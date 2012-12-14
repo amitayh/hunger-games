@@ -9,8 +9,10 @@ Arrow::Arrow() {
 }
 
 Arrow::~Arrow() {
-    // Clear square before deletion
-    pSquare->clear();
+    if (pGame->isRunning()) {
+        // Clear square before deletion
+        pSquare->clear();
+    }
 }
 
 void Arrow::setSquare(Grid::Square& square) {

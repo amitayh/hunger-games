@@ -20,8 +20,10 @@ Player::Player(char name) {
 }
 
 Player::~Player() {
-    // Clear square before deletion
-    pSquare->stepOut(*this);
+    if (pGame->isRunning()) {
+        // Clear square before deletion
+        pSquare->stepOut(*this);
+    }
 }
 
 void Player::setSquare(Grid::Square& square) {

@@ -47,8 +47,8 @@ class Game
     void addObject(Object* object, Grid::Square& square, ObjectsList& list);
     void endGame(Player* winner = NULL);
     void showMenu();
-    void draw();
-    void draw(ObjectsList& list);
+    void drawUpdatingObjects();
+    void drawObejctsList(ObjectsList& list);
 
 public:
     Game();
@@ -73,6 +73,7 @@ public:
 
     const Grid& getGrid() const;
     bool checkProbability(int probability) const;
+    bool isRunning() const;
     unsigned int getTick() const;
     char getKey() const;
 };
