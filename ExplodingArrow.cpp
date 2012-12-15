@@ -3,7 +3,7 @@
 
 bool ExplodingArrow::checkHit() {
     if (pSquare && pSquare->hasWall()) {
-        pGame->clearWall(*pSquare);
+        pGame->clearWall(pSquare->getWall());
         hit = true;
     }
     return Arrow::checkHit();

@@ -99,12 +99,10 @@ void Game::addObject(Object* object, Grid::Square& square, ObjectsList& list) {
     list.push_back(object);
 }
 
-void Game::clearWall(Grid::Square& square) {
-    Wall* wall = &square.getWall();
-    ObjectsIterator it = find(walls.begin(), walls.end(), wall);
+void Game::clearWall(const Wall& wall) {
+    ObjectsIterator it = find(walls.begin(), walls.end(), &wall);
     if (it != walls.end()) {
-        square.unsetWall();
-        square.clear();
+        wall.getSquare().unsetWall();
         delete *it;
         walls.erase(it);
     }

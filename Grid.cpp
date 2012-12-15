@@ -87,6 +87,7 @@ void Grid::Square::setDroppingObject(DroppingObject& droppingObject) {
 
 void Grid::Square::unsetDroppingObject() {
     pDroppingObject = NULL;
+    clear();
 }
 
 void Grid::Square::setWall(Wall& wall) {
@@ -95,6 +96,7 @@ void Grid::Square::setWall(Wall& wall) {
 
 void Grid::Square::unsetWall() {
     pWall = NULL;
+    clear();
 }
 
 ObjectsList& Grid::Square::getPlayers() {

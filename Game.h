@@ -64,7 +64,7 @@ public:
     void addWall(int row, int col);
     void addInfoBox(int row, int col);
     void addArrow(Arrow& arrow, Grid::Square& square);
-    void clearWall(Grid::Square& square);
+    void clearWall(const Wall& wall);
     ObjectsList& getPlayers();
     ObjectsList& getDroppingObjects();
     Grid::Square& getValidDropSquare();
