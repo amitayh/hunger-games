@@ -4,15 +4,13 @@
 #include "Console.h"
 #include <list>
 
-using namespace std;
-
-// Pseudo declarations to enable compilation
 class BaseObject;
 class BasePlayer;
 class DroppingObject;
 class Wall;
 enum Direction;
-typedef list<BaseObject*> ObjectsList;
+
+typedef std::list<BaseObject*> ObjectsList;
 typedef ObjectsList::iterator ObjectsIterator;
 
 class Grid

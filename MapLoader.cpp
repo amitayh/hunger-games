@@ -1,4 +1,5 @@
 #include "MapLoader.h"
+#include "Game.h"
 #include "Bot.h"
 #include <fstream>
 

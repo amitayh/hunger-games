@@ -1,4 +1,5 @@
 #include "Quiver.h"
+#include "BasePlayer.h"
 
 Quiver::Quiver() {
     type = QUIVER;

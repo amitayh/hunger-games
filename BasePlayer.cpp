@@ -4,7 +4,10 @@
 #include "RegularArrow.h"
 #include "ExplodingArrow.h"
 #include "PenetratingArrow.h"
+#include <iostream>
 #include <exception>
+
+using namespace std;
 
 const int BasePlayer::INITIAL_POWER                   = 1000;
 const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS        = 3;

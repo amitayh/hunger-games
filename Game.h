@@ -2,14 +2,11 @@
 #define _GAME_H
 
 #include "Grid.h"
-#include "Bot.h"
-#include "BaseArrow.h"
 #include "InfoBox.h"
 #include "Menu.h"
-#include "DroppingObject.h"
-#include <iostream>
 
-using namespace std;
+class Bot;
+class BaseArrow;
 
 class Game
 {

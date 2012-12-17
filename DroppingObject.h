@@ -2,7 +2,8 @@
 #define _DROPPING_OBJECT_H
 
 #include "BaseObject.h"
-#include "BasePlayer.h"
+
+class BasePlayer;
 
 class DroppingObject: public BaseObject
 {

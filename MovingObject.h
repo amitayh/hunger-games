@@ -2,7 +2,6 @@
 #define _MOVING_OBJECT_H
 
 #include "BaseObject.h"
-#include "Grid.h"
 
 enum Direction {
     UP,

@@ -1,4 +1,5 @@
 #include "Bomb.h"
+#include "BasePlayer.h"
 
 Bomb::Bomb() {
     type = BOMB;

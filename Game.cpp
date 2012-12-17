@@ -7,9 +7,12 @@
 #include "Food.h"
 #include "Quiver.h"
 #include "Bomb.h"
+#include <iostream>
 #include <windows.h>
 #include <time.h>
 #include <conio.h>
+
+using namespace std;
 
 const int Game::ESCAPSE_KEY                 = 27;
 const int Game::FRAMES_PER_SECOND           = 25;

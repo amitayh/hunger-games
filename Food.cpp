@@ -1,4 +1,5 @@
 #include "Food.h"
+#include "BasePlayer.h"
 
 Food::Food() {
     type = FOOD;

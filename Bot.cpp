@@ -1,5 +1,6 @@
 #include "Bot.h"
 #include "Game.h"
+#include "DroppingObject.h"
 
 Bot::Bot(char name): BasePlayer(name) {}
 

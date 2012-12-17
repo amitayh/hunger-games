@@ -1,7 +1,9 @@
 #ifndef _MAP_LOADER_H
 #define _MAP_LOADER_H
 
-#include "Game.h"
+#include <string>
+
+class Game;
 
 class MapLoader
 {
@@ -17,7 +19,7 @@ class MapLoader
 public:
     MapLoader(Game& game);
 
-    bool load(const string& filename) const;
+    bool load(const std::string& filename) const;
 };
 
 #endif
