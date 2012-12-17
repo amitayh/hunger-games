@@ -1,10 +1,10 @@
 #ifndef _DROPPING_OBJECT_H
 #define _DROPPING_OBJECT_H
 
-#include "Object.h"
+#include "BaseObject.h"
 #include "Player.h"
 
-class DroppingObject: public Object
+class DroppingObject: public BaseObject
 {
 public:
     enum Type {

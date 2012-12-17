@@ -1,7 +1,7 @@
 #ifndef _MOVING_OBJECT_H
 #define _MOVING_OBJECT_H
 
-#include "Object.h"
+#include "BaseObject.h"
 #include "Grid.h"
 
 class Game;
@@ -13,7 +13,7 @@ enum Direction {
     RIGHT
 };
 
-class MovingObject: public Object
+class MovingObject: public BaseObject
 {
 public:
     virtual void update() = 0;

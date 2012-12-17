@@ -102,7 +102,7 @@ void Game::addArrow(Arrow* arrow, int row, int col) {
     addArrow(arrow, grid.getSquare(row, col));
 }
 
-void Game::addObject(Object* object, Grid::Square& square, ObjectsList& list) {
+void Game::addObject(BaseObject* object, Grid::Square& square, ObjectsList& list) {
     object->setGame(*this);
     object->setSquare(square);
     list.push_back(object);

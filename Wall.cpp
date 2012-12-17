@@ -1,7 +1,7 @@
 #include "Wall.h"
 
 void Wall::setSquare(Grid::Square& square) {
-    Object::setSquare(square);
+    BaseObject::setSquare(square);
     square.setWall(*this);
 }
 

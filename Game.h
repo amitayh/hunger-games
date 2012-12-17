@@ -45,7 +45,7 @@ class Game
     void updateArrows();
     void updateDroppingObjects();
     void dropObjects();
-    void addObject(Object* object, Grid::Square& square, ObjectsList& list);
+    void addObject(BaseObject* object, Grid::Square& square, ObjectsList& list);
     void endGame(Player* winner = NULL);
     void showMenu();
     void drawUpdatingObjects();

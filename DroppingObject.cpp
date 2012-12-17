@@ -12,7 +12,7 @@ DroppingObject::~DroppingObject() {
 }
 
 void DroppingObject::setSquare(Grid::Square& square) {
-    Object::setSquare(square);
+    BaseObject::setSquare(square);
     square.setDroppingObject(*this);
     draw(); // Draw immediately when the object is dropped
 }

@@ -7,12 +7,12 @@
 using namespace std;
 
 // Pseudo declarations to enable compilation
-class Object;
+class BaseObject;
 class Player;
 class DroppingObject;
 class Wall;
 enum Direction;
-typedef list<Object*> ObjectsList;
+typedef list<BaseObject*> ObjectsList;
 typedef ObjectsList::iterator ObjectsIterator;
 
 class Grid

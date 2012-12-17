@@ -11,7 +11,7 @@ const int InfoBox::HEIGHT   = 5;
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
 void InfoBox::setSquare(Grid::Square& square) {
-    Object::setSquare(square);
+    BaseObject::setSquare(square);
 
     int width = size.getWidth(),
         height = size.getHeight(),

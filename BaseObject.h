@@ -1,15 +1,15 @@
-#ifndef _OBJECT_H
-#define _OBJECT_H
+#ifndef _BASE_OBJECT_H
+#define _BASE_OBJECT_H
 
 #include "Grid.h"
 
 class Game;
 
-class Object
+class BaseObject
 {
 public:
-    Object();
-    virtual ~Object() {};
+    BaseObject();
+    virtual ~BaseObject() {};
 
     void setGame(Game& game);
     virtual void setSquare(Grid::Square& square);

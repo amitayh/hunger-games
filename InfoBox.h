@@ -1,10 +1,10 @@
 #ifndef _INFO_BOX_H
 #define _INFO_BOX_H
 
-#include "Object.h"
+#include "BaseObject.h"
 #include "Dimensions.h"
 
-class InfoBox: public Object
+class InfoBox: public BaseObject
 {
     static const int WIDTH;
     static const int HEIGHT;
