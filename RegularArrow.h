@@ -1,9 +1,9 @@
 #ifndef _REGULAR_ARROW_H
 #define _REGULAR_ARROW_H
 
-#include "Arrow.h"
+#include "BaseArrow.h"
 
-class RegularArrow: public Arrow
+class RegularArrow: public BaseArrow
 {
 public:
     virtual void draw() const;

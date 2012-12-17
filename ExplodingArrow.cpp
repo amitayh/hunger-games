@@ -6,7 +6,7 @@ bool ExplodingArrow::checkHit() {
         pGame->clearWall(pSquare->getWall());
         hit = true;
     }
-    return Arrow::checkHit();
+    return BaseArrow::checkHit();
 }
 
 void ExplodingArrow::draw() const {

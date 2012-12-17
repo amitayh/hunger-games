@@ -3,7 +3,7 @@
 
 #include "Grid.h"
 #include "Bot.h"
-#include "Arrow.h"
+#include "BaseArrow.h"
 #include "InfoBox.h"
 #include "Menu.h"
 #include "DroppingObject.h"
@@ -66,8 +66,8 @@ public:
     void addHuman(int row, int col);
     void addBot(Bot* bot, Grid::Square& square);
     void addBot(Bot* bot, int row, int col);
-    void addArrow(Arrow* arrow, Grid::Square& square);
-    void addArrow(Arrow* arrow, int row, int col);
+    void addArrow(BaseArrow* arrow, Grid::Square& square);
+    void addArrow(BaseArrow* arrow, int row, int col);
     void clearWall(const Wall& wall);
     ObjectsList& getPlayers();
     ObjectsList& getDroppingObjects();

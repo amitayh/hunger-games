@@ -1,9 +1,9 @@
 #ifndef _EXPLODING_ARROW_H
 #define _EXPLODING_ARROW_H
 
-#include "Arrow.h"
+#include "BaseArrow.h"
 
-class ExplodingArrow: public Arrow
+class ExplodingArrow: public BaseArrow
 {
 public:
     virtual void draw() const;

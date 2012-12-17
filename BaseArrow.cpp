@@ -1,26 +1,26 @@
-#include "Arrow.h"
+#include "BaseArrow.h"
 #include "Game.h"
 #include "BasePlayer.h"
 
-const int Arrow::MOVE_INTERVAL = 1;
+const int BaseArrow::MOVE_INTERVAL = 1;
 
-Arrow::Arrow() {
+BaseArrow::BaseArrow() {
     hit = false;
 }
 
-Arrow::~Arrow() {
+BaseArrow::~BaseArrow() {
     if (pGame->isRunning()) {
         // Clear square before deletion
         pSquare->clear();
     }
 }
 
-void Arrow::setSquare(Grid::Square& square) {
+void BaseArrow::setSquare(Grid::Square& square) {
     pSquare = &square;
     checkHit();
 }
 
-void Arrow::update() {
+void BaseArrow::update() {
     if (!checkHit() && pGame->getTick() % MOVE_INTERVAL == 0) {
         Grid::Square& nextSquare = getNextSquare();
         pSquare->clear();
@@ -28,7 +28,7 @@ void Arrow::update() {
     }
 }
 
-bool Arrow::checkHit() {
+bool BaseArrow::checkHit() {
     if (pSquare) {
         ObjectsList& players = pSquare->getPlayers();
         if (!players.empty()) {
@@ -41,6 +41,6 @@ bool Arrow::checkHit() {
     return hit;
 }
 
-bool Arrow::getHit() const {
+bool BaseArrow::getHit() const {
     return hit;
 }

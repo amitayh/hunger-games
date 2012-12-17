@@ -1,12 +1,12 @@
-#ifndef _ARROW_H
-#define _ARROW_H
+#ifndef _BASE_ARROW_H
+#define _BASE_ARROW_H
 
 #include "MovingObject.h"
 
-class Arrow: public MovingObject
+class BaseArrow: public MovingObject
 {
 public:
-    ~Arrow();
+    ~BaseArrow();
 
     virtual void setSquare(Grid::Square& square);
     virtual void update();
@@ -16,7 +16,7 @@ public:
 protected:
     static const int MOVE_INTERVAL;
 
-    Arrow(); // Make the class abstract
+    BaseArrow(); // Make the class abstract
 
     bool hit;
 

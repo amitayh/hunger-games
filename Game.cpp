@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "Arrow.h"
+#include "BaseArrow.h"
 #include "Bot.h"
 #include "Human.h"
 #include "Wall.h"
@@ -93,12 +93,12 @@ void Game::addInfoBox(int row, int col) {
     addInfoBox(grid.getSquare(row, col));
 }
 
-void Game::addArrow(Arrow* arrow, Grid::Square& square) {
+void Game::addArrow(BaseArrow* arrow, Grid::Square& square) {
     // The arrow is pre-allocated by the shooting player
     addObject(arrow, square, arrows);
 }
 
-void Game::addArrow(Arrow* arrow, int row, int col) {
+void Game::addArrow(BaseArrow* arrow, int row, int col) {
     addArrow(arrow, grid.getSquare(row, col));
 }
 
@@ -192,7 +192,7 @@ void Game::update() {
 void Game::updateArrows() {
     ObjectsIterator it = arrows.begin();
     while (it != arrows.end()) {
-        Arrow* arrow = (Arrow*) *it;
+        BaseArrow* arrow = (BaseArrow*) *it;
         arrow->update();
         if (arrow->getHit()) {
             // Arrow hit a wall/player - remove it

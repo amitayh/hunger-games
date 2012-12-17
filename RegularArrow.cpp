@@ -4,7 +4,7 @@ bool RegularArrow::checkHit() {
     if (pSquare && pSquare->hasWall()) {
         hit = true;
     }
-    return Arrow::checkHit();
+    return BaseArrow::checkHit();
 }
 
 void RegularArrow::draw() const {

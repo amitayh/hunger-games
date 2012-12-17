@@ -57,7 +57,7 @@ bool BasePlayer::shootArrow(ArrowsBag::Type type) {
         arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
         pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
-        Arrow* arrow = arrowsBag.getArrow(type);
+        BaseArrow* arrow = arrowsBag.getArrow(type);
         arrow->setDirection(direction);
         pGame->addArrow(arrow, square); // Update game
         lastArrowTick = pGame->getTick();
@@ -150,8 +150,8 @@ BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() cons
     return (Type) available[random];
 }
 
-Arrow* BasePlayer::ArrowsBag::getArrow(Type type) {
-    Arrow* arrow = NULL;
+BaseArrow* BasePlayer::ArrowsBag::getArrow(Type type) {
+    BaseArrow* arrow = NULL;
     if (remaining[type] > 0) {
         // Allocate arrow
         switch (type) {

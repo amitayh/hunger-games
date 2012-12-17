@@ -1,9 +1,9 @@
 #ifndef _PENETRATING_ARROW_H
 #define _PENETRATING_ARROW_H
 
-#include "Arrow.h"
+#include "BaseArrow.h"
 
-class PenetratingArrow: public Arrow
+class PenetratingArrow: public BaseArrow
 {
 public:
     virtual void draw() const;

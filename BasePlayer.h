@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Arrow;
+class BaseArrow;
 
 class BasePlayer: public MovingObject
 {
@@ -24,7 +24,7 @@ public:
             PENETRATING
         };
         ArrowsBag();
-        Arrow* getArrow(Type type);
+        BaseArrow* getArrow(Type type);
         bool isEmpty() const;
         int getRemaining(Type type) const;
         Type getAvailableRandomType() const;
