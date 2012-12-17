@@ -58,39 +58,48 @@ Game::~Game() {
     }
 }
 
-void Game::addBot(int row, int col) {
-    addBot(grid.getSquare(row, col));
+void Game::addBot(Bot* bot, Grid::Square& square) {
+    addObject(bot, square, players);
 }
 
-void Game::addBot(Grid::Square& square) {
-    // Name the players sequentially (A, B, C...)
-    char name = 'A' + players.size();
-    addObject(new Bot(name), square, players);
-}
-
-void Game::addHuman(int row, int col) {
-    addHuman(grid.getSquare(row, col));
+void Game::addBot(Bot* bot, int row, int col) {
+    addBot(bot, grid.getSquare(row, col));
 }
 
 void Game::addHuman(Grid::Square& square) {
     addObject(new Human, square, players);
 }
 
-void Game::addWall(int row, int col) {
-    Grid::Square& square = grid.getSquare(row, col);
+void Game::addHuman(int row, int col) {
+    addHuman(grid.getSquare(row, col));
+}
+
+void Game::addWall(Grid::Square& square) {
     if (!square.hasWall()) {
         addObject(new Wall, square, walls);
     }
 }
 
-void Game::addInfoBox(int row, int col) {
-    infoBox.setGame(*this);
-    infoBox.setSquare(grid.getSquare(row, col));
+void Game::addWall(int row, int col) {
+    addWall(grid.getSquare(row, col));
 }
 
-void Game::addArrow(Arrow& arrow, Grid::Square& square) {
+void Game::addInfoBox(Grid::Square& square) {
+    infoBox.setGame(*this);
+    infoBox.setSquare(square);
+}
+
+void Game::addInfoBox(int row, int col) {
+    addInfoBox(grid.getSquare(row, col));
+}
+
+void Game::addArrow(Arrow* arrow, Grid::Square& square) {
     // The arrow is pre-allocated by the shooting player
-    addObject(&arrow, square, arrows);
+    addObject(arrow, square, arrows);
+}
+
+void Game::addArrow(Arrow* arrow, int row, int col) {
+    addArrow(arrow, grid.getSquare(row, col));
 }
 
 void Game::addObject(Object* object, Grid::Square& square, ObjectsList& list) {

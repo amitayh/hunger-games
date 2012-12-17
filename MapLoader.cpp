@@ -1,4 +1,5 @@
 #include "MapLoader.h"
+#include "Bot.h"
 #include <fstream>
 
 const char  MapLoader::CHAR_WALL        = 'W';
@@ -15,13 +16,13 @@ MapLoader::MapLoader(Game& game) {
 bool MapLoader::load(const string& filename) const {
     ifstream map(filename);
     if (map.good()) {
+        ObjectsList& players = pGame->getPlayers();
         const Grid& grid = pGame->getGrid();
-        int rows = grid.getRows(),
-            cols = grid.getCols();
+        int rows = grid.getRows(), cols = grid.getCols();
 
-        int players = 0; // Players counter
-        bool addedInfoBox = false, // Info box flag
-             addedHumanPlayer = false; // Human player flag
+        bool addedInfoBox = false; // Info box flag
+        bool addedHumanPlayer = false; // Human player flag
+        int bots = 0; // Bots counter
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -35,16 +36,16 @@ bool MapLoader::load(const string& filename) const {
                         pGame->addWall(row, col);
                         break;
                     case CHAR_BOT:
-                        if (players < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            pGame->addBot(row, col);
-                            players++;
+                        if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
+                            char name = 'A' + bots; // Name the bots sequentially (A, B, C...)
+                            pGame->addBot(new Bot(name), row, col);
+                            bots++;
                         }
                         break;
                     case CHAR_HUMAN:
-                        if (!addedHumanPlayer && players < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
+                        if (!addedHumanPlayer && players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
                             pGame->addHuman(row, col);
                             addedHumanPlayer = true;
-                            players++;
                         }
                         break;
                     case CHAR_INFO_BOX:
@@ -58,9 +59,11 @@ bool MapLoader::load(const string& filename) const {
             map.get(); // Consume linebreak
         }
 
-        // Add additional players if needed
-        for (int i = players; i < MIN_NUM_PLAYERS; i++) {
-            pGame->addBot(pGame->getValidDropSquare());
+        // Add additional bots if needed
+        for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
+            char name = 'A' + bots; // Name the bots sequentially (A, B, C...)
+            pGame->addBot(new Bot(name), pGame->getValidDropSquare());
+            bots++;
         }
 
         map.close(); // Close map file

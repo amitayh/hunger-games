@@ -2,6 +2,7 @@
 #define _GAME_H
 
 #include "Grid.h"
+#include "Bot.h"
 #include "Arrow.h"
 #include "InfoBox.h"
 #include "Menu.h"
@@ -57,13 +58,16 @@ public:
     void run();
     void pause();
     void resume();
-    void addBot(int row, int col);
-    void addBot(Grid::Square& square);
-    void addHuman(int row, int col);
-    void addHuman(Grid::Square& square);
+    void addWall(Grid::Square& square);
     void addWall(int row, int col);
+    void addInfoBox(Grid::Square& square);
     void addInfoBox(int row, int col);
-    void addArrow(Arrow& arrow, Grid::Square& square);
+    void addHuman(Grid::Square& square);
+    void addHuman(int row, int col);
+    void addBot(Bot* bot, Grid::Square& square);
+    void addBot(Bot* bot, int row, int col);
+    void addArrow(Arrow* arrow, Grid::Square& square);
+    void addArrow(Arrow* arrow, int row, int col);
     void clearWall(const Wall& wall);
     ObjectsList& getPlayers();
     ObjectsList& getDroppingObjects();

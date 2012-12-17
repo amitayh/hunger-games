@@ -59,7 +59,7 @@ bool Player::shootArrow(ArrowsBag::Type type) {
     ) {
         Arrow* arrow = arrowsBag.getArrow(type);
         arrow->setDirection(direction);
-        pGame->addArrow(*arrow, square); // Update game
+        pGame->addArrow(arrow, square); // Update game
         lastArrowTick = pGame->getTick();
         return true;
     }
