@@ -1,5 +1,5 @@
 #include "Grid.h"
-#include "Player.h"
+#include "BasePlayer.h"
 #include "DroppingObject.h"
 #include "Wall.h"
 #include <iostream>
@@ -67,11 +67,11 @@ Grid::Square::Square() {
     pWall = NULL;
 }
 
-void Grid::Square::stepIn(Player& player) {
+void Grid::Square::stepIn(BasePlayer& player) {
     players.push_back(&player);
 }
 
-void Grid::Square::stepOut(Player& player) {
+void Grid::Square::stepOut(BasePlayer& player) {
     players.remove(&player);
     clear();
 }

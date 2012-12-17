@@ -1,9 +1,9 @@
 #ifndef _BOT_H
 #define _BOT_H
 
-#include "Player.h"
+#include "BasePlayer.h"
 
-class Bot: public Player
+class Bot: public BasePlayer
 {
     void setRandomDirection();
     Grid::Square& getNextMove();
@@ -11,7 +11,7 @@ class Bot: public Player
     DroppingObject* findClosestObject() const;
     bool isClearPath(const Grid::Square& target) const;
     bool hasPlayersInRange() const;
-    bool playerInRange(const Player& opponent) const;
+    bool playerInRange(const BasePlayer& opponent) const;
 
 public:
     Bot(char name);

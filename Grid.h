@@ -8,7 +8,7 @@ using namespace std;
 
 // Pseudo declarations to enable compilation
 class BaseObject;
-class Player;
+class BasePlayer;
 class DroppingObject;
 class Wall;
 enum Direction;
@@ -33,8 +33,8 @@ public:
     public:
         Square();
 
-        void stepIn(Player& player);
-        void stepOut(Player& player);
+        void stepIn(BasePlayer& player);
+        void stepOut(BasePlayer& player);
         void initPosition(int row, int col);
         void setDroppingObject(DroppingObject& droppingObject);
         void unsetDroppingObject();

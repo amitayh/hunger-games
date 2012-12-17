@@ -8,7 +8,7 @@ class Quiver: public DroppingObject
 public:
     Quiver();
 
-    void affect(Player& player);
+    void affect(BasePlayer& player);
 
     void draw() const;
 };

@@ -4,7 +4,7 @@ Bomb::Bomb() {
     type = BOMB;
 }
 
-void Bomb::affect(Player& player) {
+void Bomb::affect(BasePlayer& player) {
     player.decreasePower(750);
     pickedUp = true;
 }

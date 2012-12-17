@@ -1,5 +1,5 @@
-#ifndef _PLAYER_H
-#define _PLAYER_H
+#ifndef _BASE_PLAYER_H
+#define _BASE_PLAYER_H
 
 #include "MovingObject.h"
 #include <ostream>
@@ -8,7 +8,7 @@ using namespace std;
 
 class Arrow;
 
-class Player: public MovingObject
+class BasePlayer: public MovingObject
 {
 public:
     class ArrowsBag
@@ -31,10 +31,10 @@ public:
         ArrowsBag& operator+=(int amount);
         ArrowsBag& operator++();
         friend ostream& operator<<(ostream& out, const ArrowsBag& arrowsBag);
-        friend class Player;
+        friend class BasePlayer;
     };
 
-    ~Player();
+    ~BasePlayer();
 
     virtual void setSquare(Grid::Square& square);
     void increasePower(int amount);
@@ -45,7 +45,7 @@ public:
     int getPower() const;
     virtual void draw() const;
 
-    friend ostream& operator<<(ostream& out, const Player& player);
+    friend ostream& operator<<(ostream& out, const BasePlayer& player);
 
 protected:
     static const int INITIAL_POWER;
@@ -54,14 +54,14 @@ protected:
     static const int CHANGE_DIRECTION_PROBABILITY;
     static const int MOVE_INTERVAL;
 
-    Player(char name); // Make class abstract
+    BasePlayer(char name); // Make class abstract
 
     char name;
     int power;
     ArrowsBag arrowsBag;
     unsigned int lastArrowTick;
 
-    void fight(Player& opponent);
+    void fight(BasePlayer& opponent);
     bool shootArrow(ArrowsBag::Type type);
 };
 

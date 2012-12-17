@@ -2,7 +2,7 @@
 #define _DROPPING_OBJECT_H
 
 #include "BaseObject.h"
-#include "Player.h"
+#include "BasePlayer.h"
 
 class DroppingObject: public BaseObject
 {
@@ -16,7 +16,7 @@ public:
     DroppingObject();
     ~DroppingObject();
 
-    virtual void affect(Player& player) = 0;
+    virtual void affect(BasePlayer& player) = 0;
     virtual void setSquare(Grid::Square& square);
 
     bool getPickedUp() const;

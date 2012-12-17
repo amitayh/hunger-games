@@ -1,9 +1,9 @@
 #ifndef _HUMAN_H
 #define _HUMAN_H
 
-#include "Player.h"
+#include "BasePlayer.h"
 
-class Human: public Player
+class Human: public BasePlayer
 {
     static const char DISPLAY_NAME;
     static const char KEY_LEFT;

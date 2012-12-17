@@ -4,7 +4,7 @@ Food::Food() {
     type = FOOD;
 }
 
-void Food::affect(Player& player) {
+void Food::affect(BasePlayer& player) {
     player.increasePower(200);
     pickedUp = true;
 }

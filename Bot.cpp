@@ -1,7 +1,7 @@
 #include "Bot.h"
 #include "Game.h"
 
-Bot::Bot(char name): Player(name) {}
+Bot::Bot(char name): BasePlayer(name) {}
 
 void Bot::update() {
     if (power > 0) {
@@ -105,7 +105,7 @@ bool Bot::hasPlayersInRange() const {
     bool inRange = false;
     while (!inRange && it != players.end()) {
         // Iterate over the players list
-        Player* player = (Player*) *it;
+        BasePlayer* player = (BasePlayer*) *it;
         if (player != this) {
             // Check if opponent may be hit if an arrow will be shot
             inRange = playerInRange(*player);
@@ -115,7 +115,7 @@ bool Bot::hasPlayersInRange() const {
     return inRange;
 }
 
-bool Bot::playerInRange(const Player& opponent) const {
+bool Bot::playerInRange(const BasePlayer& opponent) const {
     // Basic algorithm: check opponent's square and direction.
     // Compare with player's square and direction and decide whether or not to shoot
     const Grid::Square& opponentSquare = opponent.getSquare();

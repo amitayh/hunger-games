@@ -1,6 +1,6 @@
 #include "Arrow.h"
 #include "Game.h"
-#include "Player.h"
+#include "BasePlayer.h"
 
 const int Arrow::MOVE_INTERVAL = 1;
 
@@ -33,7 +33,7 @@ bool Arrow::checkHit() {
         ObjectsList& players = pSquare->getPlayers();
         if (!players.empty()) {
             // Hit first player on square
-            Player* player = (Player*) players.front();
+            BasePlayer* player = (BasePlayer*) players.front();
             player->decreasePower(500);
             hit = true;
         }

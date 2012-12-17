@@ -8,7 +8,7 @@ class Bomb: public DroppingObject
 public:
     Bomb();
 
-    void affect(Player& player);
+    void affect(BasePlayer& player);
 
     void draw() const;
 };

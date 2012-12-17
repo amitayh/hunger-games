@@ -1,6 +1,6 @@
 #include "InfoBox.h"
 #include "Game.h"
-#include "Player.h"
+#include "BasePlayer.h"
 #include <iostream>
 
 using namespace std;
@@ -47,7 +47,7 @@ void InfoBox::draw() const {
         Console::gotoPosition(row + i, col);
         if (it != players.end()) {
             // Print player info
-            Player* player = (Player*) *it;
+            BasePlayer* player = (BasePlayer*) *it;
             cout << *player;
             it++;
         } else {

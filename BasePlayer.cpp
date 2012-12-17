@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "BasePlayer.h"
 #include "Game.h"
 #include "DroppingObject.h"
 #include "RegularArrow.h"
@@ -6,27 +6,27 @@
 #include "PenetratingArrow.h"
 #include <exception>
 
-const int Player::INITIAL_POWER                   = 1000;
-const int Player::MIN_TICKS_BETWEEN_ARROWS        = 3;
-const int Player::SHOOT_ARROW_PROBABILITY         = 20;
-const int Player::CHANGE_DIRECTION_PROBABILITY    = 10;
-const int Player::MOVE_INTERVAL                   = 2;
+const int BasePlayer::INITIAL_POWER                   = 1000;
+const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS        = 3;
+const int BasePlayer::SHOOT_ARROW_PROBABILITY         = 20;
+const int BasePlayer::CHANGE_DIRECTION_PROBABILITY    = 10;
+const int BasePlayer::MOVE_INTERVAL                   = 2;
 
-Player::Player(char name) {
+BasePlayer::BasePlayer(char name) {
     this->name = name;
     power = INITIAL_POWER;
     direction = RIGHT;
     lastArrowTick = 0;
 }
 
-Player::~Player() {
+BasePlayer::~BasePlayer() {
     if (pGame->isRunning()) {
         // Clear square before deletion
         pSquare->stepOut(*this);
     }
 }
 
-void Player::setSquare(Grid::Square& square) {
+void BasePlayer::setSquare(Grid::Square& square) {
     if (square.hasDroppingObject()) {
         // Pick up dropping object
         DroppingObject& droppingObject = square.getDroppingObject();
@@ -38,7 +38,7 @@ void Player::setSquare(Grid::Square& square) {
         // Fight other players on square
         ObjectsIterator it = players.begin();
         while (it != players.end()) {
-            Player* player = (Player*) *it;
+            BasePlayer* player = (BasePlayer*) *it;
             fight(*player);
             it++;
         }
@@ -51,7 +51,7 @@ void Player::setSquare(Grid::Square& square) {
     pSquare = &square;
 }
 
-bool Player::shootArrow(ArrowsBag::Type type) {
+bool BasePlayer::shootArrow(ArrowsBag::Type type) {
     Grid::Square& square = getNextSquare();
     if (
         arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
@@ -66,7 +66,7 @@ bool Player::shootArrow(ArrowsBag::Type type) {
     return false;
 }
 
-void Player::fight(Player& opponent) {
+void BasePlayer::fight(BasePlayer& opponent) {
     if (power > opponent.getPower()) {
         // Player is stronger than opponent
         opponent.decreasePower(200);
@@ -82,56 +82,56 @@ void Player::fight(Player& opponent) {
     }
 }
 
-void Player::increasePower(int amount) {
+void BasePlayer::increasePower(int amount) {
     power = __max(power + amount, 0);
 }
 
-void Player::decreasePower(int amount) {
+void BasePlayer::decreasePower(int amount) {
     increasePower(-amount);
 }
 
-char Player::getName() const {
+char BasePlayer::getName() const {
     return name;
 }
 
-int Player::getPower() const {
+int BasePlayer::getPower() const {
     return power;
 }
 
-Player::ArrowsBag& Player::getArrowsBag() {
+BasePlayer::ArrowsBag& BasePlayer::getArrowsBag() {
     return arrowsBag;
 }
 
-void Player::draw() const {
+void BasePlayer::draw() const {
     pSquare->draw(name, Console::CYAN);
 }
 
-ostream& operator<<(ostream& out, const Player& player) {
+ostream& operator<<(ostream& out, const BasePlayer& player) {
     printf("%4d", player.power);
     return cout << player.arrowsBag;
 }
 
 // Player arrows bag
 
-const int Player::ArrowsBag::INITIAL_NUM_REGULAR        = 2;
-const int Player::ArrowsBag::INITIAL_NUM_EXPLODING      = 1;
-const int Player::ArrowsBag::INITIAL_NUM_PENETRATING    = 1;
+const int BasePlayer::ArrowsBag::INITIAL_NUM_REGULAR        = 2;
+const int BasePlayer::ArrowsBag::INITIAL_NUM_EXPLODING      = 1;
+const int BasePlayer::ArrowsBag::INITIAL_NUM_PENETRATING    = 1;
 
-Player::ArrowsBag::ArrowsBag() {
+BasePlayer::ArrowsBag::ArrowsBag() {
     remaining[REGULAR] = INITIAL_NUM_REGULAR;
     remaining[EXPLODING] = INITIAL_NUM_EXPLODING;
     remaining[PENETRATING] = INITIAL_NUM_PENETRATING;
 }
 
-bool Player::ArrowsBag::isEmpty() const {
+bool BasePlayer::ArrowsBag::isEmpty() const {
     return (remaining[REGULAR] + remaining[EXPLODING] + remaining[PENETRATING] == 0);
 }
 
-int Player::ArrowsBag::getRemaining(Type type) const {
+int BasePlayer::ArrowsBag::getRemaining(Type type) const {
     return remaining[type];
 }
 
-Player::ArrowsBag::Type Player::ArrowsBag::getAvailableRandomType() const {
+BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() const {
     if (isEmpty()) {
         throw runtime_error("Arrows bag is empty");
     }
@@ -150,7 +150,7 @@ Player::ArrowsBag::Type Player::ArrowsBag::getAvailableRandomType() const {
     return (Type) available[random];
 }
 
-Arrow* Player::ArrowsBag::getArrow(Type type) {
+Arrow* BasePlayer::ArrowsBag::getArrow(Type type) {
     Arrow* arrow = NULL;
     if (remaining[type] > 0) {
         // Allocate arrow
@@ -172,24 +172,24 @@ Arrow* Player::ArrowsBag::getArrow(Type type) {
     return arrow;
 }
 
-Player::ArrowsBag& Player::ArrowsBag::operator+=(int amount) {
+BasePlayer::ArrowsBag& BasePlayer::ArrowsBag::operator+=(int amount) {
     remaining[REGULAR] += amount;
     remaining[EXPLODING] += amount;
     remaining[PENETRATING] += amount;
     return *this;
 }
 
-Player::ArrowsBag& Player::ArrowsBag::operator++() {
+BasePlayer::ArrowsBag& BasePlayer::ArrowsBag::operator++() {
     // Add one arrow of each type
     return (*this += 1);
 }
 
-ostream& operator<<(ostream& out, const Player::ArrowsBag& arrowsBag) {
+ostream& operator<<(ostream& out, const BasePlayer::ArrowsBag& arrowsBag) {
     printf(
         "%2d%2d%2d",
-        arrowsBag.remaining[Player::ArrowsBag::REGULAR],
-        arrowsBag.remaining[Player::ArrowsBag::EXPLODING],
-        arrowsBag.remaining[Player::ArrowsBag::PENETRATING]
+        arrowsBag.remaining[BasePlayer::ArrowsBag::REGULAR],
+        arrowsBag.remaining[BasePlayer::ArrowsBag::EXPLODING],
+        arrowsBag.remaining[BasePlayer::ArrowsBag::PENETRATING]
     );
     return out;
 }

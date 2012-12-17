@@ -141,7 +141,7 @@ void Game::resume() {
     drawUpdatingObjects();
 }
 
-void Game::endGame(Player* winner) {
+void Game::endGame(BasePlayer* winner) {
     status = ENDED;
     Console::clear();
     Console::gotoPosition(0, 0);
@@ -207,7 +207,7 @@ void Game::updateArrows() {
 void Game::updatePlayers() {
     ObjectsIterator it = players.begin();
     while (status == RUNNING && it != players.end()) {
-        Player* player = (Player*) *it;
+        BasePlayer* player = (BasePlayer*) *it;
         player->update();
         if (!player->getPower()) {
             // Player is dead - remove him
@@ -216,7 +216,7 @@ void Game::updatePlayers() {
 
             if (players.size() == 1) {
                 // One player left, game over
-                endGame((Player*) players.front());
+                endGame((BasePlayer*) players.front());
             }
         } else {
             it++;
