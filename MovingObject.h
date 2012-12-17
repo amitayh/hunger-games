@@ -4,8 +4,6 @@
 #include "BaseObject.h"
 #include "Grid.h"
 
-class Game;
-
 enum Direction {
     UP,
     DOWN,

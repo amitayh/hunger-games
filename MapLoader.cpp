@@ -61,7 +61,7 @@ bool MapLoader::load(const string& filename) const {
 
         // Add additional bots if needed
         for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
-            char name = 'A' + bots; // Name the bots sequentially (A, B, C...)
+            char name = 'A' + bots;
             pGame->addBot(new Bot(name), pGame->getValidDropSquare());
             bots++;
         }
