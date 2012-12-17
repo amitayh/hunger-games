@@ -1,8 +1,9 @@
 #ifndef _CONSOLE_H
 #define _CONSOLE_H
 
-namespace Console {
-
+class Console
+{
+public:
     enum Color {
         BLACK,
         NAVY,
@@ -22,12 +23,9 @@ namespace Console {
         WHITE
     };
 
-    void changeColor(Color color);
-
-    void gotoPosition(int row, int col);
-
-    void clear();
-
-}
+    static void changeColor(Color color);
+    static void gotoPosition(int row, int col);
+    static void clear();
+};
 
 #endif
