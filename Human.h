@@ -18,8 +18,6 @@ public:
     Human();
 
     virtual void update();
-
-    virtual void draw() const;
 };
 
 #endif

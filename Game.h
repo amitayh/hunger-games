@@ -16,6 +16,7 @@ class Game
     static const int DROP_QUIVER_PROBABILITY;
     static const int DROP_BOMB_PROBABILITY;
     static const int MIN_DISTANCE_FROM_PLAYERS;
+    static const Console::Color DEFAULT_COLORS[3];
 
     enum Status {
         PENDING,

@@ -7,19 +7,21 @@
 #include "Food.h"
 #include "Quiver.h"
 #include "Bomb.h"
-#include <iostream>
+#include "Console.h"
 #include <windows.h>
 #include <time.h>
 #include <conio.h>
+#include <iostream>
 
 using namespace std;
 
-const int Game::ESCAPSE_KEY                 = 27;
-const int Game::FRAMES_PER_SECOND           = 25;
-const int Game::DROP_FOOD_PROBABILITY       = 2;
-const int Game::DROP_QUIVER_PROBABILITY     = 2;
-const int Game::DROP_BOMB_PROBABILITY       = 1;
-const int Game::MIN_DISTANCE_FROM_PLAYERS   = 2;
+const int Game::ESCAPSE_KEY                     = 27;
+const int Game::FRAMES_PER_SECOND               = 25;
+const int Game::DROP_FOOD_PROBABILITY           = 2;
+const int Game::DROP_QUIVER_PROBABILITY         = 2;
+const int Game::DROP_BOMB_PROBABILITY           = 1;
+const int Game::MIN_DISTANCE_FROM_PLAYERS       = 2;
+const Console::Color Game::DEFAULT_COLORS[3]    = {Console::CYAN, Console::MAGENTA, Console::YELLOW};
 
 Game::Game() {
     // Initialize random number generator
@@ -62,6 +64,7 @@ Game::~Game() {
 }
 
 void Game::addBot(Bot* bot, Grid::Square& square) {
+    bot->setColor(DEFAULT_COLORS[players.size() % 3]);
     addObject(bot, square, players);
 }
 
@@ -70,7 +73,9 @@ void Game::addBot(Bot* bot, int row, int col) {
 }
 
 void Game::addHuman(Grid::Square& square) {
-    addObject(new Human, square, players);
+    Human* human = new Human;
+    human->setColor(DEFAULT_COLORS[players.size() % 3]);
+    addObject(human, square, players);
 }
 
 void Game::addHuman(int row, int col) {

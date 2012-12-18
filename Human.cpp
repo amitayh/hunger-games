@@ -62,7 +62,3 @@ void Human::update() {
         }
     }
 }
-
-void Human::draw() const {
-    pSquare->draw(name, Console::MAGENTA);
-}

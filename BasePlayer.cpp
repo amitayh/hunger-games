@@ -17,6 +17,7 @@ const int BasePlayer::MOVE_INTERVAL                   = 2;
 
 BasePlayer::BasePlayer(char name) {
     this->name = name;
+    color = Console::WHITE;
     power = INITIAL_POWER;
     direction = RIGHT;
     lastArrowTick = 0;
@@ -52,6 +53,10 @@ void BasePlayer::setSquare(Grid::Square& square) {
     }
     square.stepIn(*this);
     pSquare = &square;
+}
+
+void BasePlayer::setColor(Console::Color color) {
+    this->color = color;
 }
 
 bool BasePlayer::shootArrow(ArrowsBag::Type type) {
@@ -93,6 +98,10 @@ void BasePlayer::decreasePower(int amount) {
     increasePower(-amount);
 }
 
+Console::Color BasePlayer::getColor() const {
+    return color;
+}
+
 char BasePlayer::getName() const {
     return name;
 }
@@ -106,10 +115,11 @@ BasePlayer::ArrowsBag& BasePlayer::getArrowsBag() {
 }
 
 void BasePlayer::draw() const {
-    pSquare->draw(name, Console::CYAN);
+    pSquare->draw(name, color);
 }
 
 ostream& operator<<(ostream& out, const BasePlayer& player) {
+    Console::changeColor(player.color);
     printf("%4d", player.power);
     return cout << player.arrowsBag;
 }

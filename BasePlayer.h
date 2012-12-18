@@ -37,10 +37,12 @@ public:
     ~BasePlayer();
 
     virtual void setSquare(Grid::Square& square);
+    void setColor(Console::Color color);
     void increasePower(int amount);
     void decreasePower(int amount);
     ArrowsBag& getArrowsBag();
 
+    Console::Color getColor() const;
     char getName() const;
     int getPower() const;
     virtual void draw() const;
@@ -56,6 +58,7 @@ protected:
 
     BasePlayer(char name); // Make class abstract
 
+    Console::Color color;
     char name;
     int power;
     ArrowsBag arrowsBag;
