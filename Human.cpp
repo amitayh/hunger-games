@@ -9,8 +9,14 @@ const char Human::KEY_DOWN                    = 'S';
 const char Human::KEY_SHOOT_REGULAR_ARROW     = 'P';
 const char Human::KEY_SHOOT_EXPLODING_ARROW   = 'I';
 const char Human::KEY_SHOOT_PENETRATING_ARROW = 'O';
+int        Human::numInstances                = 0;
 
-Human::Human(): BasePlayer(DISPLAY_NAME) {}
+Human::Human(): BasePlayer(DISPLAY_NAME) {
+    if (numInstances > 0) {
+        throw logic_error("Unable to instantiate more than one human player");
+    }
+    numInstances++;
+}
 
 void Human::update() {
     if (power > 0) {
