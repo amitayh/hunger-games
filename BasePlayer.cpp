@@ -110,6 +110,10 @@ int BasePlayer::getPower() const {
     return power;
 }
 
+bool BasePlayer::isAlive() const {
+    return power > 0;
+}
+
 BasePlayer::ArrowsBag& BasePlayer::getArrowsBag() {
     return arrowsBag;
 }

@@ -45,6 +45,7 @@ public:
     Console::Color getColor() const;
     char getName() const;
     int getPower() const;
+    bool isAlive() const;
     virtual void draw() const;
 
     friend ostream& operator<<(ostream& out, const BasePlayer& player);

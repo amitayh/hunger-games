@@ -198,7 +198,7 @@ void Game::updatePlayers() {
     while (status == RUNNING && it != players.end()) {
         BasePlayer* player = (BasePlayer*) *it;
         player->update();
-        if (!player->getPower()) {
+        if (!player->isAlive()) {
             // Player is dead - remove him
             it = players.erase(it);
             delete player;
