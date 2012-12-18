@@ -37,30 +37,11 @@ Game::Game() {
 }
 
 Game::~Game() {
-    // Delete players
-    ObjectsIterator player = players.begin();
-    while (player != players.end()) {
-        delete *player;
-        player = players.erase(player);
-    }
-    // Delete arrows
-    ObjectsIterator arrow = arrows.begin();
-    while (arrow != arrows.end()) {
-        delete *arrow;
-        arrow = arrows.erase(arrow);
-    }
-    // Delete dropping objects
-    ObjectsIterator droppingObject = droppingObjects.begin();
-    while (droppingObject != droppingObjects.end()) {
-        delete *droppingObject;
-        droppingObject = droppingObjects.erase(droppingObject);
-    }
-    // Delete walls
-    ObjectsIterator wall = walls.begin();
-    while (wall != walls.end()) {
-        delete *wall;
-        wall = walls.erase(wall);
-    }
+    // Free memory allocations
+    freeObejctsList(players);
+    freeObejctsList(arrows);
+    freeObejctsList(droppingObjects);
+    freeObejctsList(walls);
 }
 
 void Game::addBot(Bot* bot, Grid::Square& square) {
@@ -259,6 +240,14 @@ void Game::drawObejctsList(ObjectsList& list) {
     while (it != list.end()) {
         (*it)->draw();
         it++;
+    }
+}
+
+void Game::freeObejctsList(ObjectsList& list) {
+    ObjectsIterator it = list.begin();
+    while (it != list.end()) {
+        delete *it;
+        it = list.erase(it);
     }
 }
 

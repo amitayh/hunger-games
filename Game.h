@@ -48,6 +48,7 @@ class Game
     void showMenu();
     void drawUpdatingObjects();
     void drawObejctsList(ObjectsList& list);
+    void freeObejctsList(ObjectsList& list);
 
 public:
     Game();
