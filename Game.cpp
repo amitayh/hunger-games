@@ -21,7 +21,6 @@ const int Game::DROP_FOOD_PROBABILITY           = 2;
 const int Game::DROP_QUIVER_PROBABILITY         = 2;
 const int Game::DROP_BOMB_PROBABILITY           = 1;
 const int Game::MIN_DISTANCE_FROM_PLAYERS       = 2;
-const Console::Color Game::DEFAULT_COLORS[3]    = {Console::CYAN, Console::MAGENTA, Console::YELLOW};
 
 Game::Game() {
     // Initialize random number generator
@@ -44,23 +43,12 @@ Game::~Game() {
     freeObejctsList(walls);
 }
 
-void Game::addBot(Bot* bot, Grid::Square& square) {
-    bot->setColor(DEFAULT_COLORS[players.size() % 3]);
-    addObject(bot, square, players);
+void Game::addPlayer(BasePlayer* player, Grid::Square& square) {
+    addObject(player, square, players);
 }
 
-void Game::addBot(Bot* bot, int row, int col) {
-    addBot(bot, grid.getSquare(row, col));
-}
-
-void Game::addHuman(Grid::Square& square) {
-    Human* human = new Human;
-    human->setColor(DEFAULT_COLORS[players.size() % 3]);
-    addObject(human, square, players);
-}
-
-void Game::addHuman(int row, int col) {
-    addHuman(grid.getSquare(row, col));
+void Game::addPlayer(BasePlayer* player, int row, int col) {
+    addPlayer(player, grid.getSquare(row, col));
 }
 
 void Game::addWall(Grid::Square& square) {

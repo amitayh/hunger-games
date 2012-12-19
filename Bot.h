@@ -14,7 +14,7 @@ class Bot: public BasePlayer
     bool playerInRange(const BasePlayer& opponent) const;
 
 public:
-    Bot(char name);
+    Bot(char name, Console::Color color);
 
     virtual void update();
 };

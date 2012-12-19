@@ -5,7 +5,6 @@
 
 class Human: public BasePlayer
 {
-    static const char DISPLAY_NAME;
     static const char KEY_LEFT;
     static const char KEY_RIGHT;
     static const char KEY_UP;
@@ -16,7 +15,7 @@ class Human: public BasePlayer
     static int numInstances;
 
 public:
-    Human();
+    Human(char name, Console::Color color);
 
     virtual void update();
 };

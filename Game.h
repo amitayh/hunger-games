@@ -16,7 +16,6 @@ class Game
     static const int DROP_QUIVER_PROBABILITY;
     static const int DROP_BOMB_PROBABILITY;
     static const int MIN_DISTANCE_FROM_PLAYERS;
-    static const Console::Color DEFAULT_COLORS[3];
 
     enum Status {
         PENDING,
@@ -61,10 +60,8 @@ public:
     void addWall(int row, int col);
     void addInfoBox(Grid::Square& square);
     void addInfoBox(int row, int col);
-    void addHuman(Grid::Square& square);
-    void addHuman(int row, int col);
-    void addBot(Bot* bot, Grid::Square& square);
-    void addBot(Bot* bot, int row, int col);
+    void addPlayer(BasePlayer* player, Grid::Square& square);
+    void addPlayer(BasePlayer* player, int row, int col);
     void addArrow(BaseArrow* arrow, Grid::Square& square);
     void addArrow(BaseArrow* arrow, int row, int col);
     void clearWall(const Wall& wall);

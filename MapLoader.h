@@ -1,6 +1,7 @@
 #ifndef _MAP_LOADER_H
 #define _MAP_LOADER_H
 
+#include "Console.h"
 #include <string>
 
 class Game;
@@ -13,8 +14,11 @@ class MapLoader
     static const char CHAR_INFO_BOX;
     static const int MIN_NUM_PLAYERS;
     static const int MAX_NUM_PLAYERS;
+    static const Console::Color PLAYER_COLORS[3];
 
     Game* pGame;
+
+    Console::Color getPlayerColor() const;
 
 public:
     MapLoader(Game& game);

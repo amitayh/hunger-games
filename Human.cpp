@@ -1,7 +1,6 @@
 #include "Human.h"
 #include "Game.h"
 
-const char Human::DISPLAY_NAME                = 'H';
 const char Human::KEY_LEFT                    = 'A';
 const char Human::KEY_RIGHT                   = 'D';
 const char Human::KEY_UP                      = 'W';
@@ -11,7 +10,7 @@ const char Human::KEY_SHOOT_EXPLODING_ARROW   = 'I';
 const char Human::KEY_SHOOT_PENETRATING_ARROW = 'O';
 int        Human::numInstances                = 0;
 
-Human::Human(): BasePlayer(DISPLAY_NAME) {
+Human::Human(char name, Console::Color color): BasePlayer(name, color) {
     if (numInstances > 0) {
         throw logic_error("Unable to instantiate more than one human player");
     }

@@ -37,7 +37,6 @@ public:
     ~BasePlayer();
 
     virtual void setSquare(Grid::Square& square);
-    void setColor(Console::Color color);
     void increasePower(int amount);
     void decreasePower(int amount);
     ArrowsBag& getArrowsBag();
@@ -57,7 +56,7 @@ protected:
     static const int CHANGE_DIRECTION_PROBABILITY;
     static const int MOVE_INTERVAL;
 
-    BasePlayer(char name); // Make class abstract
+    BasePlayer(char name, Console::Color color); // Make class abstract
 
     Console::Color color;
     char name;

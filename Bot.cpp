@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "DroppingObject.h"
 
-Bot::Bot(char name): BasePlayer(name) {}
+Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 
 void Bot::update() {
     if (power > 0) {

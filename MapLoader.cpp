@@ -1,14 +1,16 @@
 #include "MapLoader.h"
 #include "Game.h"
 #include "Bot.h"
+#include "Human.h"
 #include <fstream>
 
-const char  MapLoader::CHAR_WALL        = 'W';
-const char  MapLoader::CHAR_BOT         = 'P';
-const char  MapLoader::CHAR_HUMAN       = 'H';
-const char  MapLoader::CHAR_INFO_BOX    = 'O';
-const int   MapLoader::MIN_NUM_PLAYERS  = 2;
-const int   MapLoader::MAX_NUM_PLAYERS  = 3;
+const char              MapLoader::CHAR_WALL        = 'W';
+const char              MapLoader::CHAR_BOT         = 'P';
+const char              MapLoader::CHAR_HUMAN       = 'H';
+const char              MapLoader::CHAR_INFO_BOX    = 'O';
+const int               MapLoader::MIN_NUM_PLAYERS  = 2;
+const int               MapLoader::MAX_NUM_PLAYERS  = 3;
+const Console::Color    MapLoader::PLAYER_COLORS[3] = {Console::CYAN, Console::MAGENTA, Console::YELLOW};
 
 MapLoader::MapLoader(Game& game) {
     pGame = &game;
@@ -39,13 +41,17 @@ bool MapLoader::load(const string& filename) const {
                     case CHAR_BOT:
                         if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
                             char name = 'A' + bots; // Name the bots sequentially (A, B, C...)
-                            pGame->addBot(new Bot(name), row, col);
+                            Console::Color color = getPlayerColor();
+                            Bot* bot = new Bot(name, color);
+                            pGame->addPlayer(bot, row, col);
                             bots++;
                         }
                         break;
                     case CHAR_HUMAN:
                         if (!addedHumanPlayer && players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            pGame->addHuman(row, col);
+                            Console::Color color = getPlayerColor();
+                            Human* human = new Human(CHAR_HUMAN, color);
+                            pGame->addPlayer(human, row, col);
                             addedHumanPlayer = true;
                         }
                         break;
@@ -63,7 +69,10 @@ bool MapLoader::load(const string& filename) const {
         // Add additional bots if needed
         for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
             char name = 'A' + bots;
-            pGame->addBot(new Bot(name), pGame->getValidDropSquare());
+            Console::Color color = getPlayerColor();
+            Bot* bot = new Bot(name, color);
+            Grid::Square& square = pGame->getValidDropSquare();
+            pGame->addPlayer(bot, square);
             bots++;
         }
 
@@ -71,4 +80,8 @@ bool MapLoader::load(const string& filename) const {
         return true; // Success - map loaded
     }
     return false; // Unable to open map file
+}
+
+Console::Color MapLoader::getPlayerColor() const {
+    return PLAYER_COLORS[pGame->getPlayers().size() % 3];
 }

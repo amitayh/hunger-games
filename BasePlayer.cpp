@@ -15,9 +15,9 @@ const int BasePlayer::SHOOT_ARROW_PROBABILITY         = 20;
 const int BasePlayer::CHANGE_DIRECTION_PROBABILITY    = 10;
 const int BasePlayer::MOVE_INTERVAL                   = 2;
 
-BasePlayer::BasePlayer(char name) {
+BasePlayer::BasePlayer(char name, Console::Color color) {
     this->name = name;
-    color = Console::WHITE;
+    this->color = color;
     power = INITIAL_POWER;
     direction = RIGHT;
     lastArrowTick = 0;
@@ -53,10 +53,6 @@ void BasePlayer::setSquare(Grid::Square& square) {
     }
     square.stepIn(*this);
     pSquare = &square;
-}
-
-void BasePlayer::setColor(Console::Color color) {
-    this->color = color;
 }
 
 bool BasePlayer::shootArrow(ArrowsBag::Type type) {
