@@ -14,7 +14,7 @@ public:
     bool getHit() const;
 
 protected:
-    static const int MOVE_INTERVAL;
+    static const int MOVE_INTERVAL = 1;
 
     BaseArrow(); // Make the class abstract
 

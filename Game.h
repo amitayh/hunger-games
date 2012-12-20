@@ -10,12 +10,12 @@ class BaseArrow;
 
 class Game
 {
-    static const int ESCAPSE_KEY;
-    static const int FRAMES_PER_SECOND;
-    static const int DROP_FOOD_PROBABILITY;
-    static const int DROP_QUIVER_PROBABILITY;
-    static const int DROP_BOMB_PROBABILITY;
-    static const int MIN_DISTANCE_FROM_PLAYERS;
+    static const int ESCAPSE_KEY                = 27;
+    static const int FRAMES_PER_SECOND          = 25;
+    static const int DROP_FOOD_PROBABILITY      = 2;
+    static const int DROP_QUIVER_PROBABILITY    = 2;
+    static const int DROP_BOMB_PROBABILITY      = 1;
+    static const int MIN_DISTANCE_FROM_PLAYERS  = 2;
 
     enum Status {
         PENDING,

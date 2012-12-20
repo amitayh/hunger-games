@@ -5,13 +5,13 @@
 
 class Human: public BasePlayer
 {
-    static const char KEY_LEFT;
-    static const char KEY_RIGHT;
-    static const char KEY_UP;
-    static const char KEY_DOWN;
-    static const char KEY_SHOOT_REGULAR_ARROW;
-    static const char KEY_SHOOT_EXPLODING_ARROW;
-    static const char KEY_SHOOT_PENETRATING_ARROW;
+    static const char KEY_LEFT                      = 'A';
+    static const char KEY_RIGHT                     = 'D';
+    static const char KEY_UP                        = 'W';
+    static const char KEY_DOWN                      = 'S';
+    static const char KEY_SHOOT_REGULAR_ARROW       = 'P';
+    static const char KEY_SHOOT_EXPLODING_ARROW     = 'I';
+    static const char KEY_SHOOT_PENETRATING_ARROW   = 'O';
     static int numInstances;
 
 public:

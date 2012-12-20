@@ -16,8 +16,8 @@ typedef ObjectsList::iterator ObjectsIterator;
 class Grid
 {
 public:
-    static const int DEFAULT_NUM_ROWS;
-    static const int DEFAULT_NUM_COLS;
+    static const int DEFAULT_NUM_ROWS = 24;
+    static const int DEFAULT_NUM_COLS = 79;
 
     class Square
     {

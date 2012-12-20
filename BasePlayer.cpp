@@ -9,12 +9,6 @@
 
 using namespace std;
 
-const int BasePlayer::INITIAL_POWER                   = 1000;
-const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS        = 3;
-const int BasePlayer::SHOOT_ARROW_PROBABILITY         = 20;
-const int BasePlayer::CHANGE_DIRECTION_PROBABILITY    = 10;
-const int BasePlayer::MOVE_INTERVAL                   = 2;
-
 BasePlayer::BasePlayer(char name, Console::Color color) {
     this->name = name;
     this->color = color;
@@ -125,10 +119,6 @@ ostream& operator<<(ostream& out, const BasePlayer& player) {
 }
 
 // Player arrows bag
-
-const int BasePlayer::ArrowsBag::INITIAL_NUM_REGULAR        = 2;
-const int BasePlayer::ArrowsBag::INITIAL_NUM_EXPLODING      = 1;
-const int BasePlayer::ArrowsBag::INITIAL_NUM_PENETRATING    = 1;
 
 BasePlayer::ArrowsBag::ArrowsBag() {
     remaining[REGULAR] = INITIAL_NUM_REGULAR;

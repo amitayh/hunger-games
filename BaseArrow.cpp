@@ -2,8 +2,6 @@
 #include "Game.h"
 #include "BasePlayer.h"
 
-const int BaseArrow::MOVE_INTERVAL = 1;
-
 BaseArrow::BaseArrow() {
     hit = false;
 }

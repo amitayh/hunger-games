@@ -6,8 +6,8 @@
 
 class InfoBox: public BaseObject
 {
-    static const int WIDTH;
-    static const int HEIGHT;
+    static const int WIDTH  = 10;
+    static const int HEIGHT = 5;
 
     Dimensions size;
 

@@ -8,9 +8,6 @@ using namespace std;
 
 // Grid implementation
 
-const int Grid::DEFAULT_NUM_ROWS = 24;
-const int Grid::DEFAULT_NUM_COLS = 79;
-
 Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
     // Allocate squares matrix
     squares = new Square*[rows];
