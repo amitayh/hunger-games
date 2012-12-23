@@ -4,6 +4,8 @@
 
 using namespace HungerGames;
 
+const int BaseArrow::MOVE_INTERVAL = 1;
+
 BaseArrow::BaseArrow() {
     hit = false;
 }

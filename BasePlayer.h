@@ -19,9 +19,9 @@ namespace HungerGames
         {
             int remaining[3];
         public:
-            static const int INITIAL_NUM_REGULAR        = 2;
-            static const int INITIAL_NUM_EXPLODING      = 1;
-            static const int INITIAL_NUM_PENETRATING    = 1;
+            static const int INITIAL_NUM_REGULAR;
+            static const int INITIAL_NUM_EXPLODING;
+            static const int INITIAL_NUM_PENETRATING;
             enum Type {
                 REGULAR,
                 EXPLODING,
@@ -52,11 +52,11 @@ namespace HungerGames
         virtual void draw() const;
 
     protected:
-        static const int INITIAL_POWER                  = 1000;
-        static const int MIN_TICKS_BETWEEN_ARROWS       = 3;
-        static const int SHOOT_ARROW_PROBABILITY        = 20;
-        static const int CHANGE_DIRECTION_PROBABILITY   = 10;
-        static const int MOVE_INTERVAL                  = 2;
+        static const int INITIAL_POWER;
+        static const int MIN_TICKS_BETWEEN_ARROWS;
+        static const int SHOOT_ARROW_PROBABILITY;
+        static const int CHANGE_DIRECTION_PROBABILITY;
+        static const int MOVE_INTERVAL;
 
         BasePlayer(char name, Console::Color color); // Make class abstract
 

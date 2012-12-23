@@ -6,7 +6,13 @@
 
 using namespace HungerGames;
 
-const Console::Color MapLoader::PLAYER_COLORS[3] = {
+const char  MapLoader::CHAR_WALL         = 'W';
+const char  MapLoader::CHAR_BOT          = 'P';
+const char  MapLoader::CHAR_HUMAN        = 'H';
+const char  MapLoader::CHAR_INFO_BOX     = 'O';
+const int   MapLoader::MIN_NUM_PLAYERS   = 2;
+const int   MapLoader::MAX_NUM_PLAYERS   = 3;
+const Console::Color MapLoader::PLAYER_COLORS[] = {
     Console::CYAN, Console::MAGENTA, Console::YELLOW
 };
 

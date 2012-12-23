@@ -3,7 +3,14 @@
 
 using namespace HungerGames;
 
-int Human::numInstances = 0;
+const char  Human::KEY_LEFT                      = 'A';
+const char  Human::KEY_RIGHT                     = 'D';
+const char  Human::KEY_UP                        = 'W';
+const char  Human::KEY_DOWN                      = 'S';
+const char  Human::KEY_SHOOT_REGULAR_ARROW       = 'P';
+const char  Human::KEY_SHOOT_EXPLODING_ARROW     = 'I';
+const char  Human::KEY_SHOOT_PENETRATING_ARROW   = 'O';
+int         Human::numInstances                  = 0;
 
 Human::Human(char name, Console::Color color): BasePlayer(name, color) {
     if (numInstances > 0) {

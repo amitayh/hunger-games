@@ -11,13 +11,13 @@ namespace HungerGames
 
     class MapLoader
     {
-        static const char CHAR_WALL         = 'W';
-        static const char CHAR_BOT          = 'P';
-        static const char CHAR_HUMAN        = 'H';
-        static const char CHAR_INFO_BOX     = 'O';
-        static const int MIN_NUM_PLAYERS    = 2;
-        static const int MAX_NUM_PLAYERS    = 3;
-        static const Console::Color PLAYER_COLORS[3];
+        static const char CHAR_WALL;
+        static const char CHAR_BOT;
+        static const char CHAR_HUMAN;
+        static const char CHAR_INFO_BOX;
+        static const int MIN_NUM_PLAYERS;
+        static const int MAX_NUM_PLAYERS;
+        static const Console::Color PLAYER_COLORS[];
 
         Game* pGame;
 

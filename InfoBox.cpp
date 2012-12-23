@@ -6,6 +6,9 @@
 using namespace std;
 using namespace HungerGames;
 
+const int InfoBox::WIDTH  = 10;
+const int InfoBox::HEIGHT = 5;
+
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
 void InfoBox::setSquare(Grid::Square& square) {

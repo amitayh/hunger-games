@@ -17,7 +17,7 @@ namespace HungerGames
         bool getHit() const;
 
     protected:
-        static const int MOVE_INTERVAL = 1;
+        static const int MOVE_INTERVAL;
 
         BaseArrow(); // Make the class abstract
 

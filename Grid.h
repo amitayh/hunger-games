@@ -19,8 +19,8 @@ namespace HungerGames
     class Grid
     {
     public:
-        static const int DEFAULT_NUM_ROWS = 24;
-        static const int DEFAULT_NUM_COLS = 79;
+        static const int DEFAULT_NUM_ROWS;
+        static const int DEFAULT_NUM_COLS;
 
         class Square
         {
