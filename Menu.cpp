@@ -4,6 +4,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace HungerGames;
 
 int Menu::addOption(const string& option) {
     options.push_back(option);

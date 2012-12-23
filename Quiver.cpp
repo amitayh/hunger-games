@@ -1,6 +1,8 @@
 #include "Quiver.h"
 #include "BasePlayer.h"
 
+using namespace HungerGames;
+
 Quiver::Quiver() {
     type = QUIVER;
 }

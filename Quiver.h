@@ -3,14 +3,19 @@
 
 #include "DroppingObject.h"
 
-class Quiver: public DroppingObject
+namespace HungerGames
 {
-public:
-    Quiver();
 
-    void affect(BasePlayer& player);
+    class Quiver: public DroppingObject
+    {
+    public:
+        Quiver();
 
-    void draw() const;
-};
+        virtual void affect(BasePlayer& player);
+
+        virtual void draw() const;
+    };
+
+}
 
 #endif

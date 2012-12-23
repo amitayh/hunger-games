@@ -1,5 +1,7 @@
 #include "BaseObject.h"
 
+using namespace HungerGames;
+
 BaseObject::BaseObject() {
     pGame = NULL;
     pSquare = NULL;

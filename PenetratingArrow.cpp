@@ -1,5 +1,7 @@
 #include "PenetratingArrow.h"
 
+using namespace HungerGames;
+
 void PenetratingArrow::draw() const {
     char ch;
     switch (direction) {

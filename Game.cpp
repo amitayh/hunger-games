@@ -14,6 +14,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace HungerGames;
 
 Game::Game() {
     // Initialize random number generator

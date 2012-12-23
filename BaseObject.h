@@ -3,23 +3,28 @@
 
 #include "Grid.h"
 
-class Game;
-
-class BaseObject
+namespace HungerGames
 {
-public:
-    BaseObject();
-    virtual ~BaseObject() {};
 
-    void setGame(Game& game);
-    virtual void setSquare(Grid::Square& square);
+    class Game;
+
+    class BaseObject
+    {
+    public:
+        BaseObject();
+        virtual ~BaseObject() {};
+
+        void setGame(Game& game);
+        virtual void setSquare(Grid::Square& square);
     
-    virtual void draw() const = 0;
-    Grid::Square& getSquare() const;
+        virtual void draw() const = 0;
+        Grid::Square& getSquare() const;
 
-protected:
-    Game* pGame;
-    Grid::Square *pSquare;
-};
+    protected:
+        Game* pGame;
+        Grid::Square *pSquare;
+    };
+
+}
 
 #endif

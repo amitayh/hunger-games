@@ -1,6 +1,8 @@
 #include "Bomb.h"
 #include "BasePlayer.h"
 
+using namespace HungerGames;
+
 Bomb::Bomb() {
     type = BOMB;
 }

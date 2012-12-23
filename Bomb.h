@@ -3,14 +3,19 @@
 
 #include "DroppingObject.h"
 
-class Bomb: public DroppingObject
+namespace HungerGames
 {
-public:
-    Bomb();
 
-    void affect(BasePlayer& player);
+    class Bomb: public DroppingObject
+    {
+    public:
+        Bomb();
 
-    void draw() const;
-};
+        virtual void affect(BasePlayer& player);
+
+        virtual void draw() const;
+    };
+
+}
 
 #endif

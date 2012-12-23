@@ -4,6 +4,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace HungerGames;
 
 InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 

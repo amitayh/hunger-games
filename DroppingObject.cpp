@@ -1,6 +1,8 @@
 #include "DroppingObject.h"
 #include "Game.h"
 
+using namespace HungerGames;
+
 DroppingObject::DroppingObject() {
     pickedUp = false;
 }

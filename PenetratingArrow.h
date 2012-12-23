@@ -3,10 +3,15 @@
 
 #include "BaseArrow.h"
 
-class PenetratingArrow: public BaseArrow
+namespace HungerGames
 {
-public:
-    virtual void draw() const;
-};
+
+    class PenetratingArrow: public BaseArrow
+    {
+    public:
+        virtual void draw() const;
+    };
+
+}
 
 #endif

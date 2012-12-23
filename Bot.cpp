@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "DroppingObject.h"
 
+using namespace HungerGames;
+
 Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 
 void Bot::update() {

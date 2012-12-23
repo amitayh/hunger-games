@@ -1,5 +1,7 @@
 #include "RegularArrow.h"
 
+using namespace HungerGames;
+
 bool RegularArrow::checkHit() {
     if (pSquare && pSquare->hasWall()) {
         hit = true;

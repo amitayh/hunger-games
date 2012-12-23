@@ -3,20 +3,25 @@
 
 #include "BasePlayer.h"
 
-class Bot: public BasePlayer
+namespace HungerGames
 {
-    void setRandomDirection();
-    Grid::Square& getNextMove();
 
-    DroppingObject* findClosestObject() const;
-    bool isClearPath(const Grid::Square& target) const;
-    bool hasPlayersInRange() const;
-    bool playerInRange(const BasePlayer& opponent) const;
+    class Bot: public BasePlayer
+    {
+        void setRandomDirection();
+        Grid::Square& getNextMove();
 
-public:
-    Bot(char name, Console::Color color);
+        DroppingObject* findClosestObject() const;
+        bool isClearPath(const Grid::Square& target) const;
+        bool hasPlayersInRange() const;
+        bool playerInRange(const BasePlayer& opponent) const;
 
-    virtual void update();
-};
+    public:
+        Bot(char name, Console::Color color);
+
+        virtual void update();
+    };
+
+}
 
 #endif

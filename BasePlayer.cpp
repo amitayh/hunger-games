@@ -8,6 +8,7 @@
 #include <exception>
 
 using namespace std;
+using namespace HungerGames;
 
 BasePlayer::BasePlayer(char name, Console::Color color) {
     this->name = name;
@@ -108,14 +109,18 @@ BasePlayer::ArrowsBag& BasePlayer::getArrowsBag() {
     return arrowsBag;
 }
 
+const BasePlayer::ArrowsBag& BasePlayer::getArrowsBag() const {
+    return arrowsBag;
+}
+
 void BasePlayer::draw() const {
     pSquare->draw(name, color);
 }
 
 ostream& operator<<(ostream& out, const BasePlayer& player) {
-    Console::changeColor(player.color);
-    printf("%4d", player.power);
-    return cout << player.arrowsBag;
+    Console::changeColor(player.getColor());
+    printf("%4d", player.getPower());
+    return cout << player.getArrowsBag();
 }
 
 // Player arrows bag
@@ -190,9 +195,9 @@ BasePlayer::ArrowsBag& BasePlayer::ArrowsBag::operator++() {
 ostream& operator<<(ostream& out, const BasePlayer::ArrowsBag& arrowsBag) {
     printf(
         "%2d%2d%2d",
-        arrowsBag.remaining[BasePlayer::ArrowsBag::REGULAR],
-        arrowsBag.remaining[BasePlayer::ArrowsBag::EXPLODING],
-        arrowsBag.remaining[BasePlayer::ArrowsBag::PENETRATING]
+        arrowsBag.getRemaining(BasePlayer::ArrowsBag::REGULAR),
+        arrowsBag.getRemaining(BasePlayer::ArrowsBag::EXPLODING),
+        arrowsBag.getRemaining(BasePlayer::ArrowsBag::PENETRATING)
     );
     return out;
 }

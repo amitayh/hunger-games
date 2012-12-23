@@ -1,6 +1,8 @@
 #include "Human.h"
 #include "Game.h"
 
+using namespace HungerGames;
+
 int Human::numInstances = 0;
 
 Human::Human(char name, Console::Color color): BasePlayer(name, color) {

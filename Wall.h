@@ -3,12 +3,17 @@
 
 #include "BaseObject.h"
 
-class Wall: public BaseObject 
+namespace HungerGames
 {
-public:
-    virtual void setSquare(Grid::Square& square);
 
-    virtual void draw() const;
-};
+    class Wall: public BaseObject 
+    {
+    public:
+        virtual void setSquare(Grid::Square& square);
+
+        virtual void draw() const;
+    };
+
+}
 
 #endif

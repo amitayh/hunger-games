@@ -4,6 +4,8 @@
 #include "Human.h"
 #include <fstream>
 
+using namespace HungerGames;
+
 const Console::Color MapLoader::PLAYER_COLORS[3] = {
     Console::CYAN, Console::MAGENTA, Console::YELLOW
 };

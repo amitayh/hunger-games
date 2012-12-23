@@ -4,6 +4,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace HungerGames;
 
 void Console::changeColor(Color color) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -1,5 +1,7 @@
 #include "Dimensions.h"
 
+using namespace HungerGames;
+
 Dimensions::Dimensions(int width, int height) {
     this->width = width;
     this->height = height;

@@ -1,6 +1,8 @@
 #include "ExplodingArrow.h"
 #include "Game.h"
 
+using namespace HungerGames;
+
 bool ExplodingArrow::checkHit() {
     if (pSquare && pSquare->hasWall()) {
         pGame->clearWall(pSquare->getWall());

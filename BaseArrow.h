@@ -3,24 +3,29 @@
 
 #include "MovingObject.h"
 
-class BaseArrow: public MovingObject
+namespace HungerGames
 {
-public:
-    ~BaseArrow();
 
-    virtual void setSquare(Grid::Square& square);
-    virtual void update();
+    class BaseArrow: public MovingObject
+    {
+    public:
+        ~BaseArrow();
 
-    bool getHit() const;
+        virtual void setSquare(Grid::Square& square);
+        virtual void update();
 
-protected:
-    static const int MOVE_INTERVAL = 1;
+        bool getHit() const;
 
-    BaseArrow(); // Make the class abstract
+    protected:
+        static const int MOVE_INTERVAL = 1;
 
-    bool hit;
+        BaseArrow(); // Make the class abstract
 
-    virtual bool checkHit();
-};
+        bool hit;
+
+        virtual bool checkHit();
+    };
+
+}
 
 #endif

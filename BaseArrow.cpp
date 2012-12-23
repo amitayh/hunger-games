@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "BasePlayer.h"
 
+using namespace HungerGames;
+
 BaseArrow::BaseArrow() {
     hit = false;
 }

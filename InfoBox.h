@@ -4,20 +4,25 @@
 #include "BaseObject.h"
 #include "Dimensions.h"
 
-class InfoBox: public BaseObject
+namespace HungerGames
 {
-    static const int WIDTH  = 10;
-    static const int HEIGHT = 5;
 
-    Dimensions size;
+    class InfoBox: public BaseObject
+    {
+        static const int WIDTH  = 10;
+        static const int HEIGHT = 5;
 
-public:
-    InfoBox();
+        Dimensions size;
 
-    virtual void setSquare(Grid::Square& square);
+    public:
+        InfoBox();
 
-    virtual void draw() const;
-    bool inArea(const Grid::Square& square) const;
-};
+        virtual void setSquare(Grid::Square& square);
+
+        virtual void draw() const;
+        bool inArea(const Grid::Square& square) const;
+    };
+
+}
 
 #endif

@@ -3,26 +3,31 @@
 
 #include "BaseObject.h"
 
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
-
-class MovingObject: public BaseObject
+namespace HungerGames
 {
-public:
-    virtual void update() = 0;
-    void setDirection(Direction direction);
 
-    Direction getDirection() const;
+    enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
 
-protected:
-    Direction direction;
+    class MovingObject: public BaseObject
+    {
+    public:
+        virtual void update() = 0;
+        void setDirection(Direction direction);
 
-    Grid::Square& getNextSquare() const;
-    static Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
-};
+        Direction getDirection() const;
+
+    protected:
+        Direction direction;
+
+        Grid::Square& getNextSquare() const;
+        static Grid::Square& getNextSquare(const Grid& grid, const Grid::Square& square, Direction direction);
+    };
+
+}
 
 #endif

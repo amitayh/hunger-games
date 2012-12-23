@@ -6,15 +6,20 @@
 
 using namespace std;
 
-class Menu
+namespace HungerGames
 {
-    vector<string> options;
 
-public:
-    int addOption(const string& option);
+    class Menu
+    {
+        vector<string> options;
 
-    void show() const;
-    int choose() const;
-};
+    public:
+        int addOption(const string& option);
+
+        void show() const;
+        int choose() const;
+    };
+
+}
 
 #endif

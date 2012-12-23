@@ -1,6 +1,8 @@
 #include "Food.h"
 #include "BasePlayer.h"
 
+using namespace HungerGames;
+
 Food::Food() {
     type = FOOD;
 }

@@ -1,6 +1,8 @@
 #include "MovingObject.h"
 #include "Game.h"
 
+using namespace HungerGames;
+
 void MovingObject::setDirection(Direction direction) {
     this->direction = direction;
 }

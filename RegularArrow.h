@@ -3,13 +3,18 @@
 
 #include "BaseArrow.h"
 
-class RegularArrow: public BaseArrow
+namespace HungerGames
 {
-public:
-    virtual void draw() const;
 
-protected:
-    virtual bool checkHit();
-};
+    class RegularArrow: public BaseArrow
+    {
+    public:
+        virtual void draw() const;
+
+    protected:
+        virtual bool checkHit();
+    };
+
+}
 
 #endif
