@@ -1,15 +1,20 @@
 #ifndef _DIMENSIONS_H
 #define _DIMENSIONS_H
 
-class Dimensions
+namespace HungerGames
 {
-    int width, height;
 
-public:
-    Dimensions(int width, int height);
+    class Dimensions
+    {
+        int width, height;
 
-    int getWidth() const;
-    int getHeight() const;
-};
+    public:
+        Dimensions(int width, int height);
+
+        int getWidth() const;
+        int getHeight() const;
+    };
+
+}
 
 #endif

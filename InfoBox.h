@@ -1,27 +1,28 @@
 #ifndef _INFO_BOX_H
 #define _INFO_BOX_H
 
-#include "Grid.h"
+#include "BaseObject.h"
 #include "Dimensions.h"
 
-class InfoBox
+namespace HungerGames
 {
-    enum {
-        WIDTH = 10,
-        HEIGHT = 5
+
+    class InfoBox: public BaseObject
+    {
+        static const int WIDTH;
+        static const int HEIGHT;
+
+        Dimensions size;
+
+    public:
+        InfoBox();
+
+        virtual void setSquare(Grid::Square& square);
+
+        virtual void draw() const;
+        bool inArea(const Grid::Square& square) const;
     };
 
-    Grid::Square* pSquare;
-    Dimensions size;
-
-public:
-    InfoBox();
-
-    void setSquare(Grid::Square& square);
-
-    void draw(const List& players) const;
-    const Dimensions& getSize() const;
-    bool inArea(const Grid::Square& square) const;
-};
+}
 
 #endif

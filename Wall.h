@@ -1,16 +1,19 @@
 #ifndef _WALL_H
 #define _WALL_H
 
-#include "Grid.h"
+#include "BaseObject.h"
 
-class Wall
+namespace HungerGames
 {
-    Grid::Square* pSquare;
 
-public:
-    Wall(Grid::Square& square);
+    class Wall: public BaseObject 
+    {
+    public:
+        virtual void setSquare(Grid::Square& square);
 
-    void draw() const;
-};
+        virtual void draw() const;
+    };
+
+}
 
 #endif

@@ -1,54 +1,22 @@
 #include "DroppingObject.h"
+#include "Game.h"
 
-DroppingObject::DroppingObject(Type type, Grid::Square& square) {
-    square.setDroppingObject(*this);
-    this->type = type;
-    pSquare = &square;
+using namespace HungerGames;
+
+DroppingObject::DroppingObject() {
     pickedUp = false;
 }
 
 DroppingObject::~DroppingObject() {
-    pSquare->unsetDroppingObject();
-    pSquare->clear();
-}
-
-void DroppingObject::affect(Player& player) {
-    switch (type) {
-        case FOOD:
-            player.increasePower(200);
-            break;
-        case QUIVER:
-            player.addArrows(3);
-            break;
-        case BOMB:
-            player.decreasePower(750);
-            break;
+    if (pGame->isRunning()) {
+        pSquare->unsetDroppingObject();
     }
-    pickedUp = true;
 }
 
-Grid::Square& DroppingObject::getSquare() const {
-    return *pSquare;
-}
-
-void DroppingObject::draw() const {
-    char ch;
-    Color color;
-    switch (type) {
-        case FOOD:
-            ch = '$';
-            color = LIME;
-            break;
-        case QUIVER:
-            ch = '*';
-            color = YELLOW;
-            break;
-        case BOMB:
-            ch = '@';
-            color = RED;
-            break;
-    }
-    pSquare->draw(ch, color);
+void DroppingObject::setSquare(Grid::Square& square) {
+    BaseObject::setSquare(square);
+    square.setDroppingObject(*this);
+    draw(); // Draw immediately when the object is dropped
 }
 
 bool DroppingObject::getPickedUp() const {

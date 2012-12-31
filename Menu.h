@@ -1,21 +1,25 @@
 #ifndef _MENU_H
 #define _MENU_H
 
-const int MAX_OPTIONS = 5;
+#include <vector>
+#include <string>
 
-class Menu
+using namespace std;
+
+namespace HungerGames
 {
-    char* options[MAX_OPTIONS];
-    int numOptions;
 
-public:
-    Menu();
-    ~Menu();
+    class Menu
+    {
+        vector<string> options;
 
-    int addOption(const char* option);
+    public:
+        int addOption(const string& option);
 
-    void show() const;
-    int choose() const;
-};
+        void show() const;
+        int choose() const;
+    };
+
+}
 
 #endif

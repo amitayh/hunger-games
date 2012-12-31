@@ -1,23 +1,34 @@
 #ifndef _MAP_LOADER_H
 #define _MAP_LOADER_H
 
-#include "Game.h"
+#include "Console.h"
+#include <string>
 
-class MapLoader
+namespace HungerGames
 {
-    enum {
-        CHAR_WALL       = 'W',
-        CHAR_PLAYER     = 'P',
-        CHAR_INFO_BOX   = 'O',
-        MIN_NUM_PLAYERS = 2
+
+    class Game;
+
+    class MapLoader
+    {
+        static const char CHAR_WALL;
+        static const char CHAR_BOT;
+        static const char CHAR_HUMAN;
+        static const char CHAR_INFO_BOX;
+        static const int MIN_NUM_PLAYERS;
+        static const int MAX_NUM_PLAYERS;
+        static const Console::Color PLAYER_COLORS[];
+
+        Game* pGame;
+
+        Console::Color getPlayerColor() const;
+
+    public:
+        MapLoader(Game& game);
+
+        bool load(const std::string& filename) const;
     };
 
-    Game* pGame;
-
-public:
-    MapLoader(Game& game);
-
-    bool load(const string& filename) const;
-};
+}
 
 #endif

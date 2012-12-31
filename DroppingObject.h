@@ -1,31 +1,36 @@
 #ifndef _DROPPING_OBJECT_H
 #define _DROPPING_OBJECT_H
 
-#include "Player.h"
+#include "BaseObject.h"
 
-class DroppingObject
+namespace HungerGames
 {
-public:
-    enum Type {
-        FOOD,
-        QUIVER,
-        BOMB
+
+    class BasePlayer;
+
+    class DroppingObject: public BaseObject
+    {
+    public:
+        enum Type {
+            FOOD,
+            QUIVER,
+            BOMB
+        };
+
+        DroppingObject();
+        ~DroppingObject();
+
+        virtual void affect(BasePlayer& player) = 0;
+        virtual void setSquare(Grid::Square& square);
+
+        bool getPickedUp() const;
+        Type getType() const;
+
+    protected:
+        bool pickedUp;
+        Type type;
     };
 
-    DroppingObject(Type type, Grid::Square& square);
-    ~DroppingObject();
-
-    void affect(Player& player);
-
-    void draw() const;
-    bool getPickedUp() const;
-    Grid::Square& getSquare() const;
-    Type getType() const;
-
-private:
-    Grid::Square *pSquare;
-    Type type;
-    bool pickedUp;
-};
+}
 
 #endif

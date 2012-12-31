@@ -1,12 +1,16 @@
 #include "Grid.h"
-#include "Player.h"
+#include "BasePlayer.h"
 #include "DroppingObject.h"
-#include "Gotoxy.h"
+#include "Wall.h"
 #include <iostream>
 
 using namespace std;
+using namespace HungerGames;
 
 // Grid implementation
+
+const int Grid::DEFAULT_NUM_ROWS = 24;
+const int Grid::DEFAULT_NUM_COLS = 79;
 
 Grid::Grid(int rows, int cols): rows(rows), cols(cols) {
     // Allocate squares matrix
@@ -57,20 +61,20 @@ int Grid::getCols() const {
 
 // Grid square implementation
 
+const double Grid::Square::PI = 3.141592653589793;
+
 Grid::Square::Square() {
     pDroppingObject = NULL;
     pWall = NULL;
 }
 
-void Grid::Square::stepIn(const Player& player) {
-    players.push(&player);
+void Grid::Square::stepIn(BasePlayer& player) {
+    players.push_back(&player);
 }
 
-void Grid::Square::stepOut(const Player& player) {
-    // The List::find() method performs a linear search (O(n) efficiency), however
-    // in most cases the list will not contain more than one player
-    List::Node* node = players.find(&player);
-    players.remove(node);
+void Grid::Square::stepOut(BasePlayer& player) {
+    players.remove(&player);
+    clear();
 }
 
 void Grid::Square::initPosition(int row, int col) {
@@ -84,13 +88,19 @@ void Grid::Square::setDroppingObject(DroppingObject& droppingObject) {
 
 void Grid::Square::unsetDroppingObject() {
     pDroppingObject = NULL;
+    clear();
 }
 
 void Grid::Square::setWall(Wall& wall) {
     pWall = &wall;
 }
 
-const List& Grid::Square::getPlayers() const {
+void Grid::Square::unsetWall() {
+    pWall = NULL;
+    clear();
+}
+
+ObjectsList& Grid::Square::getPlayers() {
     return players;
 }
 
@@ -98,10 +108,17 @@ DroppingObject& Grid::Square::getDroppingObject() const {
     return *pDroppingObject;
 }
 
+Wall& Grid::Square::getWall() const {
+    return *pWall;
+}
+
 void Grid::Square::clear() const {
     if (pDroppingObject) {
         // Draw dropping object
         pDroppingObject->draw();
+    } else if (pWall) {
+        // Draw wall
+        pWall->draw();
     } else {
         // Blank square
         draw(' ');
@@ -116,10 +133,10 @@ bool Grid::Square::hasWall() const {
     return (pWall != NULL);
 }
 
-void Grid::Square::draw(char ch, Color color) const {
+void Grid::Square::draw(char ch, Console::Color color) const {
     // Draw a single character on square
-    gotoxy(col, row);
-    changeColor(color);
+    Console::gotoPosition(row, col);
+    Console::changeColor(color);
     cout << ch;
 }
 
@@ -164,7 +181,7 @@ Direction Grid::Square::getDirection(const Square& otherSquare) const {
 
 bool Grid::Square::isEmpty() const {
     // Check if square is not occupied by a dropping object, a wall, or a player
-    return (!pDroppingObject && !pWall && players.isEmpty());
+    return (!pDroppingObject && !pWall && players.empty());
 }
 
 int Grid::Square::getRow() const {

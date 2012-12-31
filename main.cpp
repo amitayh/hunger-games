@@ -1,5 +1,9 @@
-﻿#include "Game.h"
+#include "Game.h"
 #include "MapLoader.h"
+#include <iostream>
+
+using namespace std;
+using namespace HungerGames;
 
 int main(int argc, char **argv) {
     Game game;
@@ -7,7 +11,7 @@ int main(int argc, char **argv) {
     if (argc > 1 && loader.load(argv[1])) {
         game.run();
     } else {
-        cout << "Unable to load map file" << endl;
+        cerr << "Unable to load map file" << endl;
     }
 
     return EXIT_SUCCESS;

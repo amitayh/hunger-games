@@ -1,47 +1,61 @@
 #include "InfoBox.h"
-#include "Player.h"
-#include "Gotoxy.h"
+#include "Game.h"
+#include "BasePlayer.h"
 #include <iostream>
 
 using namespace std;
+using namespace HungerGames;
 
-InfoBox::InfoBox(): size(WIDTH, HEIGHT) {
-    pSquare = NULL;
-}
+const int InfoBox::WIDTH  = 10;
+const int InfoBox::HEIGHT = 5;
+
+InfoBox::InfoBox(): size(WIDTH, HEIGHT) {}
 
 void InfoBox::setSquare(Grid::Square& square) {
-    pSquare = &square;
+    BaseObject::setSquare(square);
+
+    int width = size.getWidth(),
+        height = size.getHeight(),
+        row = square.getRow(),
+        col = square.getCol();
+
+    // Add walls around the info box
+    for (int i = 0; i < width + 2; i++) {
+        pGame->addWall(row - 1, col + i - 1);
+        pGame->addWall(row + height, col + i - 1);
+    }
+    for (int i = 0; i < height; i++) {
+        pGame->addWall(row + i, col - 1);
+        pGame->addWall(row + i, col + width);
+    }
 }
 
-void InfoBox::draw(const List& players) const {
-    List::Iterator it(players);
+void InfoBox::draw() const {
+    ObjectsList& players = pGame->getPlayers();
+    ObjectsIterator it = players.begin();
     int row = pSquare->getRow(),
         col = pSquare->getCol(),
         height = size.getHeight();
 
-    changeColor(SILVER);
+    Console::changeColor(Console::SILVER);
     
-    gotoxy(col, row);
-    cout << "P HP   A";
-    gotoxy(col, row + 1);
+    Console::gotoPosition(row, col);
+    cout << "HP   > * -";
+    Console::gotoPosition(row + 1, col);
     cout << "----------";
 
     for (int i = 2; i < height; i++) {
-        gotoxy(col, row + i);
-        if (!it.done()) {
+        Console::gotoPosition(row + i, col);
+        if (it != players.end()) {
             // Print player info
-            List::Node* node = it.getCurrent();
-            Player* player = (Player*) node->getData();
-            printf("%c %-4d %-3d\n", player->getName(), player->getPower(), player->getRemainingArrows());
+            BasePlayer* player = (BasePlayer*) *it;
+            cout << *player;
+            it++;
         } else {
             // Print empty line
             cout << "          ";
         }
     }
-}
-
-const Dimensions& InfoBox::getSize() const {
-    return size;
 }
 
 bool InfoBox::inArea(const Grid::Square& square) const {
