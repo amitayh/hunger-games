@@ -55,7 +55,6 @@ namespace HungerGames
         static const int INITIAL_POWER;
         static const int MIN_TICKS_BETWEEN_ARROWS;
         static const int SHOOT_ARROW_PROBABILITY;
-        static const int CHANGE_DIRECTION_PROBABILITY;
         static const int MOVE_INTERVAL;
 
         BasePlayer(char name, Console::Color color); // Make class abstract

@@ -4,6 +4,8 @@
 
 using namespace HungerGames;
 
+const int Bot::CHANGE_DIRECTION_PROBABILITY = 10;
+
 Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 
 void Bot::update() {
