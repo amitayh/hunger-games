@@ -37,6 +37,16 @@ namespace HungerGames
             friend class BasePlayer;
         };
 
+        enum Action {
+            LEFT                      = 'a',
+            RIGHT                     = 'd',
+            UP                        = 'w',
+            DOWN                      = 's',
+            SHOOT_REGULAR_ARROW       = 'p',
+            SHOOT_EXPLODING_ARROW     = 'i',
+            SHOOT_PENETRATING_ARROW   = 'o'
+        };
+
         ~BasePlayer();
 
         virtual void setSquare(Grid::Square& square);
@@ -67,6 +77,7 @@ namespace HungerGames
 
         void fight(BasePlayer& opponent);
         bool shootArrow(ArrowsBag::Type type);
+        void doAction(Action action);
     };
 
 }

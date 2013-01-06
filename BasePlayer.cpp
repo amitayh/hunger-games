@@ -86,6 +86,48 @@ void BasePlayer::fight(BasePlayer& opponent) {
     }
 }
 
+void BasePlayer::doAction(Action action) {
+    ArrowsBag::Type arrowType;
+    bool shoot = false;
+
+    switch (action) {
+        case Action::LEFT:
+            direction = Direction::LEFT;
+            break;
+        case Action::RIGHT:
+            direction = Direction::RIGHT;
+            break;
+        case Action::UP:
+            direction = Direction::UP;
+            break;
+        case Action::DOWN:
+            direction = Direction::DOWN;
+            break;
+        case Action::SHOOT_REGULAR_ARROW:
+            arrowType = ArrowsBag::REGULAR;
+            shoot = true;
+            break;
+        case Action::SHOOT_EXPLODING_ARROW:
+            arrowType = ArrowsBag::EXPLODING;
+            shoot = true;
+            break;
+        case Action::SHOOT_PENETRATING_ARROW:
+            arrowType = ArrowsBag::PENETRATING;
+            shoot = true;
+            break;
+    }
+
+    Grid::Square& square = getNextSquare();
+    if (pGame->getTick() % MOVE_INTERVAL == 0 && !square.hasWall()) {
+        // Move to next square
+        setSquare(square);
+    }
+
+    if (shoot) {
+        shootArrow(arrowType);
+    }
+}
+
 void BasePlayer::increasePower(int amount) {
     power = __max(power + amount, 0);
 }
