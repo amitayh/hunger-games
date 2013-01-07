@@ -1,17 +1,17 @@
-#ifndef _HUMAN_H
-#define _HUMAN_H
+#ifndef _HUMAN_PLAYER_H
+#define _HUMAN_PLAYER_H
 
 #include "BasePlayer.h"
 
 namespace HungerGames
 {
 
-    class Human: public BasePlayer
+    class HumanPlayer: public BasePlayer
     {
         static int numInstances;
 
     public:
-        Human(char name, Console::Color color);
+        HumanPlayer(char name, Console::Color color);
 
         virtual void update();
     };

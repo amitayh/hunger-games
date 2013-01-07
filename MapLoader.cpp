@@ -1,17 +1,19 @@
 #include "MapLoader.h"
 #include "Game.h"
 #include "Bot.h"
+#include "ScheduledPlayer.h"
 #include "Human.h"
 #include <fstream>
 
 using namespace HungerGames;
 
-const char  MapLoader::CHAR_WALL         = 'W';
-const char  MapLoader::CHAR_BOT          = 'P';
-const char  MapLoader::CHAR_HUMAN        = 'H';
-const char  MapLoader::CHAR_INFO_BOX     = 'O';
-const int   MapLoader::MIN_NUM_PLAYERS   = 2;
-const int   MapLoader::MAX_NUM_PLAYERS   = 3;
+const char  MapLoader::CHAR_WALL                = 'W';
+const char  MapLoader::CHAR_BOT                 = 'P';
+const char  MapLoader::CHAR_HUMAN_PLAYER        = 'H';
+const char  MapLoader::CHAR_SCHEDULED_PLAYER    = 'C';
+const char  MapLoader::CHAR_INFO_BOX            = 'O';
+const int   MapLoader::MIN_NUM_PLAYERS          = 2;
+const int   MapLoader::MAX_NUM_PLAYERS          = 3;
 const Console::Color MapLoader::PLAYER_COLORS[] = {
     Console::CYAN, Console::MAGENTA, Console::YELLOW
 };
@@ -29,6 +31,7 @@ bool MapLoader::load(const string& filename) const {
 
         bool addedInfoBox = false; // Info box flag
         bool addedHumanPlayer = false; // Human player flag
+        int scheduled = 0; // Scheduled players counter
         int bots = 0; // Bots counter
 
         for (int row = 0; row < rows; row++) {
@@ -44,17 +47,26 @@ bool MapLoader::load(const string& filename) const {
                         break;
                     case CHAR_BOT:
                         if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            char name = 'A' + bots; // Name the bots sequentially (A, B, C...)
+                            char name = 'A' + bots + scheduled; // Name the bots sequentially (A, B, C...)
                             Console::Color color = getPlayerColor();
                             Bot* bot = new Bot(name, color);
                             pGame->addPlayer(bot, row, col);
                             bots++;
                         }
                         break;
-                    case CHAR_HUMAN:
+                    case CHAR_SCHEDULED_PLAYER:
+                        if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
+                            char name = 'A' + bots + scheduled;
+                            Console::Color color = getPlayerColor();
+                            ScheduledPlayer* player = new ScheduledPlayer(name, color);
+                            pGame->addPlayer(player, row, col);
+                            scheduled++;
+                        }
+                        break;
+                    case CHAR_HUMAN_PLAYER:
                         if (!addedHumanPlayer && players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
                             Console::Color color = getPlayerColor();
-                            Human* human = new Human(CHAR_HUMAN, color);
+                            HumanPlayer* human = new HumanPlayer(CHAR_HUMAN_PLAYER, color);
                             pGame->addPlayer(human, row, col);
                             addedHumanPlayer = true;
                         }
@@ -72,7 +84,7 @@ bool MapLoader::load(const string& filename) const {
 
         // Add additional bots if needed
         for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
-            char name = 'A' + bots;
+            char name = 'A' + bots + scheduled;
             Console::Color color = getPlayerColor();
             Bot* bot = new Bot(name, color);
             Grid::Square& square = pGame->getValidDropSquare();

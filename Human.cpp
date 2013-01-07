@@ -3,16 +3,16 @@
 
 using namespace HungerGames;
 
-int Human::numInstances = 0;
+int HumanPlayer::numInstances = 0;
 
-Human::Human(char name, Console::Color color): BasePlayer(name, color) {
+HumanPlayer::HumanPlayer(char name, Console::Color color): BasePlayer(name, color) {
     if (numInstances > 0) {
         throw logic_error("Unable to instantiate more than one human player");
     }
     numInstances++;
 }
 
-void Human::update() {
+void HumanPlayer::update() {
     if (power > 0) {
         char key = pGame->getKey();
         if (key >= 'A' && key <= 'Z') {

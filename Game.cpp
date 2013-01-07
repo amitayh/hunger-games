@@ -1,7 +1,5 @@
 #include "Game.h"
 #include "BaseArrow.h"
-#include "Bot.h"
-#include "Human.h"
 #include "Wall.h"
 #include "InfoBox.h"
 #include "Food.h"

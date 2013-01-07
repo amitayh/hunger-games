@@ -13,7 +13,8 @@ namespace HungerGames
     {
         static const char CHAR_WALL;
         static const char CHAR_BOT;
-        static const char CHAR_HUMAN;
+        static const char CHAR_HUMAN_PLAYER;
+        static const char CHAR_SCHEDULED_PLAYER;
         static const char CHAR_INFO_BOX;
         static const int MIN_NUM_PLAYERS;
         static const int MAX_NUM_PLAYERS;
