@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "BaseArrow.h"
+#include "BasePlayer.h"
 #include "Wall.h"
 #include "InfoBox.h"
 #include "Food.h"

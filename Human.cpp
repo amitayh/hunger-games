@@ -1,4 +1,5 @@
 #include "Human.h"
+#include "Common.h"
 #include "Game.h"
 
 using namespace HungerGames;
@@ -14,11 +15,7 @@ HumanPlayer::HumanPlayer(char name, Console::Color color): BasePlayer(name, colo
 
 void HumanPlayer::update() {
     if (power > 0) {
-        char key = pGame->getKey();
-        if (key >= 'A' && key <= 'Z') {
-            // Convert to lowercase
-            key -= ('A' - 'a');
-        }
+        char key = toLowerCase(pGame->getKey()); 
         doAction((Action) key);
     }
 }

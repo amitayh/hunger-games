@@ -9,10 +9,10 @@ ScheduledPlayer::ScheduledPlayer(char name, Console::Color color, const std::str
 
 void ScheduledPlayer::update() {
     if (power > 0) {
-        char actions[3];
-        if (events.readActions(pGame->getTick(), actions)) {
-            for (int i = 0; actions[i] != '\0'; i++) {
-                doAction((Action) actions[i]);
+        EventsFile::Event* event = events.getEvent(pGame->getTick());
+        if (event) {
+            for (int i = 0; i < event->getNumActions(); i++) {
+                doAction((Action) event->getAction(i));
             }
         }
     }
