@@ -90,15 +90,15 @@ void Bot::setRandomDirection() {
     // Set a direction randomly. Player will only turn right or left (from his perspective)
     Direction directions[2];
     switch (direction) {
-        case UP:
-        case DOWN:
-            directions[0] = LEFT;
-            directions[1] = RIGHT;
+        case Direction::UP:
+        case Direction::DOWN:
+            directions[0] = Direction::LEFT;
+            directions[1] = Direction::RIGHT;
             break;
         case LEFT:
         case RIGHT:
-            directions[0] = UP;
-            directions[1] = DOWN;
+            directions[0] = Direction::UP;
+            directions[1] = Direction::DOWN;
             break;
     }
     direction = directions[rand() % 2];

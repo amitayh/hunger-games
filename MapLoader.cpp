@@ -12,6 +12,7 @@ const char  MapLoader::CHAR_BOT                 = 'P';
 const char  MapLoader::CHAR_HUMAN_PLAYER        = 'H';
 const char  MapLoader::CHAR_SCHEDULED_PLAYER    = 'C';
 const char  MapLoader::CHAR_INFO_BOX            = 'O';
+const char  MapLoader::CHAR_EVENTS_FILE         = 'E';
 const int   MapLoader::MIN_NUM_PLAYERS          = 2;
 const int   MapLoader::MAX_NUM_PLAYERS          = 3;
 const Console::Color MapLoader::PLAYER_COLORS[] = {
@@ -22,80 +23,109 @@ MapLoader::MapLoader(Game& game) {
     pGame = &game;
 }
 
-bool MapLoader::load(const string& filename) const {
-    ifstream map(filename);
-    if (map.good()) {
-        ObjectsList& players = pGame->getPlayers();
-        const Grid& grid = pGame->getGrid();
-        int rows = grid.getRows(), cols = grid.getCols();
-
-        bool addedInfoBox = false; // Info box flag
-        bool addedHumanPlayer = false; // Human player flag
-        int scheduled = 0; // Scheduled players counter
-        int bots = 0; // Bots counter
-
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                if (map.eof()) {
-                    // Oops! Something went wrong...
-                    map.close();
-                    return false;
-                }
-                switch (map.get()) {
-                    case CHAR_WALL:
-                        pGame->addWall(row, col);
-                        break;
-                    case CHAR_BOT:
-                        if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            char name = 'A' + bots + scheduled; // Name the bots sequentially (A, B, C...)
-                            Console::Color color = getPlayerColor();
-                            Bot* bot = new Bot(name, color);
-                            pGame->addPlayer(bot, row, col);
-                            bots++;
-                        }
-                        break;
-                    case CHAR_SCHEDULED_PLAYER:
-                        if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            char name = 'A' + bots + scheduled;
-                            Console::Color color = getPlayerColor();
-                            ScheduledPlayer* player = new ScheduledPlayer(name, color);
-                            pGame->addPlayer(player, row, col);
-                            scheduled++;
-                        }
-                        break;
-                    case CHAR_HUMAN_PLAYER:
-                        if (!addedHumanPlayer && players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            Console::Color color = getPlayerColor();
-                            HumanPlayer* human = new HumanPlayer(CHAR_HUMAN_PLAYER, color);
-                            pGame->addPlayer(human, row, col);
-                            addedHumanPlayer = true;
-                        }
-                        break;
-                    case CHAR_INFO_BOX:
-                        if (!addedInfoBox) {
-                            pGame->addInfoBox(row, col);
-                            addedInfoBox = true;
-                        }
-                        break;
-                }
+void MapLoader::loadFromArguments(int argc, char* argv[]) const {
+    char* mapFile = NULL;
+    char* eventsFile = NULL;
+    char* scheduledPlayersFiles[MAX_NUM_PLAYERS] = {NULL};
+    for (int i = 1; i < argc; i++) {
+        if (argv[i][0] == CHAR_SCHEDULED_PLAYER && argv[i][2] == '=') {
+            int index = (argv[i][1] - '0') - 1;
+            if (index >= 0 && index < MAX_NUM_PLAYERS) {
+                // String starts with "C1=" - scheduled player file
+                scheduledPlayersFiles[index] = argv[i] + 3;
             }
-            map.get(); // Consume linebreak
+        } else if (argv[i][0] == CHAR_EVENTS_FILE && argv[i][1] == '=') {
+            // String starts with "E=" - events file
+            eventsFile = argv[i] + 2;
+        } else {
+            // Default - map file
+            mapFile = argv[i];
         }
-
-        // Add additional bots if needed
-        for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
-            char name = 'A' + bots + scheduled;
-            Console::Color color = getPlayerColor();
-            Bot* bot = new Bot(name, color);
-            Grid::Square& square = pGame->getValidDropSquare();
-            pGame->addPlayer(bot, square);
-            bots++;
-        }
-
-        map.close(); // Close map file
-        return true; // Success - map loaded
     }
-    return false; // Unable to open map file
+    if (!mapFile) {
+        throw "Required map file was not provided"; // Use exception class
+    }
+    load(mapFile, eventsFile, scheduledPlayersFiles);
+}
+
+void MapLoader::load(const char* mapFile, const char* eventsFile, char* scheduledPlayersFiles[]) const {
+    ifstream map(mapFile);
+    if (!map.good()) {
+        throw "Unable to open map file";
+    }
+
+    ObjectsList& players = pGame->getPlayers();
+    const Grid& grid = pGame->getGrid();
+    int rows = grid.getRows(), cols = grid.getCols();
+
+    bool addedInfoBox = false; // Info box flag
+    bool addedHumanPlayer = false; // Human player flag
+    int scheduled = 0; // Scheduled players counter
+    int bots = 0; // Bots counter
+
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            if (map.eof()) {
+                // Oops! Something went wrong...
+                map.close();
+                throw "Map file ended unexpectedly";
+            }
+            switch (map.get()) {
+                case CHAR_WALL:
+                    pGame->addWall(row, col);
+                    break;
+                case CHAR_BOT:
+                    if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
+                        char name = 'A' + bots + scheduled; // Name the bots sequentially (A, B, C...)
+                        Console::Color color = getPlayerColor();
+                        Bot* bot = new Bot(name, color);
+                        pGame->addPlayer(bot, row, col);
+                        bots++;
+                    }
+                    break;
+                case CHAR_SCHEDULED_PLAYER:
+                    if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
+                        char name = 'A' + bots + scheduled;
+                        Console::Color color = getPlayerColor();
+                        char* scheduledPlayersFile = scheduledPlayersFiles[scheduled];
+                        if (!scheduledPlayersFile) {
+                            throw "No file was provided for scheduled player";
+                        }
+                        ScheduledPlayer* player = new ScheduledPlayer(name, color, scheduledPlayersFile);
+                        pGame->addPlayer(player, row, col);
+                        scheduled++;
+                    }
+                    break;
+                case CHAR_HUMAN_PLAYER:
+                    if (!addedHumanPlayer && players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
+                        Console::Color color = getPlayerColor();
+                        HumanPlayer* human = new HumanPlayer(CHAR_HUMAN_PLAYER, color);
+                        pGame->addPlayer(human, row, col);
+                        addedHumanPlayer = true;
+                    }
+                    break;
+                case CHAR_INFO_BOX:
+                    if (!addedInfoBox) {
+                        pGame->addInfoBox(row, col);
+                        addedInfoBox = true;
+                    }
+                    break;
+            }
+        }
+        map.get(); // Consume linebreak
+    }
+
+    // Add additional bots if needed
+    for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
+        char name = 'A' + bots + scheduled;
+        Console::Color color = getPlayerColor();
+        Bot* bot = new Bot(name, color);
+        Grid::Square& square = pGame->getValidDropSquare();
+        pGame->addPlayer(bot, square);
+        bots++;
+    }
+
+    map.close(); // Close map file
 }
 
 Console::Color MapLoader::getPlayerColor() const {

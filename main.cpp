@@ -5,14 +5,15 @@
 using namespace std;
 using namespace HungerGames;
 
-int main(int argc, char **argv) {
+int main(int argc, char* argv[]) {
     Game game;
     MapLoader loader(game);
-    if (argc > 1 && loader.load(argv[1])) {
+    try {
+        loader.loadFromArguments(argc, argv);
         game.run();
-    } else {
-        cerr << "Unable to load map file" << endl;
+        return EXIT_SUCCESS;
+    } catch (...) {
+        cerr << "An error occurred" << endl;
+        return EXIT_FAILURE;
     }
-
-    return EXIT_SUCCESS;
 }

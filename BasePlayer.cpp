@@ -19,7 +19,7 @@ BasePlayer::BasePlayer(char name, Console::Color color) {
     this->name = name;
     this->color = color;
     power = INITIAL_POWER;
-    direction = RIGHT;
+    direction = Direction::RIGHT;
     lastArrowTick = 0;
 }
 
