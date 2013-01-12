@@ -19,6 +19,7 @@ namespace HungerGames
             char actions[MAX_ACTIONS];
             int numActions;
         public:
+            Event();
             int getNumActions();
             char getAction(int index);
             friend class EventsFile;

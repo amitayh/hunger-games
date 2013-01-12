@@ -32,17 +32,22 @@ EventsFile::Event* EventsFile::getEvent(unsigned int tick) {
 
 void EventsFile::readEvent() {
     file >> event.tick;
-    int numActions = 0;
+    event.numActions = 0;
     bool read = true;
-    while (read && numActions < Event::MAX_ACTIONS) {
+    while (read && event.numActions < Event::MAX_ACTIONS) {
         char action = toLowerCase(file.get());
         if (action >= 'a' && action <= 'z') {
             // Valid action, add to actions array
-            event.actions[numActions] = action;
-            numActions++;
+            event.actions[event.numActions] = action;
+            event.numActions++;
         }
         read = (action != NEW_LINE);
     }
+}
+
+EventsFile::Event::Event() {
+    tick = 0;
+    numActions = 0;
 }
 
 int EventsFile::Event::getNumActions() {

@@ -32,7 +32,7 @@ Game::Game() {
 
     // Initialize game
     status = PENDING;
-    tick = 0;
+    tick = 1;
 }
 
 Game::~Game() {
