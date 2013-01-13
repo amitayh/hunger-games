@@ -95,8 +95,8 @@ void Bot::setRandomDirection() {
             directions[0] = Direction::LEFT;
             directions[1] = Direction::RIGHT;
             break;
-        case LEFT:
-        case RIGHT:
+        case Direction::LEFT:
+        case Direction::RIGHT:
             directions[0] = Direction::UP;
             directions[1] = Direction::DOWN;
             break;

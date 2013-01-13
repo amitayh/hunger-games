@@ -31,28 +31,30 @@ BasePlayer::~BasePlayer() {
 }
 
 void BasePlayer::setSquare(Grid::Square& square) {
-    if (square.hasDroppingObject()) {
-        // Pick up dropping object
-        DroppingObject& droppingObject = square.getDroppingObject();
-        droppingObject.affect(*this);
-    }
-
-    ObjectsList& players = square.getPlayers();
-    if (!players.empty()) {
-        // Fight other players on square
-        ObjectsIterator it = players.begin();
-        while (it != players.end()) {
-            BasePlayer* player = (BasePlayer*) *it;
-            fight(*player);
-            it++;
+    if (!square.hasWall()) {
+        if (square.hasDroppingObject()) {
+            // Pick up dropping object
+            DroppingObject& droppingObject = square.getDroppingObject();
+            droppingObject.affect(*this);
         }
-    }
 
-    if (pSquare) {
-        pSquare->stepOut(*this);
+        ObjectsList& players = square.getPlayers();
+        if (!players.empty()) {
+            // Fight other players on square
+            ObjectsIterator it = players.begin();
+            while (it != players.end()) {
+                BasePlayer* player = (BasePlayer*) *it;
+                fight(*player);
+                it++;
+            }
+        }
+
+        if (pSquare) {
+            pSquare->stepOut(*this);
+        }
+        square.stepIn(*this);
+        pSquare = &square;
     }
-    square.stepIn(*this);
-    pSquare = &square;
 }
 
 bool BasePlayer::shootArrow(ArrowsBag::Type type) {
@@ -115,12 +117,6 @@ void BasePlayer::doAction(Action action) {
             arrowType = ArrowsBag::PENETRATING;
             shoot = true;
             break;
-    }
-
-    Grid::Square& square = getNextSquare();
-    if (pGame->getTick() % MOVE_INTERVAL == 0 && !square.hasWall()) {
-        // Move to next square
-        setSquare(square);
     }
 
     if (shoot) {

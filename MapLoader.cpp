@@ -29,14 +29,14 @@ void MapLoader::loadFromArguments(int argc, char* argv[]) const {
     char* scheduledPlayersFiles[MAX_NUM_PLAYERS] = {NULL};
     for (int i = 1; i < argc; i++) {
         if (argv[i][0] == CHAR_SCHEDULED_PLAYER && argv[i][2] == '=') {
-            int index = (argv[i][1] - '0') - 1;
+            // Player's instructions file
+            int index = (argv[i][1] - '0') - 1; // Convert second char to index
             if (index >= 0 && index < MAX_NUM_PLAYERS) {
-                // String starts with "C1=" - scheduled player file
-                scheduledPlayersFiles[index] = argv[i] + 3;
+                scheduledPlayersFiles[index] = argv[i] + 3; // Skip 'C1='
             }
         } else if (argv[i][0] == CHAR_EVENTS_FILE && argv[i][1] == '=') {
-            // String starts with "E=" - events file
-            eventsFile = argv[i] + 2;
+            // Events file
+            eventsFile = argv[i] + 2; // Skip 'E='
         } else {
             // Default - map file
             mapFile = argv[i];

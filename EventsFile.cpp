@@ -6,7 +6,7 @@ using namespace HungerGames;
 
 const char EventsFile::NEW_LINE = '\n';
 
-EventsFile::EventsFile(const string& filename) {
+EventsFile::EventsFile(const char* filename) {
     file.open(filename);
     if (!file.good()) {
         throw runtime_error("Unable to open events file");
@@ -34,7 +34,7 @@ void EventsFile::readEvent() {
     file >> event.tick;
     event.numActions = 0;
     bool read = true;
-    while (read && event.numActions < Event::MAX_ACTIONS) {
+    while (read && !file.eof() && event.numActions < Event::MAX_ACTIONS) {
         char action = toLowerCase(file.get());
         if (action >= 'a' && action <= 'z') {
             // Valid action, add to actions array

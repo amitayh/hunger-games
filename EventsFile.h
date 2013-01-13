@@ -1,7 +1,6 @@
 #ifndef _EVENTS_FILE_H
 #define _EVENTS_FILE_H
 
-#include <string>
 #include <fstream>
 
 using namespace std;
@@ -25,7 +24,7 @@ namespace HungerGames
             friend class EventsFile;
         };
 
-        EventsFile(const string& filename);
+        EventsFile(const char* filename);
         ~EventsFile();
         
         Event* getEvent(unsigned int tick);
