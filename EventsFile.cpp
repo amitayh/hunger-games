@@ -19,27 +19,27 @@ EventsFile::~EventsFile() {
 
 EventsFile::Event* EventsFile::getEvent(unsigned int tick) {
     if (!file.eof()) {
-        if (tick > event.tick) {
+        if (tick > lastEvent.tick) {
             // Read next event from file
             readEvent();
         }
-        if (tick == event.tick) {
-            return &event;
+        if (tick == lastEvent.tick) {
+            return &lastEvent;
         }
     }
     return NULL;
 }
 
 void EventsFile::readEvent() {
-    file >> event.tick;
-    event.numActions = 0;
+    file >> lastEvent.tick;
+    lastEvent.numActions = 0;
     bool read = true;
-    while (read && !file.eof() && event.numActions < Event::MAX_ACTIONS) {
+    while (read && !file.eof() && lastEvent.numActions < Event::MAX_ACTIONS) {
         char action = toLowerCase(file.get());
         if (action >= 'a' && action <= 'z') {
             // Valid action, add to actions array
-            event.actions[event.numActions] = action;
-            event.numActions++;
+            lastEvent.actions[lastEvent.numActions] = action;
+            lastEvent.numActions++;
         }
         read = (action != NEW_LINE);
     }

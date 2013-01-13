@@ -33,7 +33,7 @@ namespace HungerGames
         static const char NEW_LINE;
 
         ifstream file;
-        Event event;
+        Event lastEvent;
 
         void readEvent();
     };

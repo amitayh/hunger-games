@@ -12,10 +12,10 @@ void ScheduledPlayer::update() {
         if (pGame->getTick() % MOVE_INTERVAL == 0) {
             setSquare(getNextSquare());
         }
-        EventsFile::Event* event = events.getEvent(pGame->getTick());
-        if (event) {
-            for (int i = 0; i < event->getNumActions(); i++) {
-                doAction((Action) event->getAction(i));
+        EventsFile::Event* ev = events.getEvent(pGame->getTick());
+        if (ev) {
+            for (int i = 0; i < ev->getNumActions(); i++) {
+                doAction((Action) ev->getAction(i));
             }
         }
     }
