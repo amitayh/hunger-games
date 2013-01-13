@@ -12,7 +12,7 @@ namespace HungerGames
         EventsFile events;
 
     public:
-        ScheduledPlayer(char name, Console::Color color, const std::string& eventsFilename);
+        ScheduledPlayer(char name, Console::Color color, const char* eventsFilename);
 
         virtual void update();
     };

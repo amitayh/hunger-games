@@ -10,15 +10,19 @@ namespace HungerGames
 
     class Bot;
     class BaseArrow;
+    class EventsFile;
 
     class Game
     {
         static const int ESCAPSE_KEY;
         static const int FRAMES_PER_SECOND;
+        static const int MIN_DISTANCE_FROM_PLAYERS;
         static const int DROP_FOOD_PROBABILITY;
         static const int DROP_QUIVER_PROBABILITY;
         static const int DROP_BOMB_PROBABILITY;
-        static const int MIN_DISTANCE_FROM_PLAYERS;
+        static const char DROP_FOOD_ACTION;
+        static const char DROP_QUIVER_ACTION;
+        static const char DROP_BOMB_ACTION;
 
         enum Status {
             PENDING,
@@ -37,6 +41,7 @@ namespace HungerGames
         ObjectsList droppingObjects;
         InfoBox infoBox;
         Menu menu;
+        EventsFile* pEvents;
         char key;
 
         void loop();
@@ -73,6 +78,7 @@ namespace HungerGames
         Grid::Square& getValidDropSquare();
         bool isValidDrop(int row, int col);
         bool isValidDrop(const Grid::Square& square);
+        void setEventsFile(const char* filename);
 
         const Grid& getGrid() const;
         bool checkProbability(int probability) const;

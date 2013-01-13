@@ -3,16 +3,20 @@
 
 using namespace HungerGames;
 
-ScheduledPlayer::ScheduledPlayer(char name, Console::Color color, const std::string& eventsFilename):
+ScheduledPlayer::ScheduledPlayer(char name, Console::Color color, const char* eventsFilename):
     BasePlayer(name, color), events(eventsFilename) {
 }
 
 void ScheduledPlayer::update() {
     if (power > 0) {
-        char actions[3];
-        if (events.readActions(pGame->getTick(), actions)) {
-            for (int i = 0; actions[i] != '\0'; i++) {
-                doAction((Action) actions[i]);
+        if (pGame->getTick() % MOVE_INTERVAL == 0) {
+            setSquare(getNextSquare());
+        }
+
+        EventsFile::Event* ev = events.getEvent(pGame->getTick());
+        if (ev) {
+            for (int i = 0; i < ev->getNumActions(); i++) {
+                doAction((Action) ev->getAction(i));
             }
         }
     }
