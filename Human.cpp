@@ -18,6 +18,7 @@ void HumanPlayer::update() {
         if (pGame->getTick() % MOVE_INTERVAL == 0) {
             setSquare(getNextSquare());
         }
+
         char key = toLowerCase(pGame->getKey()); 
         doAction((Action) key);
     }

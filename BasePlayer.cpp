@@ -89,9 +89,6 @@ void BasePlayer::fight(BasePlayer& opponent) {
 }
 
 void BasePlayer::doAction(Action action) {
-    ArrowsBag::Type arrowType;
-    bool shoot = false;
-
     switch (action) {
         case Action::LEFT:
             direction = Direction::LEFT;
@@ -106,21 +103,14 @@ void BasePlayer::doAction(Action action) {
             direction = Direction::DOWN;
             break;
         case Action::SHOOT_REGULAR_ARROW:
-            arrowType = ArrowsBag::REGULAR;
-            shoot = true;
+            shootArrow(ArrowsBag::REGULAR);
             break;
         case Action::SHOOT_EXPLODING_ARROW:
-            arrowType = ArrowsBag::EXPLODING;
-            shoot = true;
+            shootArrow(ArrowsBag::EXPLODING);
             break;
         case Action::SHOOT_PENETRATING_ARROW:
-            arrowType = ArrowsBag::PENETRATING;
-            shoot = true;
+            shootArrow(ArrowsBag::PENETRATING);
             break;
-    }
-
-    if (shoot) {
-        shootArrow(arrowType);
     }
 }
 

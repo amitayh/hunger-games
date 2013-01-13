@@ -11,7 +11,6 @@ Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 void Bot::update() {
     if (power > 0) {
         if (pGame->getTick() % MOVE_INTERVAL == 0) {
-            // Move to next square
             setSquare(getNextMove());
         }
 

@@ -7,6 +7,7 @@
 #include "Quiver.h"
 #include "Bomb.h"
 #include "Console.h"
+#include "EventsFile.h"
 #include <windows.h>
 #include <time.h>
 #include <conio.h>
@@ -15,12 +16,15 @@
 using namespace std;
 using namespace HungerGames;
 
-const int Game::ESCAPSE_KEY                = 27;
-const int Game::FRAMES_PER_SECOND          = 25;
-const int Game::DROP_FOOD_PROBABILITY      = 2;
-const int Game::DROP_QUIVER_PROBABILITY    = 2;
-const int Game::DROP_BOMB_PROBABILITY      = 1;
-const int Game::MIN_DISTANCE_FROM_PLAYERS  = 2;
+const int   Game::ESCAPSE_KEY                = 27;
+const int   Game::FRAMES_PER_SECOND          = 25;
+const int   Game::MIN_DISTANCE_FROM_PLAYERS  = 2;
+const int   Game::DROP_FOOD_PROBABILITY      = 2;
+const int   Game::DROP_QUIVER_PROBABILITY    = 2;
+const int   Game::DROP_BOMB_PROBABILITY      = 1;
+const char  Game::DROP_FOOD_ACTION          = 'f';
+const char  Game::DROP_QUIVER_ACTION        = 'q';
+const char  Game::DROP_BOMB_ACTION          = 'b';
 
 Game::Game() {
     // Initialize random number generator
@@ -29,6 +33,8 @@ Game::Game() {
     // Initialize menu
     menuResume = menu.addOption("Resume");
     menuQuit = menu.addOption("Quit");
+
+    pEvents = NULL;
 
     // Initialize game
     status = PENDING;
@@ -41,6 +47,7 @@ Game::~Game() {
     freeObejctsList(arrows);
     freeObejctsList(droppingObjects);
     freeObejctsList(walls);
+    delete pEvents;
 }
 
 void Game::addPlayer(BasePlayer* player, Grid::Square& square) {
@@ -240,13 +247,42 @@ void Game::freeObejctsList(ObjectsList& list) {
 }
 
 void Game::dropObjects() {
-    if (checkProbability(DROP_FOOD_PROBABILITY)) {
+    bool dropFood, dropQuiver, dropBomb;
+    dropFood = dropQuiver = dropBomb = false;
+
+    if (pEvents) {
+        // Drop objects from events file
+        EventsFile::Event* ev = pEvents->getEvent(tick);
+        if (ev) {
+            for (int i = 0; i < ev->getNumActions(); i++) {
+                char action = ev->getAction(i);
+                switch (action) {
+                    case DROP_FOOD_ACTION:
+                        dropFood = true;
+                        break;
+                    case DROP_QUIVER_ACTION:
+                        dropQuiver = true;
+                        break;
+                    case DROP_BOMB_ACTION:
+                        dropBomb = true;
+                        break;
+                }
+            }
+        }
+    } else {
+        // Drop objects by probability
+        dropFood = checkProbability(DROP_FOOD_PROBABILITY);
+        dropQuiver = checkProbability(DROP_QUIVER_PROBABILITY);
+        dropBomb = checkProbability(DROP_BOMB_PROBABILITY);
+    }
+
+    if (dropFood) {
         addObject(new Food, getValidDropSquare(), droppingObjects);
     }
-    if (checkProbability(DROP_QUIVER_PROBABILITY)) {
+    if (dropQuiver) {
         addObject(new Quiver, getValidDropSquare(), droppingObjects);
     }
-    if (checkProbability(DROP_BOMB_PROBABILITY)) {
+    if (dropBomb) {
         addObject(new Bomb, getValidDropSquare(), droppingObjects);
     }
 }
@@ -285,6 +321,10 @@ bool Game::isValidDrop(const Grid::Square& square) {
         }
     }
     return result;
+}
+
+void Game::setEventsFile(const char* filename) {
+    pEvents = new EventsFile(filename);
 }
 
 unsigned int Game::getTick() const {

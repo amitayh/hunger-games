@@ -114,6 +114,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
         }
         map.get(); // Consume linebreak
     }
+    map.close(); // Close map file
 
     // Add additional bots if needed
     for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
@@ -125,7 +126,10 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
         bots++;
     }
 
-    map.close(); // Close map file
+    if (eventsFile) {
+        // Set events file
+        pGame->setEventsFile(eventsFile);
+    }
 }
 
 Console::Color MapLoader::getPlayerColor() const {
