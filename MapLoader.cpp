@@ -1,4 +1,5 @@
 #include "MapLoader.h"
+#include "Common.h"
 #include "Game.h"
 #include "Bot.h"
 #include "ScheduledPlayer.h"
@@ -43,7 +44,7 @@ void MapLoader::loadFromArguments(int argc, char* argv[]) const {
         }
     }
     if (!mapFile) {
-        throw "Required map file was not provided"; // Use exception class
+        throw InvalidArgumentError();
     }
     load(mapFile, eventsFile, scheduledPlayersFiles);
 }
@@ -51,7 +52,7 @@ void MapLoader::loadFromArguments(int argc, char* argv[]) const {
 void MapLoader::load(const char* mapFile, const char* eventsFile, char* scheduledPlayersFiles[]) const {
     ifstream map(mapFile);
     if (!map.good()) {
-        throw "Unable to open map file";
+        throw IOError();
     }
 
     ObjectsList& players = pGame->getPlayers();
@@ -68,7 +69,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
             if (map.eof()) {
                 // Oops! Something went wrong...
                 map.close();
-                throw "Map file ended unexpectedly";
+                throw EndOfFileError();
             }
             switch (map.get()) {
                 case CHAR_WALL:
@@ -89,7 +90,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                         Console::Color color = getPlayerColor();
                         char* scheduledPlayersFile = scheduledPlayersFiles[scheduled];
                         if (!scheduledPlayersFile) {
-                            throw "No file was provided for scheduled player";
+                            throw InvalidArgumentError();
                         }
                         ScheduledPlayer* player = new ScheduledPlayer(name, color, scheduledPlayersFile);
                         pGame->addPlayer(player, row, col);

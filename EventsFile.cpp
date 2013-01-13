@@ -4,12 +4,12 @@
 
 using namespace HungerGames;
 
-const char EventsFile::NEW_LINE = '\n';
+const char EventsFile::SEPARATOR = '\n';
 
 EventsFile::EventsFile(const char* filename) {
     file.open(filename);
     if (!file.good()) {
-        throw runtime_error("Unable to open events file");
+        throw IOError();
     }
 }
 
@@ -18,14 +18,12 @@ EventsFile::~EventsFile() {
 }
 
 EventsFile::Event* EventsFile::getEvent(unsigned int tick) {
-    if (!file.eof()) {
-        if (tick > lastEvent.tick) {
-            // Read next event from file
-            readEvent();
-        }
-        if (tick == lastEvent.tick) {
-            return &lastEvent;
-        }
+    if (tick > lastEvent.tick && !file.eof()) {
+        // Read next event from file
+        readEvent();
+    }
+    if (tick == lastEvent.tick) {
+        return &lastEvent;
     }
     return NULL;
 }
@@ -41,7 +39,9 @@ void EventsFile::readEvent() {
             lastEvent.actions[lastEvent.numActions] = action;
             lastEvent.numActions++;
         }
-        read = (action != NEW_LINE);
+        if (action == SEPARATOR) {
+            read = false;
+        }
     }
 }
 
@@ -56,7 +56,7 @@ int EventsFile::Event::getNumActions() {
 
 char EventsFile::Event::getAction(int index) {
     if (index < 0 || index >= numActions) {
-        throw out_of_range("Invalid action index");
+        throw OutOfRangeError();
     }
     return actions[index];
 }

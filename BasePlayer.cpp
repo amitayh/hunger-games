@@ -24,7 +24,7 @@ BasePlayer::BasePlayer(char name, Console::Color color) {
 }
 
 BasePlayer::~BasePlayer() {
-    if (pGame->isRunning()) {
+    if (pGame && pGame->isRunning()) {
         // Clear square before deletion
         pSquare->stepOut(*this);
     }
@@ -178,7 +178,7 @@ int BasePlayer::ArrowsBag::getRemaining(Type type) const {
 
 BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() const {
     if (isEmpty()) {
-        throw runtime_error("Arrows bag is empty");
+        throw EmptyError();
     }
 
     // Check which arrow type is available

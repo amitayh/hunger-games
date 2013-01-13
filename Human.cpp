@@ -8,7 +8,7 @@ int HumanPlayer::numInstances = 0;
 
 HumanPlayer::HumanPlayer(char name, Console::Color color): BasePlayer(name, color) {
     if (numInstances > 0) {
-        throw logic_error("Unable to instantiate more than one human player");
+        throw SingletonError();
     }
     numInstances++;
 }

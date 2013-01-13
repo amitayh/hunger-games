@@ -27,6 +27,7 @@ namespace HungerGames
                 EXPLODING,
                 PENETRATING
             };
+            class EmptyError {};
             ArrowsBag();
             BaseArrow* getArrow(Type type);
             bool isEmpty() const;

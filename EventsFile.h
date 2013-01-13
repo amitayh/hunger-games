@@ -30,7 +30,7 @@ namespace HungerGames
         Event* getEvent(unsigned int tick);
 
     private:
-        static const char NEW_LINE;
+        static const char SEPARATOR;
 
         ifstream file;
         Event lastEvent;
