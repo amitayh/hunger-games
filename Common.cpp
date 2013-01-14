@@ -8,3 +8,8 @@ char HungerGames::toLowerCase(char ch) {
     }
     return ch;
 }
+
+bool HungerGames::checkProbability(int probability) {
+    int random = rand() % 100;
+    return (random < probability);
+}

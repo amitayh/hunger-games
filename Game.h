@@ -44,7 +44,6 @@ namespace HungerGames
         void updatePlayers();
         void updateArrows();
         void updateDroppingObjects();
-        void dropObjects();
         void addObject(BaseObject* object, Grid::Square& square, ObjectsList& list);
         void endGame(BasePlayer* winner = NULL);
         void showMenu();
@@ -77,7 +76,6 @@ namespace HungerGames
         void setObjectsDropper(ObjectsDropper* dropper);
 
         const Grid& getGrid() const;
-        bool checkProbability(int probability) const;
         bool isRunning() const;
         unsigned int getTick() const;
         char getKey() const;

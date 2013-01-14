@@ -1,4 +1,5 @@
 #include "Bot.h"
+#include "Common.h"
 #include "Game.h"
 #include "DroppingObject.h"
 
@@ -14,9 +15,9 @@ void Bot::update() {
         setNextMove();
     }
     if (
-        !arrowsBag.isEmpty() &&                             // Player still has arrows
-        pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
-        hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
+        !arrowsBag.isEmpty() &&                      // Player still has arrows
+        checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
+        hasPlayersInRange()                          // Shoot only if there is a reasonable chance of hitting an opponent
     ) {
         // Shoot an arrow if conditions are met
         nextArrowType = arrowsBag.getAvailableRandomType();
@@ -32,7 +33,7 @@ void Bot::setNextMove() {
     if (closest && isClearPath(closest->getSquare())) {
         // Move towards the closest if it exists and the path is clear
         direction = pSquare->getDirection(closest->getSquare());
-    } else if (pGame->checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
+    } else if (checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
         // Randomly change direction
         setRandomDirection();
     }

@@ -9,7 +9,6 @@
 #include "Console.h"
 #include "ObjectsDropper.h"
 #include <windows.h>
-#include <time.h>
 #include <conio.h>
 #include <iostream>
 #include <algorithm>
@@ -22,16 +21,12 @@ const int Game::FRAMES_PER_SECOND          = 25;
 const int Game::MIN_DISTANCE_FROM_PLAYERS  = 2;
 
 Game::Game() {
-    // Initialize random number generator
-    srand((unsigned int) time(NULL));
-
     // Initialize menu
     menuResume = menu.addOption("Resume");
     menuQuit = menu.addOption("Quit");
 
-    pObjectsDropper = NULL;
-
     // Initialize game
+    pObjectsDropper = NULL;
     status = PENDING;
     tick = 1;
 }
@@ -100,11 +95,6 @@ void Game::clearWall(const Wall& wall) {
     }
 }
 
-bool Game::checkProbability(int probability) const {
-    int random = rand() % 100;
-    return (random < probability);
-}
-
 void Game::run() {
     status = RUNNING;
     Console::clear();
@@ -147,8 +137,10 @@ void Game::loop() {
         } else {
             update();
             if (status == RUNNING) { // Status may change after the update
-                drawUpdatingObjects();
-                dropObjects();
+                drawUpdatingObjects(); // Draw
+                if (pObjectsDropper) { // Drop
+                    pObjectsDropper->drop(*this);
+                }
                 tick++;
                 Sleep(1000 / FRAMES_PER_SECOND);
             }
@@ -242,12 +234,6 @@ void Game::freeObejctsList(ObjectsList& list) {
     while (it != list.end()) {
         delete *it;
         it = list.erase(it);
-    }
-}
-
-void Game::dropObjects() {
-    if (pObjectsDropper) {
-        pObjectsDropper->drop(*this);
     }
 }
 

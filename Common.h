@@ -12,6 +12,8 @@ namespace HungerGames
 
     char toLowerCase(char ch);
 
+    bool checkProbability(int probability);
+
     // Exceptions
 
     class IOError: public exception

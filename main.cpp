@@ -1,11 +1,15 @@
 #include "Game.h"
 #include "MapLoader.h"
+#include <time.h>
 #include <iostream>
 
 using namespace std;
 using namespace HungerGames;
 
 int main(int argc, char* argv[]) {
+    // Initialize random number generator
+    srand((unsigned int) time(NULL));
+
     Game game;
     MapLoader loader(game);
 

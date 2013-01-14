@@ -5,7 +5,6 @@
 #include "ExplodingArrow.h"
 #include "PenetratingArrow.h"
 #include <iostream>
-#include <exception>
 
 using namespace std;
 using namespace HungerGames;
@@ -76,14 +75,13 @@ void BasePlayer::setSquare(Grid::Square& square) {
 }
 
 bool BasePlayer::shootArrow(ArrowsBag::Type type) {
-    Grid::Square& square = getNextSquare();
     if (
         arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
         pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
         BaseArrow* arrow = arrowsBag.getArrow(type);
         arrow->setDirection(direction);
-        pGame->addArrow(arrow, square); // Update game
+        pGame->addArrow(arrow, getNextSquare()); // Update game
         lastArrowTick = pGame->getTick();
         return true;
     }
@@ -196,7 +194,7 @@ int BasePlayer::ArrowsBag::getRemaining(Type type) const {
 
 BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() const {
     if (isEmpty()) {
-        throw logic_error("Arrows bag is empty");
+        return NONE;
     }
 
     // Check which arrow type is available
