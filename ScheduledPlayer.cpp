@@ -15,8 +15,11 @@ void ScheduledPlayer::update() {
 
         EventsFile::Event* ev = events.getEvent(pGame->getTick());
         if (ev) {
-            for (int i = 0; i < ev->getNumActions(); i++) {
-                doAction((Action) ev->getAction(i));
+            list<char>& actions = ev->getActions();
+            list<char>::iterator it = actions.begin();
+            while (it != actions.end()) {
+                doAction((Action) *it);
+                it++;
             }
         }
     }

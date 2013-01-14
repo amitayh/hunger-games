@@ -10,7 +10,6 @@ namespace HungerGames
     // Exceptions
     class SingletonError {};
     class IOError {};
-    class OutOfRangeError {};
     class InvalidArgumentError {};
     class EndOfFileError {};
 

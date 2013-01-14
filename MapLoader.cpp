@@ -4,6 +4,8 @@
 #include "Bot.h"
 #include "ScheduledPlayer.h"
 #include "Human.h"
+#include "FileObjectsDropper.h"
+#include "RandomObjectsDropper.h"
 #include <fstream>
 
 using namespace HungerGames;
@@ -128,8 +130,10 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
     }
 
     if (eventsFile) {
-        // Set events file
-        pGame->setEventsFile(eventsFile);
+        // Events file
+        pGame->setObjectsDropper(new FileObjectsDropper(eventsFile));
+    } else {
+        pGame->setObjectsDropper(new RandomObjectsDropper);
     }
 }
 

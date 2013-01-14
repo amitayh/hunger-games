@@ -2,6 +2,7 @@
 #define _EVENTS_FILE_H
 
 #include <fstream>
+#include <list>
 
 using namespace std;
 
@@ -13,14 +14,11 @@ namespace HungerGames
     public:
         class Event
         {
-            static const int MAX_ACTIONS = 3;
             unsigned int tick;
-            char actions[MAX_ACTIONS];
-            int numActions;
+            list<char> actions;
         public:
             Event();
-            int getNumActions();
-            char getAction(int index);
+            list<char>& getActions();
             friend class EventsFile;
         };
 
