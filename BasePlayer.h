@@ -2,6 +2,7 @@
 #define _BASE_PLAYER_H
 
 #include "MovingObject.h"
+#include "EventsFile.h"
 #include <ostream>
 
 using namespace std;
@@ -58,13 +59,13 @@ namespace HungerGames
         static const int INITIAL_POWER;
         static const int MIN_TICKS_BETWEEN_ARROWS;
         static const int MOVE_INTERVAL;
-        static const char ACTION_LEFT;
-        static const char ACTION_RIGHT;
-        static const char ACTION_UP;
-        static const char ACTION_DOWN;
-        static const char ACTION_SHOOT_REGULAR_ARROW;
-        static const char ACTION_SHOOT_EXPLODING_ARROW;
-        static const char ACTION_SHOOT_PENETRATING_ARROW;
+        static const Action MOVE_LEFT;
+        static const Action MOVE_RIGHT;
+        static const Action MOVE_UP;
+        static const Action MOVE_DOWN;
+        static const Action SHOOT_REGULAR_ARROW;
+        static const Action SHOOT_EXPLODING_ARROW;
+        static const Action SHOOT_PENETRATING_ARROW;
 
         BasePlayer(char name, Console::Color color); // Make class abstract
 
@@ -77,7 +78,7 @@ namespace HungerGames
 
         void fight(BasePlayer& opponent);
         bool shootArrow(ArrowsBag::Type type);
-        void doAction(char action);
+        void doAction(Action action);
     };
 
 }

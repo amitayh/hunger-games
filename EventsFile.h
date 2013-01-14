@@ -9,16 +9,20 @@ using namespace std;
 namespace HungerGames
 {
 
+    typedef char Action;
+    typedef list<Action> ActionsList;
+    typedef ActionsList::iterator ActionsIterator;
+
     class EventsFile
     {
     public:
         class Event
         {
             unsigned int tick;
-            list<char> actions;
+            ActionsList actions;
         public:
             Event();
-            list<char>& getActions();
+            ActionsList& getActions();
             friend class EventsFile;
         };
 

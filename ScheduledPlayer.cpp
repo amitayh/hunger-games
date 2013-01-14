@@ -11,8 +11,8 @@ void ScheduledPlayer::update() {
     nextArrowType = ArrowsBag::NONE;
     EventsFile::Event* ev = events.getEvent(pGame->getTick());
     if (ev) {
-        list<char>& actions = ev->getActions();
-        list<char>::iterator it = actions.begin();
+        ActionsList& actions = ev->getActions();
+        ActionsIterator it = actions.begin();
         while (it != actions.end()) {
             doAction(*it);
             it++;
