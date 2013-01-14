@@ -12,7 +12,6 @@ using namespace HungerGames;
 
 const int BasePlayer::INITIAL_POWER                     = 1000;
 const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS          = 3;
-const int BasePlayer::SHOOT_ARROW_PROBABILITY           = 20;
 const int BasePlayer::MOVE_INTERVAL                     = 2;
 const char BasePlayer::ACTION_LEFT                      = 'a';
 const char BasePlayer::ACTION_RIGHT                     = 'd';

@@ -9,6 +9,7 @@ namespace HungerGames
     class Bot: public BasePlayer
     {
         static const int CHANGE_DIRECTION_PROBABILITY;
+        static const int SHOOT_ARROW_PROBABILITY;
 
         void setRandomDirection();
         Grid::Square& getNextMove();

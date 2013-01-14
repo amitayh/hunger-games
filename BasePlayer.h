@@ -55,7 +55,6 @@ namespace HungerGames
     protected:
         static const int INITIAL_POWER;
         static const int MIN_TICKS_BETWEEN_ARROWS;
-        static const int SHOOT_ARROW_PROBABILITY;
         static const int MOVE_INTERVAL;
         static const char ACTION_LEFT;
         static const char ACTION_RIGHT;
