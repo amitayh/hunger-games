@@ -1,4 +1,3 @@
-#include "Common.h"
 #include "Game.h"
 #include "MapLoader.h"
 #include <iostream>
@@ -13,6 +12,8 @@ int main(int argc, char* argv[]) {
     try {
         loader.loadFromArguments(argc, argv);
         game.run();
+    } catch (const exception& e) {
+        cerr << e.what() << endl;
     } catch (...) {
         cerr << "An error occurred" << endl;
     }

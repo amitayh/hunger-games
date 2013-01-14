@@ -25,7 +25,8 @@ namespace HungerGames
             enum Type {
                 REGULAR,
                 EXPLODING,
-                PENETRATING
+                PENETRATING,
+                NONE
             };
             class EmptyError {};
             ArrowsBag();
@@ -38,18 +39,9 @@ namespace HungerGames
             friend class BasePlayer;
         };
 
-        enum Action {
-            LEFT                      = 'a',
-            RIGHT                     = 'd',
-            UP                        = 'w',
-            DOWN                      = 's',
-            SHOOT_REGULAR_ARROW       = 'p',
-            SHOOT_EXPLODING_ARROW     = 'i',
-            SHOOT_PENETRATING_ARROW   = 'o'
-        };
-
         ~BasePlayer();
 
+        virtual void update();
         virtual void setSquare(Grid::Square& square);
         void increasePower(int amount);
         void decreasePower(int amount);
@@ -65,8 +57,14 @@ namespace HungerGames
     protected:
         static const int INITIAL_POWER;
         static const int MIN_TICKS_BETWEEN_ARROWS;
-        static const int SHOOT_ARROW_PROBABILITY;
         static const int MOVE_INTERVAL;
+        static const char ACTION_LEFT;
+        static const char ACTION_RIGHT;
+        static const char ACTION_UP;
+        static const char ACTION_DOWN;
+        static const char ACTION_SHOOT_REGULAR_ARROW;
+        static const char ACTION_SHOOT_EXPLODING_ARROW;
+        static const char ACTION_SHOOT_PENETRATING_ARROW;
 
         BasePlayer(char name, Console::Color color); // Make class abstract
 
@@ -75,10 +73,11 @@ namespace HungerGames
         int power;
         ArrowsBag arrowsBag;
         unsigned int lastArrowTick;
+        ArrowsBag::Type nextArrowType;
 
         void fight(BasePlayer& opponent);
         bool shootArrow(ArrowsBag::Type type);
-        void doAction(Action action);
+        void doAction(char action);
     };
 
 }

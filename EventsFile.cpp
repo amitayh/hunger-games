@@ -9,7 +9,7 @@ const char EventsFile::SEPARATOR = '\n';
 EventsFile::EventsFile(const char* filename) {
     file.open(filename);
     if (!file.good()) {
-        throw IOError();
+        throw IOError("Unable to open events file");
     }
 }
 
@@ -30,14 +30,13 @@ EventsFile::Event* EventsFile::getEvent(unsigned int tick) {
 
 void EventsFile::readEvent() {
     file >> lastEvent.tick;
-    lastEvent.numActions = 0;
+    lastEvent.actions.clear();
     bool read = true;
-    while (read && !file.eof() && lastEvent.numActions < Event::MAX_ACTIONS) {
+    while (read && !file.eof()) {
         char action = toLowerCase(file.get());
         if (action >= 'a' && action <= 'z') {
             // Valid action, add to actions array
-            lastEvent.actions[lastEvent.numActions] = action;
-            lastEvent.numActions++;
+            lastEvent.actions.push_back(action);
         }
         if (action == SEPARATOR) {
             read = false;
@@ -47,16 +46,8 @@ void EventsFile::readEvent() {
 
 EventsFile::Event::Event() {
     tick = 0;
-    numActions = 0;
 }
 
-int EventsFile::Event::getNumActions() {
-    return numActions;
-}
-
-char EventsFile::Event::getAction(int index) {
-    if (index < 0 || index >= numActions) {
-        throw OutOfRangeError();
-    }
-    return actions[index];
+list<char>& EventsFile::Event::getActions() {
+    return actions;
 }

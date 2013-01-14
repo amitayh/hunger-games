@@ -12,13 +12,13 @@ void Console::changeColor(Color color) {
 }
 
 void Console::gotoPosition(int row, int col) {
-	HANDLE hConsoleOutput;
-	COORD dwCursorPosition;
-	cout.flush();
-	dwCursorPosition.X = col;
-	dwCursorPosition.Y = row;
-	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleCursorPosition(hConsoleOutput,dwCursorPosition);
+    HANDLE hConsoleOutput;
+    COORD dwCursorPosition;
+    cout.flush();
+    dwCursorPosition.X = col;
+    dwCursorPosition.Y = row;
+    hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleCursorPosition(hConsoleOutput,dwCursorPosition);
 }
 
 void Console::clear() {

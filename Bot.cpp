@@ -5,27 +5,28 @@
 using namespace HungerGames;
 
 const int Bot::CHANGE_DIRECTION_PROBABILITY = 10;
+const int Bot::SHOOT_ARROW_PROBABILITY      = 20;
 
 Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 
 void Bot::update() {
-    if (power > 0) {
-        if (pGame->getTick() % MOVE_INTERVAL == 0) {
-            setSquare(getNextMove());
-        }
-
-        if (
-            !arrowsBag.isEmpty() &&                             // Player still has arrows
-            pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
-            hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
-        ) {
-            // Shoot an arrow if conditions are met
-            shootArrow(arrowsBag.getAvailableRandomType());
-        }
+    if (pGame->getTick() % MOVE_INTERVAL == 0) {
+        setNextMove();
     }
+    if (
+        !arrowsBag.isEmpty() &&                             // Player still has arrows
+        pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
+        hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
+    ) {
+        // Shoot an arrow if conditions are met
+        nextArrowType = arrowsBag.getAvailableRandomType();
+    } else {
+        nextArrowType = ArrowsBag::NONE;
+    }
+    BasePlayer::update();
 }
 
-Grid::Square& Bot::getNextMove() {
+void Bot::setNextMove() {
     // Find closest food / quiver
     DroppingObject* closest = findClosestObject();
     if (closest && isClearPath(closest->getSquare())) {
@@ -42,8 +43,6 @@ Grid::Square& Bot::getNextMove() {
         setRandomDirection();
         nextSquare = &getNextSquare();
     }
-
-    return *nextSquare;
 }
 
 DroppingObject* Bot::findClosestObject() const {
@@ -55,7 +54,7 @@ DroppingObject* Bot::findClosestObject() const {
         while (it != droppingObjects.end()) {
             // Iterate over the objects list
             DroppingObject* current = (DroppingObject*) *it;
-            if (current->getType() != DroppingObject::Type::BOMB) {
+            if (current->getType() != DroppingObject::BOMB) {
                 // Don't go for the bombs!
                 double distance = pSquare->getDistance(current->getSquare());
                 if (!closest || distance < closestDistance) {
@@ -89,15 +88,15 @@ void Bot::setRandomDirection() {
     // Set a direction randomly. Player will only turn right or left (from his perspective)
     Direction directions[2];
     switch (direction) {
-        case Direction::UP:
-        case Direction::DOWN:
-            directions[0] = Direction::LEFT;
-            directions[1] = Direction::RIGHT;
+        case UP:
+        case DOWN:
+            directions[0] = LEFT;
+            directions[1] = RIGHT;
             break;
-        case Direction::LEFT:
-        case Direction::RIGHT:
-            directions[0] = Direction::UP;
-            directions[1] = Direction::DOWN;
+        case LEFT:
+        case RIGHT:
+            directions[0] = UP;
+            directions[1] = DOWN;
             break;
     }
     direction = directions[rand() % 2];
