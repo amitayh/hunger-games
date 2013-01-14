@@ -10,16 +10,16 @@
 using namespace std;
 using namespace HungerGames;
 
-const int BasePlayer::INITIAL_POWER                     = 1000;
-const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS          = 3;
-const int BasePlayer::MOVE_INTERVAL                     = 2;
-const char BasePlayer::ACTION_LEFT                      = 'a';
-const char BasePlayer::ACTION_RIGHT                     = 'd';
-const char BasePlayer::ACTION_UP                        = 'w';
-const char BasePlayer::ACTION_DOWN                      = 's';
-const char BasePlayer::ACTION_SHOOT_REGULAR_ARROW       = 'p';
-const char BasePlayer::ACTION_SHOOT_EXPLODING_ARROW     = 'i';
-const char BasePlayer::ACTION_SHOOT_PENETRATING_ARROW   = 'o';
+const int   BasePlayer::INITIAL_POWER                   = 1000;
+const int   BasePlayer::MIN_TICKS_BETWEEN_ARROWS        = 3;
+const int   BasePlayer::MOVE_INTERVAL                   = 2;
+const char  BasePlayer::ACTION_LEFT                     = 'a';
+const char  BasePlayer::ACTION_RIGHT                    = 'd';
+const char  BasePlayer::ACTION_UP                       = 'w';
+const char  BasePlayer::ACTION_DOWN                     = 's';
+const char  BasePlayer::ACTION_SHOOT_REGULAR_ARROW      = 'p';
+const char  BasePlayer::ACTION_SHOOT_EXPLODING_ARROW    = 'i';
+const char  BasePlayer::ACTION_SHOOT_PENETRATING_ARROW  = 'o';
 
 BasePlayer::BasePlayer(char name, Console::Color color) {
     this->name = name;
@@ -27,12 +27,24 @@ BasePlayer::BasePlayer(char name, Console::Color color) {
     power = INITIAL_POWER;
     direction = RIGHT;
     lastArrowTick = 0;
+    nextArrowType = ArrowsBag::NONE;
 }
 
 BasePlayer::~BasePlayer() {
     if (pGame && pGame->isRunning()) {
         // Clear square before deletion
         pSquare->stepOut(*this);
+    }
+}
+
+void BasePlayer::update() {
+    if (power > 0) {
+        if (pGame->getTick() % MOVE_INTERVAL == 0) {
+            setSquare(getNextSquare());
+        }
+        if (nextArrowType != ArrowsBag::NONE) {
+            shootArrow(nextArrowType);
+        }
     }
 }
 
@@ -109,13 +121,13 @@ void BasePlayer::doAction(char action) {
             direction = DOWN;
             break;
         case ACTION_SHOOT_REGULAR_ARROW:
-            shootArrow(ArrowsBag::REGULAR);
+            nextArrowType = ArrowsBag::REGULAR;
             break;
         case ACTION_SHOOT_EXPLODING_ARROW:
-            shootArrow(ArrowsBag::EXPLODING);
+            nextArrowType = ArrowsBag::EXPLODING;
             break;
         case ACTION_SHOOT_PENETRATING_ARROW:
-            shootArrow(ArrowsBag::PENETRATING);
+            nextArrowType = ArrowsBag::PENETRATING;
             break;
     }
 }

@@ -15,12 +15,8 @@ HumanPlayer::HumanPlayer(char name, Console::Color color): BasePlayer(name, colo
 }
 
 void HumanPlayer::update() {
-    if (power > 0) {
-        if (pGame->getTick() % MOVE_INTERVAL == 0) {
-            setSquare(getNextSquare());
-        }
-
-        char action = toLowerCase(pGame->getKey()); 
-        doAction(action);
-    }
+    nextArrowType = ArrowsBag::NONE;
+    char key = pGame->getKey();
+    doAction(toLowerCase(key));
+    BasePlayer::update();
 }

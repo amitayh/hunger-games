@@ -25,7 +25,8 @@ namespace HungerGames
             enum Type {
                 REGULAR,
                 EXPLODING,
-                PENETRATING
+                PENETRATING,
+                NONE
             };
             class EmptyError {};
             ArrowsBag();
@@ -40,6 +41,7 @@ namespace HungerGames
 
         ~BasePlayer();
 
+        virtual void update();
         virtual void setSquare(Grid::Square& square);
         void increasePower(int amount);
         void decreasePower(int amount);
@@ -71,6 +73,7 @@ namespace HungerGames
         int power;
         ArrowsBag arrowsBag;
         unsigned int lastArrowTick;
+        ArrowsBag::Type nextArrowType;
 
         void fight(BasePlayer& opponent);
         bool shootArrow(ArrowsBag::Type type);

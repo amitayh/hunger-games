@@ -10,23 +10,23 @@ const int Bot::SHOOT_ARROW_PROBABILITY      = 20;
 Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 
 void Bot::update() {
-    if (power > 0) {
-        if (pGame->getTick() % MOVE_INTERVAL == 0) {
-            setSquare(getNextMove());
-        }
-
-        if (
-            !arrowsBag.isEmpty() &&                             // Player still has arrows
-            pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
-            hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
-        ) {
-            // Shoot an arrow if conditions are met
-            shootArrow(arrowsBag.getAvailableRandomType());
-        }
+    if (pGame->getTick() % MOVE_INTERVAL == 0) {
+        setNextMove();
     }
+    if (
+        !arrowsBag.isEmpty() &&                             // Player still has arrows
+        pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
+        hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
+    ) {
+        // Shoot an arrow if conditions are met
+        nextArrowType = arrowsBag.getAvailableRandomType();
+    } else {
+        nextArrowType = ArrowsBag::NONE;
+    }
+    BasePlayer::update();
 }
 
-Grid::Square& Bot::getNextMove() {
+void Bot::setNextMove() {
     // Find closest food / quiver
     DroppingObject* closest = findClosestObject();
     if (closest && isClearPath(closest->getSquare())) {
@@ -43,8 +43,6 @@ Grid::Square& Bot::getNextMove() {
         setRandomDirection();
         nextSquare = &getNextSquare();
     }
-
-    return *nextSquare;
 }
 
 DroppingObject* Bot::findClosestObject() const {

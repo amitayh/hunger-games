@@ -12,7 +12,7 @@ namespace HungerGames
         static const int SHOOT_ARROW_PROBABILITY;
 
         void setRandomDirection();
-        Grid::Square& getNextMove();
+        void setNextMove();
 
         DroppingObject* findClosestObject() const;
         bool isClearPath(const Grid::Square& target) const;
