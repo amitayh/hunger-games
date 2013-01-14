@@ -18,7 +18,7 @@ void ScheduledPlayer::update() {
             list<char>& actions = ev->getActions();
             list<char>::iterator it = actions.begin();
             while (it != actions.end()) {
-                doAction((Action) *it);
+                doAction(*it);
                 it++;
             }
         }

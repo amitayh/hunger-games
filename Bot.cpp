@@ -55,7 +55,7 @@ DroppingObject* Bot::findClosestObject() const {
         while (it != droppingObjects.end()) {
             // Iterate over the objects list
             DroppingObject* current = (DroppingObject*) *it;
-            if (current->getType() != DroppingObject::Type::BOMB) {
+            if (current->getType() != DroppingObject::BOMB) {
                 // Don't go for the bombs!
                 double distance = pSquare->getDistance(current->getSquare());
                 if (!closest || distance < closestDistance) {
@@ -89,15 +89,15 @@ void Bot::setRandomDirection() {
     // Set a direction randomly. Player will only turn right or left (from his perspective)
     Direction directions[2];
     switch (direction) {
-        case Direction::UP:
-        case Direction::DOWN:
-            directions[0] = Direction::LEFT;
-            directions[1] = Direction::RIGHT;
+        case UP:
+        case DOWN:
+            directions[0] = LEFT;
+            directions[1] = RIGHT;
             break;
-        case Direction::LEFT:
-        case Direction::RIGHT:
-            directions[0] = Direction::UP;
-            directions[1] = Direction::DOWN;
+        case LEFT:
+        case RIGHT:
+            directions[0] = UP;
+            directions[1] = DOWN;
             break;
     }
     direction = directions[rand() % 2];

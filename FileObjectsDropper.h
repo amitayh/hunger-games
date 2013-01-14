@@ -9,9 +9,9 @@ namespace HungerGames
 
     class FileObjectsDropper: public ObjectsDropper
     {
-        static const char FOOD_ACTION;
-        static const char QUIVER_ACTION;
-        static const char BOMB_ACTION;
+        static const char ACTION_FOOD;
+        static const char ACTION_QUIVER;
+        static const char ACTION_BOMB;
 
         EventsFile events;
 

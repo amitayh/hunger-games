@@ -8,7 +8,3 @@ char HungerGames::toLowerCase(char ch) {
     }
     return ch;
 }
-
-IOError::IOError(const char* msg): exception(msg) {};
-
-EndOfFile::EndOfFile(const char* msg): exception(msg) {};

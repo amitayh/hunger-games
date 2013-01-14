@@ -10,16 +10,23 @@
 using namespace std;
 using namespace HungerGames;
 
-const int BasePlayer::INITIAL_POWER                  = 1000;
-const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS       = 3;
-const int BasePlayer::SHOOT_ARROW_PROBABILITY        = 20;
-const int BasePlayer::MOVE_INTERVAL                  = 2;
+const int BasePlayer::INITIAL_POWER                     = 1000;
+const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS          = 3;
+const int BasePlayer::SHOOT_ARROW_PROBABILITY           = 20;
+const int BasePlayer::MOVE_INTERVAL                     = 2;
+const char BasePlayer::ACTION_LEFT                      = 'a';
+const char BasePlayer::ACTION_RIGHT                     = 'd';
+const char BasePlayer::ACTION_UP                        = 'w';
+const char BasePlayer::ACTION_DOWN                      = 's';
+const char BasePlayer::ACTION_SHOOT_REGULAR_ARROW       = 'p';
+const char BasePlayer::ACTION_SHOOT_EXPLODING_ARROW     = 'i';
+const char BasePlayer::ACTION_SHOOT_PENETRATING_ARROW   = 'o';
 
 BasePlayer::BasePlayer(char name, Console::Color color) {
     this->name = name;
     this->color = color;
     power = INITIAL_POWER;
-    direction = Direction::RIGHT;
+    direction = RIGHT;
     lastArrowTick = 0;
 }
 
@@ -88,27 +95,27 @@ void BasePlayer::fight(BasePlayer& opponent) {
     }
 }
 
-void BasePlayer::doAction(Action action) {
+void BasePlayer::doAction(char action) {
     switch (action) {
-        case Action::LEFT:
-            direction = Direction::LEFT;
+        case ACTION_LEFT:
+            direction = LEFT;
             break;
-        case Action::RIGHT:
-            direction = Direction::RIGHT;
+        case ACTION_RIGHT:
+            direction = RIGHT;
             break;
-        case Action::UP:
-            direction = Direction::UP;
+        case ACTION_UP:
+            direction = UP;
             break;
-        case Action::DOWN:
-            direction = Direction::DOWN;
+        case ACTION_DOWN:
+            direction = DOWN;
             break;
-        case Action::SHOOT_REGULAR_ARROW:
+        case ACTION_SHOOT_REGULAR_ARROW:
             shootArrow(ArrowsBag::REGULAR);
             break;
-        case Action::SHOOT_EXPLODING_ARROW:
+        case ACTION_SHOOT_EXPLODING_ARROW:
             shootArrow(ArrowsBag::EXPLODING);
             break;
-        case Action::SHOOT_PENETRATING_ARROW:
+        case ACTION_SHOOT_PENETRATING_ARROW:
             shootArrow(ArrowsBag::PENETRATING);
             break;
     }

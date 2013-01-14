@@ -6,9 +6,9 @@
 
 using namespace HungerGames;
 
-const char FileObjectsDropper::FOOD_ACTION      = 'f';
-const char FileObjectsDropper::QUIVER_ACTION    = 'q';
-const char FileObjectsDropper::BOMB_ACTION      = 'b';
+const char FileObjectsDropper::ACTION_FOOD      = 'f';
+const char FileObjectsDropper::ACTION_QUIVER    = 'q';
+const char FileObjectsDropper::ACTION_BOMB      = 'b';
 
 FileObjectsDropper::FileObjectsDropper(const char* filename): events(filename) {}
 
@@ -19,13 +19,13 @@ void FileObjectsDropper::drop(Game& game) {
         list<char>::iterator it = actions.begin();
         while (it != actions.end()) {
             switch (*it) {
-                case FOOD_ACTION:
+                case ACTION_FOOD:
                     game.dropObject(new Food);
                     break;
-                case QUIVER_ACTION:
+                case ACTION_QUIVER:
                     game.dropObject(new Quiver);
                     break;
-                case BOMB_ACTION:
+                case ACTION_BOMB:
                     game.dropObject(new Bomb);
                     break;
             }

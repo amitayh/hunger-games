@@ -9,7 +9,7 @@ namespace HungerGames
     class ObjectsDropper
     {
     public:
-        virtual ~ObjectsDropper();
+        virtual ~ObjectsDropper() {};
 
         virtual void drop(Game& game) = 0;
     };

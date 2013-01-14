@@ -17,13 +17,13 @@ namespace HungerGames
     class IOError: public exception
     {
     public:
-        IOError(const char* msg = "");
+        IOError(const char* msg = ""): exception(msg) {};
     };
 
     class EndOfFile: public exception
     {
     public:
-        EndOfFile(const char* msg = "");
+        EndOfFile(const char* msg = ""): exception(msg) {};
     };
 
 }

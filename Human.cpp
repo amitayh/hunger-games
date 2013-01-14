@@ -20,7 +20,7 @@ void HumanPlayer::update() {
             setSquare(getNextSquare());
         }
 
-        char key = toLowerCase(pGame->getKey()); 
-        doAction((Action) key);
+        char action = toLowerCase(pGame->getKey()); 
+        doAction(action);
     }
 }
