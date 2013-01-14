@@ -1,6 +1,7 @@
 #include "Human.h"
 #include "Common.h"
 #include "Game.h"
+#include <exception>
 
 using namespace HungerGames;
 
@@ -8,7 +9,7 @@ int HumanPlayer::numInstances = 0;
 
 HumanPlayer::HumanPlayer(char name, Console::Color color): BasePlayer(name, color) {
     if (numInstances > 0) {
-        throw SingletonError();
+        throw logic_error("Trying to instantiate more than one human player");
     }
     numInstances++;
 }

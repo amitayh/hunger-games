@@ -178,7 +178,7 @@ int BasePlayer::ArrowsBag::getRemaining(Type type) const {
 
 BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() const {
     if (isEmpty()) {
-        throw EmptyError();
+        throw logic_error("Arrows bag is empty");
     }
 
     // Check which arrow type is available

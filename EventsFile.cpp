@@ -9,7 +9,7 @@ const char EventsFile::SEPARATOR = '\n';
 EventsFile::EventsFile(const char* filename) {
     file.open(filename);
     if (!file.good()) {
-        throw IOError();
+        throw IOError("Unable to open events file");
     }
 }
 
