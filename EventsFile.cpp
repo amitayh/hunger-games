@@ -29,16 +29,17 @@ EventsFile::Event* EventsFile::getEvent(unsigned int tick) {
 }
 
 void EventsFile::readEvent() {
-    file >> lastEvent.tick;
+    file >> lastEvent.tick; // Read tick
     lastEvent.actions.clear();
     bool read = true;
     while (read && !file.eof()) {
         char action = toLowerCase(file.get());
         if (action >= 'a' && action <= 'z') {
-            // Valid action, add to actions array
+            // Valid action, add to actions list
             lastEvent.actions.push_back(action);
         }
         if (action == SEPARATOR) {
+            // End of line, break out of the loop
             read = false;
         }
     }
@@ -48,6 +49,6 @@ EventsFile::Event::Event() {
     tick = 0;
 }
 
-list<char>& EventsFile::Event::getActions() {
+ActionsList& EventsFile::Event::getActions() {
     return actions;
 }

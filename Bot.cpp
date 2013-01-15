@@ -12,6 +12,7 @@ Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 
 void Bot::update() {
     if (pGame->getTick() % MOVE_INTERVAL == 0) {
+        // Don't call this method on every tick for efficiency reasons
         setNextMove();
     }
     if (
@@ -24,6 +25,7 @@ void Bot::update() {
     } else {
         nextArrowType = ArrowsBag::NONE;
     }
+    // Call overridden method
     BasePlayer::update();
 }
 
