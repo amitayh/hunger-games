@@ -1,4 +1,5 @@
 #include "InfoBox.h"
+#include "Common.h"
 #include "Game.h"
 #include "BasePlayer.h"
 #include <iostream>
@@ -18,6 +19,12 @@ void InfoBox::setSquare(Grid::Square& square) {
         height = size.getHeight(),
         row = square.getRow(),
         col = square.getCol();
+
+    // Validate position
+    const Grid& grid = pGame->getGrid();
+    if (col + width > grid.getCols() || row + height > grid.getRows()) {
+        throw InvalidPosition("Invalid position for info box");
+    }
 
     // Add walls around the info box
     for (int i = 0; i < width + 2; i++) {

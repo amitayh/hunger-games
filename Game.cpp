@@ -25,6 +25,9 @@ Game::Game() {
     menuResume = menu.addOption("Resume");
     menuQuit = menu.addOption("Quit");
 
+    // Initialize info box
+    infoBox.setGame(*this);
+
     // Initialize game
     pObjectsDropper = NULL;
     status = PENDING;
@@ -59,7 +62,6 @@ void Game::addWall(int row, int col) {
 }
 
 void Game::addInfoBox(Grid::Square& square) {
-    infoBox.setGame(*this);
     infoBox.setSquare(square);
 }
 

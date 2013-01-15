@@ -28,6 +28,11 @@ namespace HungerGames
         EndOfFile(const char* msg = ""): exception(msg) {};
     };
 
+    class InvalidPosition: public exception
+    {
+    public:
+        InvalidPosition(const char* msg = ""): exception(msg) {};
+    };
 }
 
 #endif
