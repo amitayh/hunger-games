@@ -169,12 +169,16 @@ void Game::update() {
 void Game::updateArrows() {
     ObjectsIterator it = arrows.begin();
     while (it != arrows.end()) {
-        BaseArrow* arrow = (BaseArrow*) *it;
-        arrow->update();
-        if (arrow->getHit()) {
-            // Arrow hit a wall/player - remove it
-            it = arrows.erase(it);
-            delete arrow;
+        BaseArrow* arrow = dynamic_cast<BaseArrow*> (*it);
+        if (arrow) {
+            arrow->update();
+            if (arrow->getHit()) {
+                // Arrow hit a wall/player - remove it
+                it = arrows.erase(it);
+                delete arrow;
+            } else {
+                it++;
+            }
         } else {
             it++;
         }
@@ -184,16 +188,20 @@ void Game::updateArrows() {
 void Game::updatePlayers() {
     ObjectsIterator it = players.begin();
     while (status == RUNNING && it != players.end()) {
-        BasePlayer* player = (BasePlayer*) *it;
-        player->update();
-        if (!player->isAlive()) {
-            // Player is dead - remove him
-            it = players.erase(it);
-            delete player;
+        BasePlayer* player = dynamic_cast<BasePlayer*> (*it);
+        if (player) {
+            player->update();
+            if (!player->isAlive()) {
+                // Player is dead - remove him
+                it = players.erase(it);
+                delete player;
 
-            if (players.size() == 1) {
-                // One player left, game over
-                endGame((BasePlayer*) players.front());
+                if (players.size() == 1) {
+                    // One player left, game over
+                    endGame((BasePlayer*) players.front());
+                }
+            } else {
+                it++;
             }
         } else {
             it++;
@@ -204,8 +212,8 @@ void Game::updatePlayers() {
 void Game::updateDroppingObjects() {
     ObjectsIterator it = droppingObjects.begin();
     while (status == RUNNING && it != droppingObjects.end()) {
-        DroppingObject* droppingObject = (DroppingObject*) *it;
-        if (droppingObject->getPickedUp()) {
+        DroppingObject* droppingObject = dynamic_cast<DroppingObject*> (*it);
+        if (droppingObject && droppingObject->getPickedUp()) {
             // Object was picked up by a player - remove it
             it = droppingObjects.erase(it);
             delete droppingObject;

@@ -60,8 +60,10 @@ void BasePlayer::setSquare(Grid::Square& square) {
             // Fight other players on square
             ObjectsIterator it = players.begin();
             while (it != players.end()) {
-                BasePlayer* player = (BasePlayer*) *it;
-                fight(*player);
+                BasePlayer* player = dynamic_cast<BasePlayer*> (*it);
+                if (player) {
+                    fight(*player);
+                }
                 it++;
             }
         }

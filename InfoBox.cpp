@@ -55,8 +55,10 @@ void InfoBox::draw() const {
         Console::gotoPosition(row + i, col);
         if (it != players.end()) {
             // Print player info
-            BasePlayer* player = (BasePlayer*) *it;
-            cout << *player;
+            BasePlayer* player = dynamic_cast<BasePlayer*> (*it);
+            if (player) {
+                cout << *player;
+            }
             it++;
         } else {
             // Print empty line

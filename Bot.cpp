@@ -56,8 +56,8 @@ DroppingObject* Bot::findClosestObject() const {
         ObjectsIterator it = droppingObjects.begin();
         while (it != droppingObjects.end()) {
             // Iterate over the objects list
-            DroppingObject* current = (DroppingObject*) *it;
-            if (current->getType() != DroppingObject::BOMB) {
+            DroppingObject* current = dynamic_cast<DroppingObject*> (*it);
+            if (current && current->getType() != DroppingObject::BOMB) {
                 // Don't go for the bombs!
                 double distance = pSquare->getDistance(current->getSquare());
                 if (!closest || distance < closestDistance) {
@@ -111,7 +111,7 @@ bool Bot::hasPlayersInRange() const {
     bool inRange = false;
     while (!inRange && it != players.end()) {
         // Iterate over the players list
-        BasePlayer* player = (BasePlayer*) *it;
+        BasePlayer* player = dynamic_cast<BasePlayer*> (*it);
         if (player != this) {
             // Check if opponent may be hit if an arrow will be shot
             inRange = playerInRange(*player);
