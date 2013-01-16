@@ -30,7 +30,7 @@ namespace HungerGames
                 NONE
             };
             ArrowsBag();
-            BaseArrow* getArrow(Type type);
+            BaseArrow& getArrow(Type type);
             bool isEmpty() const;
             int getRemaining(Type type) const;
             Type getAvailableRandomType() const;

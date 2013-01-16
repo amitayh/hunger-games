@@ -58,8 +58,8 @@ namespace HungerGames
         template<class L>
         void freeObejctsList(L& list);
 
-        template<class O, class L>
-        void addObject(O* object, Grid::Square& square, L& list);
+        template<class T>
+        void addObject(T& object, Grid::Square& square, list<T*>& list);
 
     public:
         Game();
@@ -72,11 +72,11 @@ namespace HungerGames
         void addWall(int row, int col);
         void addInfoBox(Grid::Square& square);
         void addInfoBox(int row, int col);
-        void addPlayer(BasePlayer* player, Grid::Square& square);
-        void addPlayer(BasePlayer* player, int row, int col);
-        void addArrow(BaseArrow* arrow, Grid::Square& square);
-        void addArrow(BaseArrow* arrow, int row, int col);
-        void dropObject(DroppingObject* object);
+        void addPlayer(BasePlayer& player, Grid::Square& square);
+        void addPlayer(BasePlayer& player, int row, int col);
+        void addArrow(BaseArrow& arrow, Grid::Square& square);
+        void addArrow(BaseArrow& arrow, int row, int col);
+        void dropObject(DroppingObject& object);
         void clearWall(const Wall& wall);
         PlayersList& getPlayers();
         DroppingObjectsList& getDroppingObjects();
@@ -111,11 +111,11 @@ namespace HungerGames
         }
     }
 
-    template<class O, class L>
-    void Game::addObject(O* object, Grid::Square& square, L& list) {
-        object->setGame(*this);
-        object->setSquare(square);
-        list.push_back(object);
+    template<class T>
+    void Game::addObject(T& object, Grid::Square& square, list<T*>& list) {
+        object.setGame(*this);
+        object.setSquare(square);
+        list.push_back(&object);
     }
 
 }

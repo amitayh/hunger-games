@@ -43,17 +43,18 @@ Game::~Game() {
     delete pObjectsDropper;
 }
 
-void Game::addPlayer(BasePlayer* player, Grid::Square& square) {
+void Game::addPlayer(BasePlayer& player, Grid::Square& square) {
     addObject(player, square, players);
 }
 
-void Game::addPlayer(BasePlayer* player, int row, int col) {
+void Game::addPlayer(BasePlayer& player, int row, int col) {
     addPlayer(player, grid.getSquare(row, col));
 }
 
 void Game::addWall(Grid::Square& square) {
     if (!square.hasWall()) {
-        addObject(new Wall, square, walls);
+        Wall* wall = new Wall;
+        addObject(*wall, square, walls);
     }
 }
 
@@ -69,16 +70,16 @@ void Game::addInfoBox(int row, int col) {
     addInfoBox(grid.getSquare(row, col));
 }
 
-void Game::addArrow(BaseArrow* arrow, Grid::Square& square) {
+void Game::addArrow(BaseArrow& arrow, Grid::Square& square) {
     // The arrow is pre-allocated by the shooting player
     addObject(arrow, square, arrows);
 }
 
-void Game::addArrow(BaseArrow* arrow, int row, int col) {
+void Game::addArrow(BaseArrow& arrow, int row, int col) {
     addArrow(arrow, grid.getSquare(row, col));
 }
 
-void Game::dropObject(DroppingObject* object) {
+void Game::dropObject(DroppingObject& object) {
     // The object is pre-allocated by the objects dropper
     addObject(object, getValidDropSquare(), droppingObjects);
 }

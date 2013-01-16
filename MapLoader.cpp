@@ -89,7 +89,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                             char name = FIRST_PLAYER_NAME + bots + scheduled; // Name the bots sequentially (A, B, C...)
                             Console::Color color = getPlayerColor();
                             Bot* bot = new Bot(name, color);
-                            pGame->addPlayer(bot, row, col);
+                            pGame->addPlayer(*bot, row, col);
                             bots++;
                         }
                         break;
@@ -102,7 +102,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                                 throw invalid_argument("No events file was provided for scheduled player");
                             }
                             ScheduledPlayer* player = new ScheduledPlayer(name, color, scheduledPlayersFile);
-                            pGame->addPlayer(player, row, col);
+                            pGame->addPlayer(*player, row, col);
                             scheduled++;
                         }
                         break;
@@ -110,7 +110,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                         if (!addedHumanPlayer && players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
                             Console::Color color = getPlayerColor();
                             HumanPlayer* human = new HumanPlayer(CHAR_HUMAN_PLAYER, color);
-                            pGame->addPlayer(human, row, col);
+                            pGame->addPlayer(*human, row, col);
                             addedHumanPlayer = true;
                         }
                         break;
@@ -136,7 +136,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
         Console::Color color = getPlayerColor();
         Bot* bot = new Bot(name, color);
         Grid::Square& square = pGame->getValidDropSquare();
-        pGame->addPlayer(bot, square);
+        pGame->addPlayer(*bot, square);
         bots++;
     }
 

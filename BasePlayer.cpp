@@ -79,8 +79,8 @@ bool BasePlayer::shootArrow(ArrowsBag::Type type) {
         arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
         pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
-        BaseArrow* arrow = arrowsBag.getArrow(type);
-        arrow->setDirection(direction);
+        BaseArrow& arrow = arrowsBag.getArrow(type);
+        arrow.setDirection(direction);
         pGame->addArrow(arrow, getNextSquare()); // Update game
         lastArrowTick = pGame->getTick();
         return true;
@@ -211,26 +211,30 @@ BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() cons
     return (Type) available[random];
 }
 
-BaseArrow* BasePlayer::ArrowsBag::getArrow(Type type) {
-    BaseArrow* arrow = NULL;
-    if (remaining[type] > 0) {
-        // Allocate arrow
-        switch (type) {
-            case REGULAR:
-                arrow = new RegularArrow;
-                break;
-            case EXPLODING:
-                arrow = new ExplodingArrow;
-                break;
-            case PENETRATING:
-                arrow = new PenetratingArrow;
-                break;
-        }
-
-        // Decrease counter
-        remaining[type]--;
+BaseArrow& BasePlayer::ArrowsBag::getArrow(Type type) {
+    if (remaining[type] == 0) {
+        throw logic_error("No remaining arrows from this type");
     }
-    return arrow;
+
+    BaseArrow* arrow;
+
+    // Allocate arrow
+    switch (type) {
+        case REGULAR:
+            arrow = new RegularArrow;
+            break;
+        case EXPLODING:
+            arrow = new ExplodingArrow;
+            break;
+        case PENETRATING:
+            arrow = new PenetratingArrow;
+            break;
+    }
+
+    // Decrease counter
+    remaining[type]--;
+
+    return *arrow;
 }
 
 BasePlayer::ArrowsBag& BasePlayer::ArrowsBag::operator+=(int amount) {

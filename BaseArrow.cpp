@@ -35,8 +35,7 @@ bool BaseArrow::checkHit() {
         PlayersList& players = pSquare->getPlayers();
         if (!players.empty()) {
             // Hit first player on square
-            BasePlayer* player = players.front();
-            player->decreasePower(500);
+            players.front()->decreasePower(500);
             hit = true;
         }
     }

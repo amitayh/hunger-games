@@ -13,12 +13,15 @@ const int RandomObjectsDropper::BOMB_PROBABILITY    = 1;
 
 void RandomObjectsDropper::drop(Game& game) {
     if (checkProbability(FOOD_PROBABILITY)) {
-        game.dropObject(new Food);
+        Food* food = new Food;
+        game.dropObject(*food);
     }
     if (checkProbability(QUIVER_PROBABILITY)) {
-        game.dropObject(new Quiver);
+        Quiver* quiver = new Quiver;
+        game.dropObject(*quiver);
     }
     if (checkProbability(BOMB_PROBABILITY)) {
-        game.dropObject(new Bomb);
+        Bomb* bomb = new Bomb;
+        game.dropObject(*bomb);
     }
 }

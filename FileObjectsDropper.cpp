@@ -18,16 +18,20 @@ void FileObjectsDropper::drop(Game& game) {
         ActionsList& actions = ev->getActions();
         ActionsIterator it = actions.begin();
         while (it != actions.end()) {
+            DroppingObject* object = NULL;
             switch (*it) {
                 case DROP_FOOD:
-                    game.dropObject(new Food);
+                    object = new Food;
                     break;
                 case DROP_QUIVER:
-                    game.dropObject(new Quiver);
+                    object = new Quiver;
                     break;
                 case DROP_BOMB:
-                    game.dropObject(new Bomb);
+                    object = new Bomb;
                     break;
+            }
+            if (object) {
+                game.dropObject(*object);
             }
             it++;
         }
