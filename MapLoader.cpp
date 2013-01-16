@@ -57,7 +57,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
         throw IOError("Unable to open map file");
     }
 
-    ObjectsList& players = pGame->getPlayers();
+    PlayersList& players = pGame->getPlayers();
     const Grid& grid = pGame->getGrid();
     int rows = grid.getRows(), cols = grid.getCols();
 

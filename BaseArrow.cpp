@@ -32,10 +32,10 @@ void BaseArrow::update() {
 
 bool BaseArrow::checkHit() {
     if (pSquare) {
-        ObjectsList& players = pSquare->getPlayers();
+        PlayersList& players = pSquare->getPlayers();
         if (!players.empty()) {
             // Hit first player on square
-            BasePlayer* player = (BasePlayer*) players.front();
+            BasePlayer* player = players.front();
             player->decreasePower(500);
             hit = true;
         }

@@ -13,6 +13,10 @@ namespace HungerGames
     class EventsFile;
     class ObjectsDropper;
 
+    typedef list<Wall*> WallsList;
+    typedef list<BaseArrow*> ArrowsList;
+    typedef list<DroppingObject*> DroppingObjectsList;
+
     class Game
     {
         static const int ESCAPSE_KEY;
@@ -30,10 +34,10 @@ namespace HungerGames
         int menuResume, menuQuit;
         Status status;
         Grid grid;
-        ObjectsList walls;
-        ObjectsList players;
-        ObjectsList arrows;
-        ObjectsList droppingObjects;
+        WallsList walls;
+        PlayersList players;
+        ArrowsList arrows;
+        DroppingObjectsList droppingObjects;
         InfoBox infoBox;
         Menu menu;
         ObjectsDropper* pObjectsDropper;
@@ -44,12 +48,12 @@ namespace HungerGames
         void updatePlayers();
         void updateArrows();
         void updateDroppingObjects();
-        void addObject(BaseObject* object, Grid::Square& square, ObjectsList& list);
+        template<class O, class L> void addObject(O* object, Grid::Square& square, L& list);
         void endGame(BasePlayer* winner = NULL);
         void showMenu();
         void drawUpdatingObjects();
-        void drawObejctsList(ObjectsList& list);
-        void freeObejctsList(ObjectsList& list);
+        template<class L> void drawObejctsList(L& list);
+        template<class L> void freeObejctsList(L& list);
 
     public:
         Game();
@@ -68,8 +72,8 @@ namespace HungerGames
         void addArrow(BaseArrow* arrow, int row, int col);
         void dropObject(DroppingObject* object);
         void clearWall(const Wall& wall);
-        ObjectsList& getPlayers();
-        ObjectsList& getDroppingObjects();
+        PlayersList& getPlayers();
+        DroppingObjectsList& getDroppingObjects();
         Grid::Square& getValidDropSquare();
         bool isValidDrop(int row, int col);
         bool isValidDrop(const Grid::Square& square);
@@ -80,6 +84,33 @@ namespace HungerGames
         unsigned int getTick() const;
         char getKey() const;
     };
+
+    // Template methods should be implemented in header file
+
+    template<class O, class L>
+    void Game::addObject(O* object, Grid::Square& square, L& list) {
+        object->setGame(*this);
+        object->setSquare(square);
+        list.push_back(object);
+    }
+
+    template<class L>
+    void Game::drawObejctsList(L& list) {
+        L::iterator it = list.begin();
+        while (it != list.end()) {
+            (*it)->draw();
+            it++;
+        }
+    }
+
+    template<class L>
+    void Game::freeObejctsList(L& list) {
+        L::iterator it = list.begin();
+        while (it != list.end()) {
+            delete *it;
+            it = list.erase(it);
+        }
+    }
 
 }
 

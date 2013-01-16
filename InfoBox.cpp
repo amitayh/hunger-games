@@ -38,8 +38,8 @@ void InfoBox::setSquare(Grid::Square& square) {
 }
 
 void InfoBox::draw() const {
-    ObjectsList& players = pGame->getPlayers();
-    ObjectsIterator it = players.begin();
+    PlayersList& players = pGame->getPlayers();
+    PlayersList::iterator it = players.begin();
     int row = pSquare->getRow(),
         col = pSquare->getCol(),
         height = size.getHeight();
@@ -55,7 +55,7 @@ void InfoBox::draw() const {
         Console::gotoPosition(row + i, col);
         if (it != players.end()) {
             // Print player info
-            BasePlayer* player = (BasePlayer*) *it;
+            BasePlayer* player = *it;
             cout << *player;
             it++;
         } else {

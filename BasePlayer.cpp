@@ -55,12 +55,12 @@ void BasePlayer::setSquare(Grid::Square& square) {
             droppingObject.affect(*this);
         }
 
-        ObjectsList& players = square.getPlayers();
+        PlayersList& players = square.getPlayers();
         if (!players.empty()) {
             // Fight other players on square
-            ObjectsIterator it = players.begin();
+            PlayersList::iterator it = players.begin();
             while (it != players.end()) {
-                BasePlayer* player = (BasePlayer*) *it;
+                BasePlayer* player = *it;
                 fight(*player);
                 it++;
             }

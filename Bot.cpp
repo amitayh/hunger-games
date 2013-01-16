@@ -49,14 +49,14 @@ void Bot::setNextMove() {
 }
 
 DroppingObject* Bot::findClosestObject() const {
-    ObjectsList& droppingObjects = pGame->getDroppingObjects();
+    DroppingObjectsList& droppingObjects = pGame->getDroppingObjects();
     DroppingObject* closest = NULL;
     if (!droppingObjects.empty()) {
         double closestDistance = 0;
-        ObjectsIterator it = droppingObjects.begin();
+        DroppingObjectsList::iterator it = droppingObjects.begin();
         while (it != droppingObjects.end()) {
             // Iterate over the objects list
-            DroppingObject* current = (DroppingObject*) *it;
+            DroppingObject* current = *it;
             if (current->getType() != DroppingObject::BOMB) {
                 // Don't go for the bombs!
                 double distance = pSquare->getDistance(current->getSquare());
@@ -106,12 +106,12 @@ void Bot::setRandomDirection() {
 }
 
 bool Bot::hasPlayersInRange() const {
-    ObjectsList& players = pGame->getPlayers();
-    ObjectsIterator it = players.begin();
+    PlayersList& players = pGame->getPlayers();
+    PlayersList::iterator it = players.begin();
     bool inRange = false;
     while (!inRange && it != players.end()) {
         // Iterate over the players list
-        BasePlayer* player = (BasePlayer*) *it;
+        BasePlayer* player = *it;
         if (player != this) {
             // Check if opponent may be hit if an arrow will be shot
             inRange = playerInRange(*player);

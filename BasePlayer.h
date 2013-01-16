@@ -29,7 +29,6 @@ namespace HungerGames
                 PENETRATING,
                 NONE
             };
-            class EmptyError {};
             ArrowsBag();
             BaseArrow* getArrow(Type type);
             bool isEmpty() const;

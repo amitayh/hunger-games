@@ -79,17 +79,12 @@ void Game::addArrow(BaseArrow* arrow, int row, int col) {
 }
 
 void Game::dropObject(DroppingObject* object) {
+    // The object is pre-allocated by the objects dropper
     addObject(object, getValidDropSquare(), droppingObjects);
 }
 
-void Game::addObject(BaseObject* object, Grid::Square& square, ObjectsList& list) {
-    object->setGame(*this);
-    object->setSquare(square);
-    list.push_back(object);
-}
-
 void Game::clearWall(const Wall& wall) {
-    ObjectsIterator it = find(walls.begin(), walls.end(), &wall);
+    WallsList::iterator it = find(walls.begin(), walls.end(), &wall);
     if (it != walls.end()) {
         wall.getSquare().unsetWall();
         delete *it;
@@ -167,9 +162,9 @@ void Game::update() {
 }
 
 void Game::updateArrows() {
-    ObjectsIterator it = arrows.begin();
+    ArrowsList::iterator it = arrows.begin();
     while (it != arrows.end()) {
-        BaseArrow* arrow = (BaseArrow*) *it;
+        BaseArrow* arrow = *it;
         arrow->update();
         if (arrow->getHit()) {
             // Arrow hit a wall/player - remove it
@@ -182,9 +177,9 @@ void Game::updateArrows() {
 }
 
 void Game::updatePlayers() {
-    ObjectsIterator it = players.begin();
+    PlayersList::iterator it = players.begin();
     while (status == RUNNING && it != players.end()) {
-        BasePlayer* player = (BasePlayer*) *it;
+        BasePlayer* player = *it;
         player->update();
         if (!player->isAlive()) {
             // Player is dead - remove him
@@ -193,7 +188,7 @@ void Game::updatePlayers() {
 
             if (players.size() == 1) {
                 // One player left, game over
-                endGame((BasePlayer*) players.front());
+                endGame(players.front());
             }
         } else {
             it++;
@@ -202,9 +197,9 @@ void Game::updatePlayers() {
 }
 
 void Game::updateDroppingObjects() {
-    ObjectsIterator it = droppingObjects.begin();
+    DroppingObjectsList::iterator it = droppingObjects.begin();
     while (status == RUNNING && it != droppingObjects.end()) {
-        DroppingObject* droppingObject = (DroppingObject*) *it;
+        DroppingObject* droppingObject = *it;
         if (droppingObject->getPickedUp()) {
             // Object was picked up by a player - remove it
             it = droppingObjects.erase(it);
@@ -221,22 +216,6 @@ void Game::drawUpdatingObjects() {
     drawObejctsList(players);
     infoBox.draw();
     Console::gotoPosition(grid.getRows(), grid.getCols()); // Hide cursor from main window
-}
-
-void Game::drawObejctsList(ObjectsList& list) {
-    ObjectsIterator it = list.begin();
-    while (it != list.end()) {
-        (*it)->draw();
-        it++;
-    }
-}
-
-void Game::freeObejctsList(ObjectsList& list) {
-    ObjectsIterator it = list.begin();
-    while (it != list.end()) {
-        delete *it;
-        it = list.erase(it);
-    }
 }
 
 Grid::Square& Game::getValidDropSquare() {
@@ -262,7 +241,7 @@ bool Game::isValidDrop(const Grid::Square& square) {
         result = false;
     } else {
         // Check if the square is too close to the players
-        ObjectsIterator it = players.begin();
+        PlayersList::iterator it = players.begin();
         while (result && it != players.end()) {
             double distance = square.getDistance((*it)->getSquare());
             if (distance <= MIN_DISTANCE_FROM_PLAYERS) {
@@ -283,11 +262,11 @@ unsigned int Game::getTick() const {
     return tick;
 }
 
-ObjectsList& Game::getPlayers() {
+PlayersList& Game::getPlayers() {
     return players;
 }
 
-ObjectsList& Game::getDroppingObjects() {
+DroppingObjectsList& Game::getDroppingObjects() {
     return droppingObjects;
 }
 
