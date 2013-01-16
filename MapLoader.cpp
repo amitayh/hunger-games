@@ -16,9 +16,12 @@ const char  MapLoader::CHAR_HUMAN_PLAYER        = 'H';
 const char  MapLoader::CHAR_SCHEDULED_PLAYER    = 'C';
 const char  MapLoader::CHAR_INFO_BOX            = 'O';
 const char  MapLoader::CHAR_EVENTS_FILE         = 'E';
+const char  MapLoader::FILE_SEPARATOR           = '=';
+const char  MapLoader::FIRST_PLAYER_NAME        = 'A';
 const int   MapLoader::MIN_NUM_PLAYERS          = 2;
 const int   MapLoader::MAX_NUM_PLAYERS          = 3;
-const Console::Color MapLoader::PLAYER_COLORS[] = {
+const int   MapLoader::MIN_ARG_LENGTH           = 3;
+const Console::Color MapLoader::PLAYER_COLORS[NUM_COLORS] = {
     Console::CYAN, Console::MAGENTA, Console::YELLOW
 };
 
@@ -27,22 +30,27 @@ MapLoader::MapLoader(Game& game) {
 }
 
 void MapLoader::loadFromArguments(int argc, char* argv[]) const {
+    char* arg;
     char* mapFile = NULL;
     char* eventsFile = NULL;
     char* scheduledPlayersFiles[MAX_NUM_PLAYERS] = {NULL};
     for (int i = 1; i < argc; i++) {
-        if (argv[i][0] == CHAR_SCHEDULED_PLAYER && argv[i][2] == '=') {
-            // Player's instructions file
-            int index = (argv[i][1] - '0') - 1; // Convert second char to index
-            if (index >= 0 && index < MAX_NUM_PLAYERS) {
-                scheduledPlayersFiles[index] = argv[i] + 3; // Skip 'C1='
+        arg = argv[i];
+        if (strlen(arg) >= MIN_ARG_LENGTH) {
+            if (arg[0] == CHAR_SCHEDULED_PLAYER && arg[2] == FILE_SEPARATOR) {
+                // Player's instructions file
+                int index = (arg[1] - '0'); // Convert second char to index
+                index--; // Use 0 based index (C1 => index 0)
+                if (index >= 0 && index < MAX_NUM_PLAYERS) {
+                    scheduledPlayersFiles[index] = arg + 3; // Skip 'C1='
+                }
+            } else if (arg[0] == CHAR_EVENTS_FILE && arg[1] == FILE_SEPARATOR) {
+                // Events file
+                eventsFile = arg + 2; // Skip 'E='
+            } else {
+                // Default - map file
+                mapFile = arg;
             }
-        } else if (argv[i][0] == CHAR_EVENTS_FILE && argv[i][1] == '=') {
-            // Events file
-            eventsFile = argv[i] + 2; // Skip 'E='
-        } else {
-            // Default - map file
-            mapFile = argv[i];
         }
     }
     if (!mapFile) {
@@ -78,7 +86,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                         break;
                     case CHAR_BOT:
                         if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            char name = 'A' + bots + scheduled; // Name the bots sequentially (A, B, C...)
+                            char name = FIRST_PLAYER_NAME + bots + scheduled; // Name the bots sequentially (A, B, C...)
                             Console::Color color = getPlayerColor();
                             Bot* bot = new Bot(name, color);
                             pGame->addPlayer(bot, row, col);
@@ -87,7 +95,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                         break;
                     case CHAR_SCHEDULED_PLAYER:
                         if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
-                            char name = 'A' + bots + scheduled;
+                            char name = FIRST_PLAYER_NAME + bots + scheduled;
                             Console::Color color = getPlayerColor();
                             char* scheduledPlayersFile = scheduledPlayersFiles[scheduled];
                             if (!scheduledPlayersFile) {
@@ -124,7 +132,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
 
     // Add additional bots if needed
     for (int i = players.size(); i < MIN_NUM_PLAYERS; i++) {
-        char name = 'A' + bots + scheduled;
+        char name = FIRST_PLAYER_NAME + bots + scheduled;
         Console::Color color = getPlayerColor();
         Bot* bot = new Bot(name, color);
         Grid::Square& square = pGame->getValidDropSquare();
@@ -142,5 +150,5 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
 }
 
 Console::Color MapLoader::getPlayerColor() const {
-    return PLAYER_COLORS[pGame->getPlayers().size() % 3];
+    return PLAYER_COLORS[pGame->getPlayers().size() % NUM_COLORS];
 }

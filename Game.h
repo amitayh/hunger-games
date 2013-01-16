@@ -48,12 +48,18 @@ namespace HungerGames
         void updatePlayers();
         void updateArrows();
         void updateDroppingObjects();
-        template<class O, class L> void addObject(O* object, Grid::Square& square, L& list);
         void endGame(BasePlayer* winner = NULL);
         void showMenu();
         void drawUpdatingObjects();
-        template<class L> void drawObejctsList(L& list);
-        template<class L> void freeObejctsList(L& list);
+
+        template<class L>
+        void drawObejctsList(L& list);
+
+        template<class L>
+        void freeObejctsList(L& list);
+
+        template<class O, class L>
+        void addObject(O* object, Grid::Square& square, L& list);
 
     public:
         Game();
@@ -87,13 +93,6 @@ namespace HungerGames
 
     // Template methods should be implemented in header file
 
-    template<class O, class L>
-    void Game::addObject(O* object, Grid::Square& square, L& list) {
-        object->setGame(*this);
-        object->setSquare(square);
-        list.push_back(object);
-    }
-
     template<class L>
     void Game::drawObejctsList(L& list) {
         L::iterator it = list.begin();
@@ -110,6 +109,13 @@ namespace HungerGames
             delete *it;
             it = list.erase(it);
         }
+    }
+
+    template<class O, class L>
+    void Game::addObject(O* object, Grid::Square& square, L& list) {
+        object->setGame(*this);
+        object->setSquare(square);
+        list.push_back(object);
     }
 
 }
