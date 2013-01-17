@@ -36,10 +36,11 @@ Game::Game() {
 
 Game::~Game() {
     // Free memory allocations
-    freeObejctsList(players);
-    freeObejctsList(arrows);
-    freeObejctsList(droppingObjects);
-    freeObejctsList(walls);
+    BaseObject::Delete del;
+    for_each(players.begin(), players.end(), del);
+    for_each(arrows.begin(), arrows.end(), del);
+    for_each(droppingObjects.begin(), droppingObjects.end(), del);
+    for_each(walls.begin(), walls.end(), del);
     delete pObjectsDropper;
 }
 
@@ -96,7 +97,7 @@ void Game::clearWall(const Wall& wall) {
 void Game::run() {
     status = RUNNING;
     Console::clear();
-    drawObejctsList(walls);
+    for_each(walls.begin(), walls.end(), BaseObject::Draw());
     loop();
 }
 
@@ -107,8 +108,9 @@ void Game::pause() {
 void Game::resume() {
     status = RUNNING;
     Console::clear();
-    drawObejctsList(walls);
-    drawObejctsList(droppingObjects);
+    BaseObject::Draw draw;
+    for_each(walls.begin(), walls.end(), draw);
+    for_each(droppingObjects.begin(), droppingObjects.end(), draw);
     drawUpdatingObjects();
 }
 
@@ -213,8 +215,9 @@ void Game::updateDroppingObjects() {
 
 void Game::drawUpdatingObjects() {
     // Draw updating objects
-    drawObejctsList(arrows);
-    drawObejctsList(players);
+    BaseObject::Draw draw;
+    for_each(arrows.begin(), arrows.end(), draw);
+    for_each(players.begin(), players.end(), draw);
     infoBox.draw();
     Console::gotoPosition(grid.getRows(), grid.getCols()); // Hide cursor from main window
 }

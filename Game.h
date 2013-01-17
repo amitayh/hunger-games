@@ -51,8 +51,6 @@ namespace HungerGames
         void endGame(BasePlayer* winner = NULL);
         void showMenu();
         void drawUpdatingObjects();
-        template<class T> void drawObejctsList(T& list);
-        template<class T> void freeObejctsList(T& list);
         template<class T> void addObject(T& object, Grid::Square& square, list<T*>& list);
 
     public:
@@ -86,24 +84,6 @@ namespace HungerGames
     };
 
     // Template methods should be implemented in header file
-
-    template<class T>
-    void Game::drawObejctsList(T& list) {
-        T::iterator it = list.begin();
-        while (it != list.end()) {
-            (*it)->draw();
-            ++it;
-        }
-    }
-
-    template<class T>
-    void Game::freeObejctsList(T& list) {
-        T::iterator it = list.begin();
-        while (it != list.end()) {
-            delete *it;
-            it = list.erase(it);
-        }
-    }
 
     template<class T>
     void Game::addObject(T& object, Grid::Square& square, list<T*>& list) {
