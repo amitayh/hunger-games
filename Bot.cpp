@@ -66,7 +66,7 @@ DroppingObject* Bot::findClosestObject() const {
                     closest = current;
                 }
             }
-            it++;
+            ++it;
         }
     }
     return closest;
@@ -116,7 +116,7 @@ bool Bot::hasPlayersInRange() const {
             // Check if opponent may be hit if an arrow will be shot
             inRange = playerInRange(*player);
         }
-        it++;
+        ++it;
     }
     return inRange;
 }

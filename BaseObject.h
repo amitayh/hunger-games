@@ -11,6 +11,14 @@ namespace HungerGames
     class BaseObject
     {
     public:
+        struct Draw {
+            void operator()(BaseObject* object) const;
+        };
+
+        struct Delete {
+            void operator()(BaseObject* object) const;
+        };
+
         BaseObject();
         virtual ~BaseObject() {};
 
