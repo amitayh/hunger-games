@@ -57,7 +57,7 @@ void InfoBox::draw() const {
             // Print player info
             BasePlayer* player = *it;
             cout << *player;
-            it++;
+            ++it;
         } else {
             // Print empty line
             cout << "          ";

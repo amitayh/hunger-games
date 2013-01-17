@@ -172,7 +172,7 @@ void Game::updateArrows() {
             it = arrows.erase(it);
             delete arrow;
         } else {
-            it++;
+            ++it;
         }
     }
 }
@@ -192,7 +192,7 @@ void Game::updatePlayers() {
                 endGame(players.front());
             }
         } else {
-            it++;
+            ++it;
         }
     }
 }
@@ -206,7 +206,7 @@ void Game::updateDroppingObjects() {
             it = droppingObjects.erase(it);
             delete droppingObject;
         } else {
-            it++;
+            ++it;
         }
     }
 }
@@ -249,7 +249,7 @@ bool Game::isValidDrop(const Grid::Square& square) {
                 // Found a player closer than the minimum distance allowed
                 result = false;
             }
-            it++;
+            ++it;
         }
     }
     return result;

@@ -92,7 +92,7 @@ namespace HungerGames
         T::iterator it = list.begin();
         while (it != list.end()) {
             (*it)->draw();
-            it++;
+            ++it;
         }
     }
 

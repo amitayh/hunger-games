@@ -62,7 +62,7 @@ void BasePlayer::setSquare(Grid::Square& square) {
             while (it != players.end()) {
                 BasePlayer* player = *it;
                 fight(*player);
-                it++;
+                ++it;
             }
         }
 

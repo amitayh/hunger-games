@@ -33,7 +33,7 @@ void FileObjectsDropper::drop(Game& game) {
             if (object) {
                 game.dropObject(*object);
             }
-            it++;
+            ++it;
         }
     }
 }

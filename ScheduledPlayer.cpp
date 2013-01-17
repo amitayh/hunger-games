@@ -16,7 +16,7 @@ void ScheduledPlayer::update() {
         ActionsList::iterator it = actions.begin();
         while (it != actions.end()) {
             doAction(*it);
-            it++;
+            ++it;
         }
     }
     // Call overridden method
