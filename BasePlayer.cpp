@@ -75,14 +75,15 @@ void BasePlayer::setSquare(Grid::Square& square) {
 }
 
 bool BasePlayer::shootArrow(ArrowsBag::Type type) {
+    unsigned int tick = pGame->getTick();
     if (
-        arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
-        pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
+        arrowsBag.remaining[type] > 0 &&                // Player still has arrows
+        tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
         BaseArrow& arrow = arrowsBag.getArrow(type);
-        arrow.setDirection(direction);
+        arrow.setDirection(direction); // Initialize arrow
         pGame->addArrow(arrow, getNextSquare()); // Update game
-        lastArrowTick = pGame->getTick();
+        lastArrowTick = tick;
         return true;
     }
     return false;
@@ -228,6 +229,9 @@ BaseArrow& BasePlayer::ArrowsBag::getArrow(Type type) {
             break;
         case PENETRATING:
             arrow = new PenetratingArrow;
+            break;
+        default:
+            throw invalid_argument("Invalid arrow type");
             break;
     }
 

@@ -13,7 +13,7 @@ void ScheduledPlayer::update() {
     if (ev) {
         // Apply event's actions from file
         ActionsList& actions = ev->getActions();
-        ActionsIterator it = actions.begin();
+        ActionsList::iterator it = actions.begin();
         while (it != actions.end()) {
             doAction(*it);
             it++;

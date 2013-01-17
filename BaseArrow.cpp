@@ -11,7 +11,7 @@ BaseArrow::BaseArrow() {
 }
 
 BaseArrow::~BaseArrow() {
-    if (pGame->isRunning()) {
+    if (pGame && pGame->isRunning()) {
         // Clear square before deletion
         pSquare->clear();
     }

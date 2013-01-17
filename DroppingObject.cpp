@@ -8,7 +8,7 @@ DroppingObject::DroppingObject() {
 }
 
 DroppingObject::~DroppingObject() {
-    if (pGame->isRunning()) {
+    if (pGame && pGame->isRunning()) {
         pSquare->unsetDroppingObject();
     }
 }

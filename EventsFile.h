@@ -11,7 +11,6 @@ namespace HungerGames
 
     typedef char Action;
     typedef list<Action> ActionsList;
-    typedef ActionsList::iterator ActionsIterator;
 
     class EventsFile
     {

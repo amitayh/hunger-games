@@ -84,6 +84,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                     case CHAR_WALL:
                         pGame->addWall(row, col);
                         break;
+
                     case CHAR_BOT:
                         if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
                             char name = FIRST_PLAYER_NAME + bots + scheduled; // Name the bots sequentially (A, B, C...)
@@ -93,6 +94,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                             bots++;
                         }
                         break;
+
                     case CHAR_SCHEDULED_PLAYER:
                         if (players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
                             char name = FIRST_PLAYER_NAME + bots + scheduled;
@@ -106,6 +108,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                             scheduled++;
                         }
                         break;
+
                     case CHAR_HUMAN_PLAYER:
                         if (!addedHumanPlayer && players.size() < MAX_NUM_PLAYERS && pGame->isValidDrop(row, col)) {
                             Console::Color color = getPlayerColor();
@@ -114,6 +117,7 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
                             addedHumanPlayer = true;
                         }
                         break;
+
                     case CHAR_INFO_BOX:
                         if (!addedInfoBox) {
                             pGame->addInfoBox(row, col);
@@ -142,10 +146,12 @@ void MapLoader::load(const char* mapFile, const char* eventsFile, char* schedule
 
     if (eventsFile) {
         // Events file objects dropper
-        pGame->setObjectsDropper(new FileObjectsDropper(eventsFile));
+        FileObjectsDropper* dropper = new FileObjectsDropper(eventsFile);
+        pGame->setObjectsDropper(*dropper);
     } else {
         // Default objects dropper
-        pGame->setObjectsDropper(new RandomObjectsDropper);
+        RandomObjectsDropper* dropper = new RandomObjectsDropper;
+        pGame->setObjectsDropper(*dropper);
     }
 }
 

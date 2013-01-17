@@ -255,8 +255,8 @@ bool Game::isValidDrop(const Grid::Square& square) {
     return result;
 }
 
-void Game::setObjectsDropper(ObjectsDropper* dropper) {
-    pObjectsDropper = dropper;
+void Game::setObjectsDropper(ObjectsDropper& dropper) {
+    pObjectsDropper = &dropper;
 }
 
 unsigned int Game::getTick() const {

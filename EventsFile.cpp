@@ -23,6 +23,7 @@ EventsFile::Event* EventsFile::getEvent(unsigned int tick) {
         readEvent();
     }
     if (tick == lastEvent.tick) {
+        // Last read event matches current tick - return it
         return &lastEvent;
     }
     return NULL;
@@ -30,7 +31,7 @@ EventsFile::Event* EventsFile::getEvent(unsigned int tick) {
 
 void EventsFile::readEvent() {
     file >> lastEvent.tick; // Read tick
-    lastEvent.actions.clear();
+    lastEvent.actions.clear(); // Clear actions list
     bool read = true;
     while (read && !file.eof()) {
         char action = toLowerCase(file.get());

@@ -16,7 +16,7 @@ void FileObjectsDropper::drop(Game& game) {
     EventsFile::Event* ev = events.getEvent(game.getTick());
     if (ev) {
         ActionsList& actions = ev->getActions();
-        ActionsIterator it = actions.begin();
+        ActionsList::iterator it = actions.begin();
         while (it != actions.end()) {
             DroppingObject* object = NULL;
             switch (*it) {
