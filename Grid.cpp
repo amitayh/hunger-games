@@ -100,7 +100,7 @@ void Grid::Square::unsetWall() {
     clear();
 }
 
-ObjectsList& Grid::Square::getPlayers() {
+PlayersList& Grid::Square::getPlayers() {
     return players;
 }
 

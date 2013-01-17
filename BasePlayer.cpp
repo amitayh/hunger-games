@@ -5,15 +5,20 @@
 #include "ExplodingArrow.h"
 #include "PenetratingArrow.h"
 #include <iostream>
-#include <exception>
 
 using namespace std;
 using namespace HungerGames;
 
-const int BasePlayer::INITIAL_POWER                  = 1000;
-const int BasePlayer::MIN_TICKS_BETWEEN_ARROWS       = 3;
-const int BasePlayer::SHOOT_ARROW_PROBABILITY        = 20;
-const int BasePlayer::MOVE_INTERVAL                  = 2;
+const int       BasePlayer::INITIAL_POWER               = 1000;
+const int       BasePlayer::MIN_TICKS_BETWEEN_ARROWS    = 3;
+const int       BasePlayer::MOVE_INTERVAL               = 2;
+const Action    BasePlayer::MOVE_LEFT                   = 'a';
+const Action    BasePlayer::MOVE_RIGHT                  = 'd';
+const Action    BasePlayer::MOVE_UP                     = 'w';
+const Action    BasePlayer::MOVE_DOWN                   = 's';
+const Action    BasePlayer::SHOOT_REGULAR_ARROW         = 'p';
+const Action    BasePlayer::SHOOT_EXPLODING_ARROW       = 'i';
+const Action    BasePlayer::SHOOT_PENETRATING_ARROW     = 'o';
 
 BasePlayer::BasePlayer(char name, Console::Color color) {
     this->name = name;
@@ -21,50 +26,64 @@ BasePlayer::BasePlayer(char name, Console::Color color) {
     power = INITIAL_POWER;
     direction = RIGHT;
     lastArrowTick = 0;
+    nextArrowType = ArrowsBag::NONE;
 }
 
 BasePlayer::~BasePlayer() {
-    if (pGame->isRunning()) {
+    if (pGame && pGame->isRunning()) {
         // Clear square before deletion
         pSquare->stepOut(*this);
     }
 }
 
-void BasePlayer::setSquare(Grid::Square& square) {
-    if (square.hasDroppingObject()) {
-        // Pick up dropping object
-        DroppingObject& droppingObject = square.getDroppingObject();
-        droppingObject.affect(*this);
-    }
-
-    ObjectsList& players = square.getPlayers();
-    if (!players.empty()) {
-        // Fight other players on square
-        ObjectsIterator it = players.begin();
-        while (it != players.end()) {
-            BasePlayer* player = (BasePlayer*) *it;
-            fight(*player);
-            it++;
+void BasePlayer::update() {
+    if (power > 0) {
+        if (pGame->getTick() % MOVE_INTERVAL == 0) {
+            setSquare(getNextSquare());
+        }
+        if (nextArrowType != ArrowsBag::NONE) {
+            shootArrow(nextArrowType);
         }
     }
+}
 
-    if (pSquare) {
-        pSquare->stepOut(*this);
+void BasePlayer::setSquare(Grid::Square& square) {
+    if (!square.hasWall()) {
+        if (square.hasDroppingObject()) {
+            // Pick up dropping object
+            DroppingObject& droppingObject = square.getDroppingObject();
+            droppingObject.affect(*this);
+        }
+
+        PlayersList& players = square.getPlayers();
+        if (!players.empty()) {
+            // Fight other players on square
+            PlayersList::iterator it = players.begin();
+            while (it != players.end()) {
+                BasePlayer* player = *it;
+                fight(*player);
+                it++;
+            }
+        }
+
+        if (pSquare) {
+            pSquare->stepOut(*this);
+        }
+        square.stepIn(*this);
+        pSquare = &square;
     }
-    square.stepIn(*this);
-    pSquare = &square;
 }
 
 bool BasePlayer::shootArrow(ArrowsBag::Type type) {
-    Grid::Square& square = getNextSquare();
+    unsigned int tick = pGame->getTick();
     if (
-        arrowsBag.remaining[type] > 0 &&                            // Player still has arrows
-        pGame->getTick() > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
+        arrowsBag.remaining[type] > 0 &&                // Player still has arrows
+        tick > lastArrowTick + MIN_TICKS_BETWEEN_ARROWS // Check minimum ticks between arrows
     ) {
-        BaseArrow* arrow = arrowsBag.getArrow(type);
-        arrow->setDirection(direction);
-        pGame->addArrow(arrow, square); // Update game
-        lastArrowTick = pGame->getTick();
+        BaseArrow& arrow = arrowsBag.getArrow(type);
+        arrow.setDirection(direction); // Initialize arrow
+        pGame->addArrow(arrow, getNextSquare()); // Update game
+        lastArrowTick = tick;
         return true;
     }
     return false;
@@ -83,6 +102,32 @@ void BasePlayer::fight(BasePlayer& opponent) {
         // Player and opponent are equally matched
         opponent.decreasePower(50);
         decreasePower(50);
+    }
+}
+
+void BasePlayer::doAction(Action action) {
+    switch (action) {
+        case MOVE_LEFT:
+            direction = LEFT;
+            break;
+        case MOVE_RIGHT:
+            direction = RIGHT;
+            break;
+        case MOVE_UP:
+            direction = UP;
+            break;
+        case MOVE_DOWN:
+            direction = DOWN;
+            break;
+        case SHOOT_REGULAR_ARROW:
+            nextArrowType = ArrowsBag::REGULAR;
+            break;
+        case SHOOT_EXPLODING_ARROW:
+            nextArrowType = ArrowsBag::EXPLODING;
+            break;
+        case SHOOT_PENETRATING_ARROW:
+            nextArrowType = ArrowsBag::PENETRATING;
+            break;
     }
 }
 
@@ -150,7 +195,7 @@ int BasePlayer::ArrowsBag::getRemaining(Type type) const {
 
 BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() const {
     if (isEmpty()) {
-        throw runtime_error("Arrows bag is empty");
+        return NONE;
     }
 
     // Check which arrow type is available
@@ -167,26 +212,33 @@ BasePlayer::ArrowsBag::Type BasePlayer::ArrowsBag::getAvailableRandomType() cons
     return (Type) available[random];
 }
 
-BaseArrow* BasePlayer::ArrowsBag::getArrow(Type type) {
-    BaseArrow* arrow = NULL;
-    if (remaining[type] > 0) {
-        // Allocate arrow
-        switch (type) {
-            case REGULAR:
-                arrow = new RegularArrow;
-                break;
-            case EXPLODING:
-                arrow = new ExplodingArrow;
-                break;
-            case PENETRATING:
-                arrow = new PenetratingArrow;
-                break;
-        }
-
-        // Decrease counter
-        remaining[type]--;
+BaseArrow& BasePlayer::ArrowsBag::getArrow(Type type) {
+    if (remaining[type] == 0) {
+        throw logic_error("No remaining arrows from this type");
     }
-    return arrow;
+
+    BaseArrow* arrow;
+
+    // Allocate arrow
+    switch (type) {
+        case REGULAR:
+            arrow = new RegularArrow;
+            break;
+        case EXPLODING:
+            arrow = new ExplodingArrow;
+            break;
+        case PENETRATING:
+            arrow = new PenetratingArrow;
+            break;
+        default:
+            throw invalid_argument("Invalid arrow type");
+            break;
+    }
+
+    // Decrease counter
+    remaining[type]--;
+
+    return *arrow;
 }
 
 BasePlayer::ArrowsBag& BasePlayer::ArrowsBag::operator+=(int amount) {

@@ -1,38 +1,41 @@
 #include "Bot.h"
+#include "Common.h"
 #include "Game.h"
 #include "DroppingObject.h"
 
 using namespace HungerGames;
 
 const int Bot::CHANGE_DIRECTION_PROBABILITY = 10;
+const int Bot::SHOOT_ARROW_PROBABILITY      = 20;
 
 Bot::Bot(char name, Console::Color color): BasePlayer(name, color) {}
 
 void Bot::update() {
-    if (power > 0) {
-        if (pGame->getTick() % MOVE_INTERVAL == 0) {
-            // Move to next square
-            setSquare(getNextMove());
-        }
-
-        if (
-            !arrowsBag.isEmpty() &&                             // Player still has arrows
-            pGame->checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
-            hasPlayersInRange()                                 // Shoot only if there is a reasonable chance of hitting an opponent
-        ) {
-            // Shoot an arrow if conditions are met
-            shootArrow(arrowsBag.getAvailableRandomType());
-        }
+    if (pGame->getTick() % MOVE_INTERVAL == 0) {
+        // Don't call this method on every tick for efficiency reasons
+        setNextMove();
     }
+    if (
+        !arrowsBag.isEmpty() &&                      // Player still has arrows
+        checkProbability(SHOOT_ARROW_PROBABILITY) && // Check probability, don't shoot on every chance
+        hasPlayersInRange()                          // Shoot only if there is a reasonable chance of hitting an opponent
+    ) {
+        // Shoot an arrow if conditions are met
+        nextArrowType = arrowsBag.getAvailableRandomType();
+    } else {
+        nextArrowType = ArrowsBag::NONE;
+    }
+    // Call overridden method
+    BasePlayer::update();
 }
 
-Grid::Square& Bot::getNextMove() {
+void Bot::setNextMove() {
     // Find closest food / quiver
     DroppingObject* closest = findClosestObject();
     if (closest && isClearPath(closest->getSquare())) {
         // Move towards the closest if it exists and the path is clear
         direction = pSquare->getDirection(closest->getSquare());
-    } else if (pGame->checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
+    } else if (checkProbability(CHANGE_DIRECTION_PROBABILITY)) {
         // Randomly change direction
         setRandomDirection();
     }
@@ -43,20 +46,18 @@ Grid::Square& Bot::getNextMove() {
         setRandomDirection();
         nextSquare = &getNextSquare();
     }
-
-    return *nextSquare;
 }
 
 DroppingObject* Bot::findClosestObject() const {
-    ObjectsList& droppingObjects = pGame->getDroppingObjects();
+    DroppingObjectsList& droppingObjects = pGame->getDroppingObjects();
     DroppingObject* closest = NULL;
     if (!droppingObjects.empty()) {
         double closestDistance = 0;
-        ObjectsIterator it = droppingObjects.begin();
+        DroppingObjectsList::iterator it = droppingObjects.begin();
         while (it != droppingObjects.end()) {
             // Iterate over the objects list
-            DroppingObject* current = (DroppingObject*) *it;
-            if (current->getType() != DroppingObject::Type::BOMB) {
+            DroppingObject* current = *it;
+            if (current->getType() != DroppingObject::BOMB) {
                 // Don't go for the bombs!
                 double distance = pSquare->getDistance(current->getSquare());
                 if (!closest || distance < closestDistance) {
@@ -105,12 +106,12 @@ void Bot::setRandomDirection() {
 }
 
 bool Bot::hasPlayersInRange() const {
-    ObjectsList& players = pGame->getPlayers();
-    ObjectsIterator it = players.begin();
+    PlayersList& players = pGame->getPlayers();
+    PlayersList::iterator it = players.begin();
     bool inRange = false;
     while (!inRange && it != players.end()) {
         // Iterate over the players list
-        BasePlayer* player = (BasePlayer*) *it;
+        BasePlayer* player = *it;
         if (player != this) {
             // Check if opponent may be hit if an arrow will be shot
             inRange = playerInRange(*player);

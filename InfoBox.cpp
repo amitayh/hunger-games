@@ -1,4 +1,5 @@
 #include "InfoBox.h"
+#include "Common.h"
 #include "Game.h"
 #include "BasePlayer.h"
 #include <iostream>
@@ -19,6 +20,12 @@ void InfoBox::setSquare(Grid::Square& square) {
         row = square.getRow(),
         col = square.getCol();
 
+    // Validate position
+    const Grid& grid = pGame->getGrid();
+    if (col + width > grid.getCols() || row + height > grid.getRows()) {
+        throw InvalidPosition("Invalid position for info box");
+    }
+
     // Add walls around the info box
     for (int i = 0; i < width + 2; i++) {
         pGame->addWall(row - 1, col + i - 1);
@@ -31,8 +38,8 @@ void InfoBox::setSquare(Grid::Square& square) {
 }
 
 void InfoBox::draw() const {
-    ObjectsList& players = pGame->getPlayers();
-    ObjectsIterator it = players.begin();
+    PlayersList& players = pGame->getPlayers();
+    PlayersList::iterator it = players.begin();
     int row = pSquare->getRow(),
         col = pSquare->getCol(),
         height = size.getHeight();
@@ -48,7 +55,7 @@ void InfoBox::draw() const {
         Console::gotoPosition(row + i, col);
         if (it != players.end()) {
             // Print player info
-            BasePlayer* player = (BasePlayer*) *it;
+            BasePlayer* player = *it;
             cout << *player;
             it++;
         } else {

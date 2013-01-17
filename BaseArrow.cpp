@@ -11,7 +11,7 @@ BaseArrow::BaseArrow() {
 }
 
 BaseArrow::~BaseArrow() {
-    if (pGame->isRunning()) {
+    if (pGame && pGame->isRunning()) {
         // Clear square before deletion
         pSquare->clear();
     }
@@ -32,11 +32,10 @@ void BaseArrow::update() {
 
 bool BaseArrow::checkHit() {
     if (pSquare) {
-        ObjectsList& players = pSquare->getPlayers();
+        PlayersList& players = pSquare->getPlayers();
         if (!players.empty()) {
             // Hit first player on square
-            BasePlayer* player = (BasePlayer*) players.front();
-            player->decreasePower(500);
+            players.front()->decreasePower(500);
             hit = true;
         }
     }

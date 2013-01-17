@@ -2,6 +2,7 @@
 #define _BASE_PLAYER_H
 
 #include "MovingObject.h"
+#include "EventsFile.h"
 #include <ostream>
 
 using namespace std;
@@ -25,10 +26,11 @@ namespace HungerGames
             enum Type {
                 REGULAR,
                 EXPLODING,
-                PENETRATING
+                PENETRATING,
+                NONE
             };
             ArrowsBag();
-            BaseArrow* getArrow(Type type);
+            BaseArrow& getArrow(Type type);
             bool isEmpty() const;
             int getRemaining(Type type) const;
             Type getAvailableRandomType() const;
@@ -39,6 +41,7 @@ namespace HungerGames
 
         ~BasePlayer();
 
+        virtual void update();
         virtual void setSquare(Grid::Square& square);
         void increasePower(int amount);
         void decreasePower(int amount);
@@ -54,8 +57,14 @@ namespace HungerGames
     protected:
         static const int INITIAL_POWER;
         static const int MIN_TICKS_BETWEEN_ARROWS;
-        static const int SHOOT_ARROW_PROBABILITY;
         static const int MOVE_INTERVAL;
+        static const Action MOVE_LEFT;
+        static const Action MOVE_RIGHT;
+        static const Action MOVE_UP;
+        static const Action MOVE_DOWN;
+        static const Action SHOOT_REGULAR_ARROW;
+        static const Action SHOOT_EXPLODING_ARROW;
+        static const Action SHOOT_PENETRATING_ARROW;
 
         BasePlayer(char name, Console::Color color); // Make class abstract
 
@@ -64,9 +73,11 @@ namespace HungerGames
         int power;
         ArrowsBag arrowsBag;
         unsigned int lastArrowTick;
+        ArrowsBag::Type nextArrowType;
 
         void fight(BasePlayer& opponent);
         bool shootArrow(ArrowsBag::Type type);
+        void doAction(Action action);
     };
 
 }

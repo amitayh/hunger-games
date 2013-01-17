@@ -4,6 +4,8 @@
 #include "Console.h"
 #include <list>
 
+using namespace std;
+
 namespace HungerGames
 {
 
@@ -13,8 +15,7 @@ namespace HungerGames
     class Wall;
     enum Direction;
 
-    typedef std::list<BaseObject*> ObjectsList;
-    typedef ObjectsList::iterator ObjectsIterator;
+    typedef list<BasePlayer*> PlayersList;
 
     class Grid
     {
@@ -27,7 +28,7 @@ namespace HungerGames
             static const double PI;
 
             int row, col;
-            ObjectsList players;
+            PlayersList players;
             DroppingObject* pDroppingObject;
             Wall* pWall;
 
@@ -41,7 +42,7 @@ namespace HungerGames
             void unsetDroppingObject();
             void setWall(Wall& wall);
             void unsetWall();
-            ObjectsList& getPlayers();
+            PlayersList& getPlayers();
 
             void clear() const;
             void draw(char ch, Console::Color color = Console::SILVER) const;
